@@ -1,0 +1,128 @@
+void Q1DTOF::exec()
+{
+  m_dataWS = getProperty("DetBankWorkspace");
+  MatrixWorkspace_const_sptr waveAdj = getProperty("WavelengthAdj");
+  // this pointer could be NULL as PixelAdj is an optional property
+  MatrixWorkspace_const_sptr pixelAdj = getProperty("PixelAdj");
+  const bool doGravity = getProperty("AccountForGravity");
+  initizeCutOffs(getProperty("RadiusCut"), getProperty("WaveCut"));
+
+  //throws if we don't have common binning or another incompatibility
+  examineInput(waveAdj, pixelAdj);
+  // normalization as a function of wavelength (i.e. centers of x-value bins)
+  double const * const binNorms = waveAdj ? &(waveAdj->readY(0)[0]) : NULL;
+  // error on the wavelength normalization
+  double const * const binNormEs = waveAdj ? &(waveAdj->readE(0)[0]) : NULL;
+
+  //define the (large number of) data objects that are going to be used in all iterations of the loop below
+    // Construct a new spectra map. This will be faster than remapping the old one
+  API::SpectraDetectorMap *specMap = new SpectraDetectorMap;
+  // this will become the output workspace from this algorithm
+  MatrixWorkspace_sptr outputWS = setUpOutputWorkspace(getProperty("OutputBinning"), specMap);
+  const MantidVec & QOut = outputWS->readX(0);
+  MantidVec & YOut = outputWS->dataY(0);
+  MantidVec & EOutTo2 = outputWS->dataE(0);
+  // normalisation that is applied to counts in each Q bin
+  MantidVec normSum(YOut.size(), 0.0);
+  // the error on the normalisation
+  MantidVec normError2(YOut.size(), 0.0);
+
+  const Geometry::ISpectraDetectorMap & inSpecMap = m_dataWS->spectraMap();
+  //const Axis* const spectraAxis = m_dataWS->getAxis(1);
+
+
+
+  const int numSpec = static_cast<int>(m_dataWS->getNumberHistograms());
+  Progress progress(this, 0.1, 1.0, numSpec+1);
+
+  PARALLEL_FOR3(m_dataWS, outputWS, pixelAdj)
+  for (int i = 0; i < numSpec; ++i)
+  {
+    PARALLEL_START_INTERUPT_REGION
+    // Get the pixel relating to this spectrum
+    IDetector_const_sptr det;
+    try {
+      det = m_dataWS->getDetector(i);
+    } catch (Exception::NotFoundError&) {
+      g_log.warning() << "Spectrum index " << i << " has no detector assigned to it - discarding" << std::endl;
+      // Catch if no detector. Next line tests whether this happened - test placed
+      // outside here because Mac Intel compiler doesn't like 'continue' in a catch
+      // in an openmp block.
+    }
+    // If no detector found or if detector is masked shouldn't be included skip onto the next spectrum
+    if ( !det || det->isMonitor() || det->isMasked() )
+    {
+      continue;
+    }
+
+    // Precompute and cache values that do not change within inner loops
+    const size_t numWavbins = m_dataWS->readY(i).size();
+    const size_t wavStart = (m_RCut > 1e-200) ? waveLengthCutOff(i) : 0;
+    if (wavStart >= numWavbins)
+    {
+      // all the spectra in this detector is out of range
+      continue;
+    }
+
+    // Precompute the adjusted number of wavelength bins
+    const size_t adjustedNumWavbins = numWavbins - wavStart;
+
+    // the weighting for this input spectrum that is added to the normalization
+    MantidVec norm(adjustedNumWavbins);
+    // the error on these weights, it contributes to the error calculation on the output workspace
+    MantidVec normETo2(adjustedNumWavbins);
+    calculateNormalization(wavStart, i, pixelAdj, binNorms, binNormEs, norm, normETo2);
+    MantidVec::const_iterator norms = norm.begin();
+    MantidVec::const_iterator normETo2s = normETo2.begin();
+
+    // now read the data from the input workspace, calculate Q for each bin and get pointers to the counts data
+    // A temporary vector to store the Q values for the input workspace before the rebin
+    MantidVec QIns(adjustedNumWavbins);
+    convertWavetoQ(i, doGravity, m_dataWS->readX(i).begin() + wavStart, QIns);
+    MantidVec::const_iterator QIn, YIn, EIn;
+    getInputDataIterators(wavStart, i, QIns, QIn, YIn, EIn);
+
+    // Precompute the end iterator for the input data
+    const MantidVec::const_iterator end = m_dataWS->readY(i).end();
+
+    // Cache the QOut.end() value to avoid repeated calls
+    MantidVec::const_iterator loc = QOut.end();
+
+    // sum the Q contributions from each individual spectrum into the output array
+    for( ; YIn != end; ++YIn, ++EIn, ++QIn, ++norms, ++normETo2s)
+    {
+      // Use cached loc to restrict the search range for modest speed improvement
+      loc = std::upper_bound(QOut.begin(), loc, *QIn);
+      // ignore counts that are out of the output range
+      if ( (loc != QOut.begin()) && (loc != QOut.end()) )
+      {
+        const size_t bin = loc - QOut.begin() - 1;
+        PARALLEL_CRITICAL(q1d_counts_sum)
+        {
+          YOut[bin] += *YIn;
+          normSum[bin] += *norms;
+          //these are the errors squared which will be summed and square rooted at the end
+          EOutTo2[bin] += (*EIn)*(*EIn);
+          normError2[bin] += *normETo2s;
+        }
+        // Update loc for the next iteration
+        ++loc;
+      }
+    }
+    
+    PARALLEL_CRITICAL(q1d_spectra_map)
+    {
+      updateSpecMap(i, specMap, inSpecMap, outputWS);
+    }
+
+    progress.report("Computing I(Q)");
+    PARALLEL_END_INTERUPT_REGION
+  }
+  PARALLEL_CHECK_INTERUPT_REGION
+
+  progress.report("Normalizing I(Q)");
+  //finally divide the number of counts in each output Q bin by its weighting
+  normalize(normSum, normError2, YOut, EOutTo2);
+
+  setProperty("OutputWorkspace",outputWS);
+}

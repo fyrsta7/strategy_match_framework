@@ -1,0 +1,78 @@
+{
+  "cluster_count_by_threshold": {
+    "10": 1,
+    "9": 2,
+    "8": 3,
+    "7": 5,
+    "6": 8,
+    "5": 11,
+    "4": 14,
+    "3": 38,
+    "2": 84,
+    "1": 300
+  },
+  "cluster_summaries": [
+    {
+      "cluster_id": "23",
+      "size": 10,
+      "used_commits_count": 3,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.8702114820480347,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing unnecessary memory operations and overhead by replacing inefficient constructs (e.g., functor-based loops, off-by-one errors, redundant checks) with more efficient alternatives (e.g., const-iterator-based loops, precise conditionals, streamlined bitwise operations).",
+        "code_examples": [
+          [
+            "// Before\nfor (unsigned int i = 0; i < tree->children_len; ++i) {\n    if (Unmanaged* c = findUnmanaged(windows[i]))\n        x_stacking.append(c);\n}",
+            "// After\nconst auto count = tree->children_len;\nint foundUnmanagedCount = unmanaged.count();\nfor (unsigned int i = 0; i < count; ++i) {\n    for (auto it = unmanaged.constBegin(); it != unmanaged.constEnd(); ++it) {\n        Unmanaged *u = *it;\n        if (u->window() == windows[i]) {\n            x_stacking.append(u);\n            foundUnmanagedCount--;\n            break;\n        }\n    }\n    if (foundUnmanagedCount == 0) {\n        break;\n    }\n}"
+          ],
+          [
+            "// Before\nif (min_size < *size)\n    return 0;\nmin_size = FFMAX(17 * min_size / 16 + 32, min_size);\nav_free(*p);",
+            "// After\nif (min_size <= *size && *p)\n    return 0;\nmin_size = FFMAX(17 * min_size / 16 + 32, min_size);\nav_free(*p);"
+          ],
+          [
+            "// Before\nnew_hflags |= (((unsigned long)env->segs[R_DS].base | (unsigned long)env->segs[R_ES].base | (unsigned long)env->segs[R_SS].base) != 0) << HF_ADDSEG_SHIFT;",
+            "// After\nnew_hflags |= ((env->segs[R_DS].base | env->segs[R_ES].base | env->segs[R_SS].base) != 0) << HF_ADDSEG_SHIFT;"
+          ]
+        ],
+        "application_conditions": [
+          "The code involves frequent iteration over large data structures with high overhead from dynamic function calls or complex logic.",
+          "The code performs redundant memory operations or checks that can be streamlined with precise conditionals or bitwise operations.",
+          "The code exhibits performance bottlenecks due to unnecessary memory allocation or deallocation caused by imprecise size calculations or checks."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves reducing unnecessary memory operations and overhead by replacing inefficient constructs (e.g., functor-based loops, off-by-one errors, redundant checks) with more efficient alternatives (e.g., const-iterator-based loops, precise conditionals, streamlined bitwise operations).",
+        "The common optimization strategy across these commits involves reducing unnecessary operations—such as loop overhead, memory allocation, and bitwise computations—by leveraging const-iterators, fixing boundary conditions, and simplifying conditional checks.",
+        "The common optimization strategy across these commits involves reducing unnecessary operations—such as memory allocations, redundant checks, and iterator overhead—by refining conditional logic, leveraging const-iterators, and minimizing redundant memory operations.",
+        "The common optimization strategy across these commits involves **reducing unnecessary operations and overhead** by minimizing redundant checks, avoiding off-by-one errors, and streamlining memory access patterns.",
+        "The common optimization strategy across these commits involves reducing unnecessary computational overhead by minimizing redundant memory operations, such as replacing functor-based loops with const-iterator-based loops, fixing off-by-one errors to prevent excessive memory allocation, and streamlining conditional checks to avoid redundant memory access."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing unnecessary memory accesses within a loop to achieve a slight speedup.",
+        "The optimization strategy involved merging two separate loops into one to reduce memory traffic and improve performance.",
+        "The optimization strategy involved merging two separate loops into one to reduce CPU time.",
+        "The optimization strategy involved removing a temporary array and combining two loops into one to reduce memory usage and improve efficiency.",
+        "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture.",
+        "The optimization strategy involved using a `goto` statement to enter a loop directly, reducing overhead from loop initialization.",
+        "The optimization strategy involves terminating a loop earlier to avoid an unnecessary and expensive PCIe read operation.",
+        "The optimization strategy involved modifying the `cpu_x86_load_seg_cache` function to improve performance by reducing unnecessary memory operations.",
+        "The optimization strategy involved fixing an off-by-one error to prevent unnecessary memory allocation in the `ff_fast_malloc()` function.",
+        "The optimization strategy replaced a functor-based loop with a const-iterator-based loop to reduce overhead when checking a large list of windows."
+      ]
+    }
+  ],
+  "metadata": {
+    "use_diff_info": true,
+    "use_commit_message": false,
+    "max_diff_length": 2000,
+    "skip_truncated_diff": true,
+    "max_commits_per_cluster": 3,
+    "consistency_repeats": 5,
+    "use_new_condition_prompt": true,
+    "threshold": 10,
+    "total_clusters_analyzed": 1,
+    "total_used_commits": 3,
+    "total_truncated_diffs": 0
+  }
+}

@@ -1,0 +1,19 @@
+diff --git a/db/db_impl/db_impl.cc b/db/db_impl/db_impl.cc
+index 40e82cdba..906b42bb6 100644
+--- a/db/db_impl/db_impl.cc
++++ b/db/db_impl/db_impl.cc
+@@ -4447,10 +4447,12 @@ Status DBImpl::DeleteFilesInRanges(ColumnFamilyHandle* column_family,
+           deleted_files.insert(level_file);
+           level_file->being_compacted = true;
+         }
+-        vstorage->ComputeCompactionScore(*cfd->ioptions(),
+-                                         *cfd->GetLatestMutableCFOptions());
+       }
+     }
++    if (!deleted_files.empty()) {
++      vstorage->ComputeCompactionScore(*cfd->ioptions(),
++                                       *cfd->GetLatestMutableCFOptions());
++    }
+     if (edit.GetDeletedFiles().empty()) {
+       job_context.Clean();
+       return status;

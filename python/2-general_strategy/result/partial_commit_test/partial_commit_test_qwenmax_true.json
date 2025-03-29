@@ -1,0 +1,207 @@
+[
+    {
+        "repository_name": "operon",
+        "hash": "aae163f20fc4ddc4ff1c464466039cdf4ef77df8",
+        "author": "Bogdan Burlacu",
+        "date": "2019-09-28T10:59:30+02:00",
+        "message": "Small performance improvement in eval loop",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/operon/core/eval.hpp"
+        ],
+        "github_commit_url": "https://github.com/heal-research/operon/commit/aae163f20fc4ddc4ff1c464466039cdf4ef77df8",
+        "contains_optimization_keyword": true,
+        "is_opt_ds_simple": "true",
+        "optimization_summary": [
+            "The optimization strategy involved restructuring the evaluation loop to reduce redundant computations and improve iteration efficiency.",
+            "The optimization strategy involved restructuring the evaluation loop to reduce redundant computations or improve cache locality.",
+            "The optimization strategy involved restructuring the evaluation loop to reduce redundant computations and improve iteration efficiency.",
+            "The optimization strategy involved restructuring the evaluation loop to reduce redundant computations and improve iteration efficiency.",
+            "The optimization strategy involved restructuring the evaluation loop to reduce redundant computations and improve iteration efficiency."
+        ],
+        "is_generic_optimization": [
+            true,
+            false,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved restructuring the evaluation loop to reduce redundant computations and improve iteration efficiency.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "repository_name": "mlib",
+        "hash": "743959ebde33e9a5452799e02c245cee02ebada2",
+        "author": "Patrick Pelissier",
+        "date": "2020-05-16T14:09:49+02:00",
+        "message": "Fix micro performance issue",
+        "modified_files_count": 1,
+        "modified_files": [
+            "m-array.h"
+        ],
+        "github_commit_url": "https://github.com/P-p-H-d/mlib/commit/743959ebde33e9a5452799e02c245cee02ebada2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "M_C"
+        ],
+        "is_opt_ds_simple": "true",
+        "optimization_summary": [
+            "The optimization strategy involved replacing a function call with a direct inline calculation to reduce function call overhead.",
+            "The optimization strategy involved replacing a function call with a direct inline computation to reduce function call overhead.",
+            "The optimization strategy involved replacing a function call with a direct inline calculation to reduce function call overhead.",
+            "The optimization strategy involved replacing a function call with a direct inline calculation to reduce function call overhead.",
+            "The optimization strategy involved replacing a function call with a direct inline computation to reduce function call overhead."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved replacing a function call with a direct inline calculation to reduce function call overhead.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "repository_name": "CuraEngine",
+        "hash": "693774fcfb880220c0bd5928810be01bd3c93a8b",
+        "author": "Lipu Fei",
+        "date": "2017-07-07T11:03:58+02:00",
+        "message": "Optimize SupportLayer::excludeAreasFromSupportInfillAreas()\n\nCURA-2724",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sliceDataStorage.cpp"
+        ],
+        "github_commit_url": "https://github.com/Ultimaker/CuraEngine/commit/693774fcfb880220c0bd5928810be01bd3c93a8b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SupportLayer::excludeAreasFromSupportInfillAreas"
+        ],
+        "is_opt_ds_simple": "true",
+        "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "repository_name": "NBlood",
+        "hash": "b9e67132ccdaaec6ffcc915296f22e52f86841c9",
+        "author": "Richard Gobeille",
+        "date": "2022-04-12T17:45:45-07:00",
+        "message": "engine: optimize 8cf7e9fbb0a49d9bdc3a3c8d80a9f63df7e4daa0\n\nAnd yes, I check the compiler output using godbolt.org :p",
+        "modified_files_count": 1,
+        "modified_files": [
+            "source/build/src/engine.cpp"
+        ],
+        "github_commit_url": "https://github.com/NBlood/NBlood/commit/b9e67132ccdaaec6ffcc915296f22e52f86841c9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "classicDrawSprite"
+        ],
+        "is_opt_ds_simple": "true",
+        "optimization_summary": [
+            "The optimization strategy involved replacing a series of conditional checks with a more efficient bitmask operation to reduce branching and improve execution speed.",
+            "The optimization strategy involved replacing a series of conditional checks with a more efficient bitwise operation to determine sprite rendering flags.",
+            "The optimization strategy involved replacing a series of conditional checks with a lookup table to reduce branching and improve performance.",
+            "The optimization strategy involved replacing a series of conditional checks with a more efficient bitwise operation to determine sprite rendering flags.",
+            "The optimization strategy involved replacing a series of conditional checks with a more efficient switch-case structure to reduce branching overhead."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved replacing a series of conditional checks with a more efficient bitmask operation to reduce branching and improve execution speed.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "repository_name": "criu",
+        "hash": "2449656e10cb1725fe58399e5f07fe55f6c282d9",
+        "author": "Pavel Emelyanov",
+        "date": "2016-01-13T16:21:21+03:00",
+        "message": "util: Optimize vaddr_to_pfn\n\nSigned-off-by: Pavel Emelyanov <xemul@virtuozzo.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util.c"
+        ],
+        "github_commit_url": "https://github.com/checkpoint-restore/criu/commit/2449656e10cb1725fe58399e5f07fe55f6c282d9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "vaddr_to_pfn"
+        ],
+        "is_opt_ds_simple": "true",
+        "optimization_summary": [
+            "The optimization strategy involved replacing a linear search with a binary search to improve lookup efficiency in the `vaddr_to_pfn` function.",
+            "The optimization strategy involved replacing a loop with a direct calculation to improve the efficiency of virtual address to page frame number conversion.",
+            "The optimization strategy involved replacing a loop with a direct calculation to improve performance by reducing unnecessary iterations.",
+            "The optimization strategy involved replacing a loop with a direct calculation to improve the efficiency of virtual address to page frame number conversion.",
+            "The optimization strategy used is replacing a loop with a direct calculation to improve performance by reducing unnecessary iterations."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved replacing a loop with a direct calculation to improve the efficiency of virtual address to page frame number conversion.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "repository_name": "xray-16",
+        "hash": "40105998d414e9322540b52ed323196dc8deab78",
+        "author": "Xottab-DUTY",
+        "date": "2017-08-18T18:06:21+05:00",
+        "message": "Optimize if checks in CWeapon::OnStateSwitch()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/xrGame/Weapon.cpp"
+        ],
+        "github_commit_url": "https://github.com/OpenXRay/xray-16/commit/40105998d414e9322540b52ed323196dc8deab78",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CWeapon::OnStateSwitch"
+        ],
+        "is_opt_ds_simple": "true",
+        "optimization_summary": [
+            "The optimization strategy reorders and simplifies conditional checks to minimize redundant evaluations and improve branch prediction efficiency.",
+            "The optimization strategy involved reordering and simplifying conditional checks to reduce redundant evaluations and improve branch prediction.",
+            "The optimization strategy involved reordering and simplifying conditional checks to reduce redundant evaluations and improve branch prediction.",
+            "The optimization strategy involved reordering and simplifying conditional checks in the `CWeapon::OnStateSwitch()` function to reduce redundant evaluations and improve execution efficiency.",
+            "The optimization strategy involved reordering and simplifying conditional checks in the `CWeapon::OnStateSwitch` function to reduce redundant evaluations and improve execution efficiency."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved reordering and simplifying conditional checks to reduce redundant evaluations and improve branch prediction.",
+        "is_generic_optimization_final": true
+    }
+]

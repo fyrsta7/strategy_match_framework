@@ -1,0 +1,23 @@
+static void skl_ddi_pll_enable(struct drm_i915_private *dev_priv,
+			       struct intel_shared_dpll *pll)
+{
+	const struct skl_dpll_regs *regs = skl_dpll_regs;
+
+	skl_ddi_pll_write_ctrl1(dev_priv, pll);
+
+	I915_WRITE(regs[pll->id].cfgcr1, pll->config.hw_state.cfgcr1);
+	I915_WRITE(regs[pll->id].cfgcr2, pll->config.hw_state.cfgcr2);
+	POSTING_READ(regs[pll->id].cfgcr1);
+	POSTING_READ(regs[pll->id].cfgcr2);
+
+	/* the enable bit is always bit 31 */
+	I915_WRITE(regs[pll->id].ctl,
+		   I915_READ(regs[pll->id].ctl) | LCPLL_PLL_ENABLE);
+
+	if (intel_wait_for_register(dev_priv,
+				    DPLL_STATUS,
+				    DPLL_LOCK(pll->id),
+				    DPLL_LOCK(pll->id),
+				    5))
+		DRM_ERROR("DPLL %d not locked\n", pll->id);
+}

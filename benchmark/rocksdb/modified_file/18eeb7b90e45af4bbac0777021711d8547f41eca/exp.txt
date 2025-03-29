@@ -1,0 +1,54 @@
+这次提交主要解决了两个内存阈值检查之间的相互干扰问题，具体来说，就是之前在写入流程中，对 WAL 总大小（max_total_wal_size）和写缓冲区（db_write_buffer_size）的检查存在“互斥”关系，导致在某些情况下即使写缓冲区超限，也不会触发刷盘动作，从而可能引发内存溢出（OOM）问题。
+
+下面详细说明修改思路、目的和预期效果：
+
+1. 问题背景与目标
+
+　　近期在 logdevice 中出现了 OOM 问题。经过调查发现，当系统写入速率过高时，刷盘（flush）的进程跟不上，从而使得：
+　　
+　　① 总的 WAL 日志大小一直超过了设定的 max_total_wal_size，导致刷盘逻辑在第一个 if 分支中执行；
+　　
+　　② 同时，由于刷盘动作“抢占了”判断逻辑，write_buffer_manager_->ShouldFlush()（也就是对内存中 memtable 大小的检查）将不会触发。
+　　
+　　结果，memtable 内容不断积累，超过了 db_write_buffer_size 的限制，最终引发内存溢出。
+
+2. 修改的具体实现
+
+　　在原有的代码中，对是否需要刷新（flush）memtable的判断逻辑使用了 if/else if 结构：
+　　
+　　　　if (条件A：total_log_size_ > GetMaxTotalWalSize()) {
+　　　　　　调用 MaybeFlushColumnFamilies();
+　　　　} else if (条件B：write_buffer_manager_->ShouldFlush()) {
+　　　　　　执行针对 db_write_buffer_size 的刷盘动作；
+　　　　}
+　　
+　　这种写法意味着如果条件A成立，就不会再检查条件B，即在 WAL 大小超过阈值时，针对做 db_write_buffer_size 检查的逻辑被“屏蔽”掉。
+　　
+　　修改之后，判断逻辑变为两个独立的 if 语句：
+　　
+　　　　if (条件A) {
+　　　　　　MaybeFlushColumnFamilies();
+　　　　}
+　　　　if (条件B) {
+　　　　　　执行对应的刷盘逻辑；
+　　　　}
+　　
+　　这样，无论 WAL 大小是否超过阈值，只要 db_write_buffer_size 检查条件成立，都会触发刷盘动作，从而避免 memtable 累积过多。
+
+3. 修改目的与预期效果
+
+　　目的在于：
+　　
+　　① 修复由于 if/else if 逻辑导致的刷盘条件互斥问题，确保两个触发刷盘的条件能够独立检查；
+　　
+　　② 当写入量猛烈时，不仅检查 WAL 大小，而且同时检查 write_buffer_manager 是否需要 flush，从而能够及时释放内存，防止 memtable 过大而引发 OOM。
+
+　　预期效果是：
+　　
+　　① 在高写入场景下，刷盘动作能够更及时地响应写缓冲区（memtable）内存使用量的增长；
+　　
+　　② 同时满足 WAL 大小和写缓冲区内存检查的需求，减少内存泄漏或过度增长的风险；
+　　
+　　③ 最终提高系统的稳定性和鲁棒性，避免因内存使用过高导致操作失败。
+
+总之，这次提交的核心在于分离和独立判断两个关键的刷新触发条件，从而确保在各种负载下都能正常触发刷盘，防止内存溢出问题，是对写入流程中内存管理策略的一个精细化调整。

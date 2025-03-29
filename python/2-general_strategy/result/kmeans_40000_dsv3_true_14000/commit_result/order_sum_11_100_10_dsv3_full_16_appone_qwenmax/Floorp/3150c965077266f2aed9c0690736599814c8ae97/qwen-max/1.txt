@@ -1,0 +1,8 @@
+GPUParent::RecvInit(nsTArray<GfxPrefSetting>&& prefs)
+{
+  for (const auto& setting : prefs) {
+    gfxPrefs::Pref* pref = gfxPrefs::all()[setting.index()];
+    pref->SetCachedValue(setting.value());
+  }
+  return true;
+}

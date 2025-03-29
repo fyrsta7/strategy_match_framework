@@ -1,0 +1,12 @@
+bool CPVRProviders::PersistUserChanges(const std::vector<std::shared_ptr<CPVRProvider>>& providers)
+{
+  for (const auto& provider : providers)
+  {
+    provider->Persist(true);
+
+    CLog::LogFC(LOGDEBUG, LOGPVR, "Updated provider {} on client {}", provider->GetUniqueId(),
+                provider->GetClientId());
+  }
+
+  return true;
+}

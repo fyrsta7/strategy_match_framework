@@ -1,0 +1,26 @@
+static void intel_enable_lvds(struct intel_encoder *encoder)
+{
+	struct drm_device *dev = encoder->base.dev;
+	struct intel_lvds_encoder *lvds_encoder = to_lvds_encoder(&encoder->base);
+	struct intel_connector *intel_connector =
+		&lvds_encoder->attached_connector->base;
+	struct drm_i915_private *dev_priv = dev->dev_private;
+	i915_reg_t ctl_reg, stat_reg;
+
+	if (HAS_PCH_SPLIT(dev)) {
+		ctl_reg = PCH_PP_CONTROL;
+		stat_reg = PCH_PP_STATUS;
+	} else {
+		ctl_reg = PP_CONTROL;
+		stat_reg = PP_STATUS;
+	}
+
+	I915_WRITE(lvds_encoder->reg, I915_READ(lvds_encoder->reg) | LVDS_PORT_EN);
+
+	I915_WRITE(ctl_reg, I915_READ(ctl_reg) | POWER_TARGET_ON);
+	POSTING_READ(lvds_encoder->reg);
+	if (intel_wait_for_register(dev_priv, stat_reg, PP_ON, PP_ON, 1000))
+		DRM_ERROR("timed out waiting for panel to power on\n");
+
+	intel_panel_enable_backlight(intel_connector);
+}

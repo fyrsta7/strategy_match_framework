@@ -1,0 +1,93 @@
+TBlockIter* BlockBasedTable::NewDataBlockIterator(
+    const ReadOptions& ro, const BlockHandle& handle, TBlockIter* input_iter,
+    BlockType block_type, GetContext* get_context,
+    BlockCacheLookupContext* lookup_context,
+    FilePrefetchBuffer* prefetch_buffer, bool for_compaction, bool async_read,
+    Status& s) const {
+  PERF_TIMER_GUARD(new_table_block_iter_nanos);
+
+  // Use the provided iterator or create a new one
+  TBlockIter* iter = input_iter ? input_iter : new TBlockIter;
+
+  // Return early if the status is not OK
+  if (!s.ok()) {
+    iter->Invalidate(s);
+    return iter;
+  }
+
+  // Retrieve the uncompression dictionary if available
+  CachableEntry<UncompressionDict> uncompression_dict;
+  if (rep_->uncompression_dict_reader) {
+    const bool no_io = (ro.read_tier == kBlockCacheTier);
+    s = rep_->uncompression_dict_reader->GetOrReadUncompressionDictionary(
+        prefetch_buffer, no_io, ro.verify_checksums, get_context,
+        lookup_context, &uncompression_dict);
+    if (!s.ok()) {
+      iter->Invalidate(s);
+      return iter;
+    }
+  }
+
+  // Use the retrieved dictionary or an empty one
+  const UncompressionDict& dict = uncompression_dict.GetValue()
+                                      ? *uncompression_dict.GetValue()
+                                      : UncompressionDict::GetEmptyDict();
+
+  // Retrieve the block
+  CachableEntry<Block> block;
+  s = RetrieveBlock(prefetch_buffer, ro, handle, dict, &block, block_type,
+                    get_context, lookup_context, for_compaction,
+                    /* use_cache */ true, /* wait_for_cache */ true,
+                    async_read);
+
+  // Handle async read retry
+  if (s.IsTryAgain() && async_read) {
+    return iter;
+  }
+
+  // Return early if the block retrieval failed
+  if (!s.ok()) {
+    iter->Invalidate(s);
+    return iter;
+  }
+
+  // Ensure the block is valid
+  assert(block.GetValue() != nullptr);
+
+  // Determine if block contents are pinned
+  const bool block_contents_pinned =
+      block.IsCached() ||
+      (!block.GetValue()->own_bytes() && rep_->immortal_table);
+
+  // Initialize the block iterator
+  iter = InitBlockIterator<TBlockIter>(rep_, block.GetValue(), block_type, iter,
+                                       block_contents_pinned);
+
+  // Handle block caching
+  if (!block.IsCached()) {
+    if (!ro.fill_cache) {
+      Cache* const block_cache = rep_->table_options.block_cache.get();
+      if (block_cache) {
+        // Insert a dummy record into the block cache to track memory usage
+        Cache::Handle* cache_handle = nullptr;
+        CacheKey key = CacheKey::CreateUniqueForCacheLifetime(block_cache);
+        s = block_cache->Insert(key.AsSlice(), nullptr,
+                                block.GetValue()->ApproximateMemoryUsage(),
+                                nullptr, &cache_handle);
+
+        if (s.ok() && cache_handle) {
+          iter->RegisterCleanup(&ForceReleaseCachedEntry, block_cache,
+                                cache_handle);
+        }
+      }
+    }
+  } else {
+    // Set the cache handle for the iterator
+    iter->SetCacheHandle(block.GetCacheHandle());
+  }
+
+  // Transfer block ownership to the iterator
+  block.TransferTo(iter);
+
+  return iter;
+}

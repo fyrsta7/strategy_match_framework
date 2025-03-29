@@ -1,0 +1,54 @@
+size_t WriteThread::EnterAsBatchGroupLeader(Writer* leader,
+                                            WriteGroup* write_group) {
+  assert(leader->link_older == nullptr);
+  assert(leader->batch != nullptr);
+  assert(write_group != nullptr);
+
+  size_t size = WriteBatchInternal::ByteSize(leader->batch);
+
+  // Allow the group to grow up to a maximum size, but if the
+  // original write is small, limit the growth so we do not slow
+  // down the small write too much.
+  size_t max_size = max_write_batch_group_size_bytes;
+  const uint64_t min_batch_size_bytes = max_write_batch_group_size_bytes / 8;
+  if (size <= min_batch_size_bytes) {
+    max_size = size + min_batch_size_bytes;
+  }
+
+  leader->write_group = write_group;
+  write_group->leader = leader;
+  write_group->last_writer = leader;
+  write_group->size = 1;
+  Writer* newest_writer = newest_writer_.load(std::memory_order_acquire);
+
+  CreateMissingNewerLinks(newest_writer);
+
+  Writer* w = leader;
+  while (w != newest_writer) {
+    w = w->link_newer;
+    assert(w != nullptr);
+
+    // Check conditions that would prevent batching
+    if ((w->sync && !leader->sync) ||
+        (w->no_slowdown != leader->no_slowdown) ||
+        (w->disable_wal != leader->disable_wal) ||
+        (w->protection_bytes_per_key != leader->protection_bytes_per_key) ||
+        (w->rate_limiter_priority != leader->rate_limiter_priority) ||
+        (w->batch == nullptr) ||
+        (w->callback != nullptr && !w->callback->AllowWriteBatching())) {
+      break;
+    }
+
+    auto batch_size = WriteBatchInternal::ByteSize(w->batch);
+    if (size + batch_size > max_size) {
+      break;
+    }
+
+    w->write_group = write_group;
+    size += batch_size;
+    write_group->last_writer = w;
+    write_group->size++;
+  }
+  TEST_SYNC_POINT_CALLBACK("WriteThread::EnterAsBatchGroupLeader:End", w);
+  return size;
+}

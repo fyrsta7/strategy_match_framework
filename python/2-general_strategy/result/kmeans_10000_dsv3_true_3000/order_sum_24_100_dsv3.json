@@ -1,0 +1,96 @@
+{
+  "cluster_count_by_threshold": {
+    "24": 1,
+    "17": 2,
+    "16": 3,
+    "15": 7,
+    "14": 9,
+    "13": 10,
+    "12": 12,
+    "11": 14,
+    "10": 19,
+    "9": 33,
+    "8": 44,
+    "7": 59,
+    "6": 85,
+    "5": 124,
+    "4": 202,
+    "3": 319,
+    "2": 669,
+    "1": 3000
+  },
+  "cluster_summaries": [
+    {
+      "cluster_id": "199",
+      "size": 24,
+      "used_commits_count": 3,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9946424961090088,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance.",
+        "code_examples": [
+          [
+            "// Before\nfor (unsigned i = 0; i < mii->getNumOperands(); ++i) {\n  const MachineOperand mop = mii->getOperand(i);\n  if (mop.isRegister() && mop.getReg() && MRegisterInfo::isVirtualRegister(mop.getReg())) {\n    // replace register with representative register\n  }\n}",
+            "// After\nfor (unsigned i = 0, e = mii->getNumOperands(); i != e; ++i) {\n  const MachineOperand &mop = mii->getOperand(i);\n  if (mop.isRegister() && mop.getReg() && MRegisterInfo::isVirtualRegister(mop.getReg())) {\n    // replace register with representative register\n  }\n}"
+          ],
+          [
+            "// Before\nfor (auto nested_transferable : nested_transferables) {\n  if (std::find(host_objects_.begin(), host_objects_.end(), nested_transferable) == host_objects_.end()) {\n    // handle nested transferable\n  }\n}",
+            "// After\nfor (auto& nested_transferable : nested_transferables) {\n  if (std::find(host_objects_.begin(), host_objects_.end(), nested_transferable) == host_objects_.end()) {\n    // handle nested transferable\n  }\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop that iterates over a container of objects or values.",
+          "The loop body accesses or modifies elements of the container without requiring a copy of the element.",
+          "The container elements are non-primitive types (e.g., objects, structs, or complex data types)."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance.",
+        "The common optimization strategy across these commits involves reducing copy overhead by transitioning from value-based loop iteration to reference-based iteration, thereby avoiding unnecessary object duplication and improving performance.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance.",
+        "The common optimization strategy across these commits involves reducing copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing the loop iteration from value-based to reference-based to reduce copy overhead.",
+        "The optimization strategy involved avoiding copying the loop variable by using a reference-based iteration instead of value-based iteration to reduce overhead.",
+        "The optimization strategy involved reducing the overhead of copying objects by changing value-based loop iteration to reference-based iteration.",
+        "The optimization strategy involved reducing unnecessary value copies by using reference-based iteration when pushing values.",
+        "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the ColumnLowCardinality implementation.",
+        "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the `classicDrawSprite` function.",
+        "The optimization strategy involves changing value-based loop iteration to reference-based iteration to reduce copy overhead of BaseObjectPtrs.",
+        "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the SOA numeric table implementation.",
+        "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the LiveIntervalAnalysis.cpp file."
+      ]
+    }
+  ],
+  "metadata": {
+    "use_diff_info": true,
+    "use_commit_message": false,
+    "max_diff_length": 2000,
+    "skip_truncated_diff": true,
+    "max_commits_per_cluster": 3,
+    "consistency_repeats": 5,
+    "use_new_condition_prompt": false,
+    "threshold": 24,
+    "total_clusters_analyzed": 1,
+    "total_used_commits": 3,
+    "total_truncated_diffs": 0
+  }
+}

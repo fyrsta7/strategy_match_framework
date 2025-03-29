@@ -1,0 +1,29 @@
+static int ironlake_do_reset(struct drm_i915_private *dev_priv,
+			     unsigned engine_mask)
+{
+	int ret;
+
+	I915_WRITE(ILK_GDSR,
+		   ILK_GRDOM_RENDER | ILK_GRDOM_RESET_ENABLE);
+	ret = intel_wait_for_register(dev_priv,
+				      ILK_GDSR,
+				      ILK_GRDOM_RESET_ENABLE,
+				      0,
+				      500);
+	if (ret)
+		return ret;
+
+	I915_WRITE(ILK_GDSR,
+		   ILK_GRDOM_MEDIA | ILK_GRDOM_RESET_ENABLE);
+	ret = intel_wait_for_register(dev_priv,
+				      ILK_GDSR,
+				      ILK_GRDOM_RESET_ENABLE,
+				      0,
+				      500);
+	if (ret)
+		return ret;
+
+	I915_WRITE(ILK_GDSR, 0);
+
+	return 0;
+}

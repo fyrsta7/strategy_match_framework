@@ -1,0 +1,50 @@
+size_t InterestingPositionProcessor::FillInterestingPositions(vector<position_description> &charts) {
+    size_t count = 0;
+    set<int> tmp_pos;
+    for (size_t i = 0; i < contig_.length(); i++) {
+        int sum_total = 0;
+        // Precompute the sum of votes excluding Insertion and Deletion variants
+        for (size_t j = 0; j < MAX_VARIANTS; j++) {
+            if (j != Variants::Insertion && j != Variants::Deletion) {
+                sum_total += charts[i].votes[j];
+            }
+        }
+
+        // Cache the conditions that depend on sum_total to avoid redundant calculations
+        bool is_sum_valid = (sum_total > 20);
+        double lower_threshold = 0.1 * sum_total;
+        double upper_threshold = 0.9 * sum_total;
+
+        int variants = 0;
+        for (size_t j = 0; j < MAX_VARIANTS; j++) {
+            // Use precomputed thresholds and conditions
+            if (j != Variants::Insertion && j != Variants::Deletion &&
+                charts[i].votes[j] > lower_threshold &&
+                charts[i].votes[j] < upper_threshold &&
+                is_sum_valid) {
+                variants++;
+            }
+        }
+
+        // Precompute anchor-related values to avoid recalculating them in the inner loop
+        int anchor_base = (int)(i / kAnchorGap);
+        if (variants > 1 || contig_[i] == Variants::Undefined) {
+            DEBUG("Adding interesting position: " << i << " " << charts[i].str());
+            tmp_pos.insert((int)i);
+            for (int j = -kAnchorNum; j <= kAnchorNum; j++) {
+                tmp_pos.insert((anchor_base + j) * kAnchorGap);
+            }
+        }
+    }
+
+    // Iterate over the collected positions and mark them as interesting
+    for (const auto &pos : tmp_pos) {
+        if (pos >= 0 && pos < (int)contig_.length()) {
+            DEBUG("position " << pos << " is interesting ");
+            DEBUG(charts[pos].str());
+            is_interesting_[pos] = 1;
+            count++;
+        }
+    }
+    return count;
+}

@@ -1,0 +1,64 @@
+int OPTIMIZE3 stress_mmap_check(
+	uint8_t *buf,
+	const size_t sz,
+	const size_t page_size)
+{
+	register uint64_t *ptr = (uint64_t *)buf;
+	register uint64_t *end = (uint64_t *)(buf + sz);
+	register uint64_t val = *ptr;
+
+	while (ptr < end) {
+		register uint64_t *page_end = (uint64_t *)((uintptr_t)ptr + page_size);
+
+		if (!keep_stressing_flag())
+			break;
+
+		// Prefetch the next page into cache
+		if ((uintptr_t)ptr + page_size < (uintptr_t)end) {
+			__builtin_prefetch((void *)((uintptr_t)ptr + page_size), 0, 1);
+		}
+
+		while (ptr < page_end) {
+			// Prefetch the next cache line within the current page
+			if ((uintptr_t)ptr + 64 < (uintptr_t)page_end) {
+				__builtin_prefetch((void *)((uintptr_t)ptr + 64), 0, 1);
+			}
+
+			if (ptr[0x00] != val)
+				return -1;
+			if (ptr[0x01] != val)
+				return -1;
+			if (ptr[0x02] != val)
+				return -1;
+			if (ptr[0x03] != val)
+				return -1;
+			if (ptr[0x04] != val)
+				return -1;
+			if (ptr[0x05] != val)
+				return -1;
+			if (ptr[0x06] != val)
+				return -1;
+			if (ptr[0x07] != val)
+				return -1;
+			if (ptr[0x08] != val)
+				return -1;
+			if (ptr[0x09] != val)
+				return -1;
+			if (ptr[0x0a] != val)
+				return -1;
+			if (ptr[0x0b] != val)
+				return -1;
+			if (ptr[0x0c] != val)
+				return -1;
+			if (ptr[0x0d] != val)
+				return -1;
+			if (ptr[0x0e] != val)
+				return -1;
+			if (ptr[0x0f] != val)
+				return -1;
+			ptr += 16;
+		}
+		val++;
+	}
+	return 0;
+}

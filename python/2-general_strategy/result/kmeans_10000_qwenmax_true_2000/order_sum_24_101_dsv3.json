@@ -1,0 +1,153 @@
+{
+  "cluster_count_by_threshold": {
+    "24": 2,
+    "19": 3,
+    "17": 4,
+    "14": 5,
+    "12": 6,
+    "11": 10,
+    "10": 12,
+    "9": 14,
+    "8": 20,
+    "7": 26,
+    "6": 39,
+    "5": 61,
+    "4": 99,
+    "3": 149,
+    "2": 335,
+    "1": 2000
+  },
+  "cluster_summaries": [
+    {
+      "cluster_id": "196",
+      "size": 24,
+      "used_commits_count": 3,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 1,
+      "consistency_best_similarity": 0.9371874332427979,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **restructuring loops and data access patterns to reduce redundant computations and improve cache locality**, achieved through techniques like loop unrolling, eliminating unnecessary conditionals, and using efficient data structures for lookups.",
+        "code_examples": [
+          [
+            "// Before\nint64_t pi_deleglise_rivat(int64_t x, int threads)\n{\n  if (threads <= 1)\n    return pi_deleglise_rivat2(x);\n\n  return pi_deleglise_rivat_parallel2(x, threads);\n}",
+            "// After\nint64_t pi_deleglise_rivat(int64_t x, int threads)\n{\n  return pi_deleglise_rivat_parallel2(x, threads);\n}"
+          ],
+          [
+            "// Before\nif (std::find(visited_used.begin(), visited_used.end(), opInst) == visited_used.end()) {\n  worklist.push_back(opInst);\n}",
+            "// After\nif (visited_used_set.insert(inst).second) {\n  worklist.push_back(opInst);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains loops with repeated calculations or redundant conditionals that can be minimized or eliminated.",
+          "The code exhibits poor cache locality due to inefficient data access patterns or large working sets.",
+          "The code relies on linear searches or inefficient data structures for lookups that can be replaced with faster alternatives."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **reducing redundant computations and improving cache locality by restructuring loops, eliminating unnecessary checks, and leveraging efficient data structures like unordered sets for faster lookups**.",
+        "The common optimization strategy across these commits involves **restructuring loops and data access patterns to reduce redundant computations and improve cache locality**, achieved through techniques like loop unrolling, eliminating unnecessary conditionals, and using efficient data structures for lookups.",
+        "The common optimization strategy across these commits involves restructuring loops and data access patterns to eliminate redundant computations and improve cache locality by minimizing unnecessary iterations and leveraging efficient data structures like `unordered_set`.",
+        "The common optimization strategy across these commits involves restructuring loops and data access patterns to reduce redundant computations and improve cache locality, achieved through techniques like loop unrolling, eliminating unnecessary conditionals, and replacing linear searches with hash-based lookups.",
+        "The common optimization strategy across these commits involves **restructuring loops and data structures to reduce redundant computations and improve cache locality**, achieved through techniques like loop unrolling, eliminating unnecessary conditionals, and replacing linear searches with hash-based lookups."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop iterations to minimize redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop iteration to reduce redundant computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to reduce unnecessary computations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality.",
+        "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality."
+      ]
+    },
+    {
+      "cluster_id": "237",
+      "size": 24,
+      "used_commits_count": 3,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 4,
+      "consistency_best_similarity": 0.9364738464355469,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **reducing redundant computations by caching or reusing previously computed results**, such as block positions, delta values, or variable mappings, to improve performance.",
+        "code_examples": [
+          [
+            "// Before\nforeach (const SemanticInfo::Use &use, semanticInfo.typeUsages) {\n    QTextCursor cursor(document());\n    cursor.setPosition(document()->findBlockByNumber(use.line - 1).position() + use.column - 1);\n    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, use.length);\n    QTextEdit::ExtraSelection sel;\n    sel.cursor = cursor;\n    typeSelections.append(sel);\n}",
+            "// After\nQTextBlock currentBlock = document()->firstBlock();\nunsigned currentLine = 1;\nforeach (const SemanticInfo::Use &use, semanticInfo.typeUsages) {\n    QTextCursor cursor(document());\n    if (currentLine != use.line) {\n        int delta = use.line - currentLine;\n        if (delta >= 0) {\n            while (delta--)\n                currentBlock = currentBlock.next();\n        } else {\n            currentBlock = document()->findBlockByNumber(use.line - 1);\n        }\n        currentLine = use.line;\n    }\n    cursor.setPosition(currentBlock.position() + use.column - 1);\n    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, use.length);\n    QTextEdit::ExtraSelection sel;\n    sel.cursor = cursor;\n    typeSelections.append(sel);\n}"
+          ],
+          [
+            "// Before\nvoid get_model(std::unordered_map<var_index, mpq> & variable_values) const {\n    mpq delta = mpq(1, 2);\n    lean_assert(m_status == OPTIMAL);\n    unsigned i;\n    do {\n        delta = m_mpq_lar_core_solver.find_delta_for_strict_bounds(delta);\n        std::unordered_set<impq> set_of_different_pairs;\n        std::unordered_set<mpq> set_of_different_singles;\n        for (i = 0; i < m_mpq_lar_core_solver.m_r_x.size(); i++ ) {\n            const numeric_pair<mpq> & rp = m_mpq_lar_core_solver.m_r_x[i];\n            set_of_different_pairs.insert(rp);\n        }\n    } while (false);\n}",
+            "// After\nvoid get_model(std::unordered_map<var_index, mpq> & variable_values) const {\n    mpq delta = m_mpq_lar_core_solver.find_delta_for_strict_bounds(mpq(1, 2));\n    lean_assert(m_status == OPTIMAL);\n    unsigned i;\n    do {\n        std::unordered_set<impq> set_of_different_pairs;\n        std::unordered_set<mpq> set_of_different_singles;\n        for (i = 0; i < m_mpq_lar_core_solver.m_r_x.size(); i++ ) {\n            const numeric_pair<mpq> & rp = m_mpq_lar_core_solver.m_r_x[i];\n            set_of_different_pairs.insert(rp);\n        }\n    } while (false);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains repeated computations of the same value or state within a loop or iterative process.",
+          "The code involves expensive operations (e.g., searching, parsing, or complex calculations) that can be avoided by reusing prior results.",
+          "The code operates on data structures or variables that remain unchanged or predictable across multiple iterations or function calls."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is **caching and reusing previously computed results to eliminate redundant computations**, particularly in iterative or repetitive operations.",
+        "The common optimization strategy across these commits involves **reducing redundant computations by caching and reusing previously calculated results** to improve performance.",
+        "The common optimization strategy across these commits is **reducing redundant computations by caching or reusing previously computed results**, such as block positions, delta values, or variable ranges, to improve performance.",
+        "The common optimization strategy across these commits is **caching and reusing previously computed results** to reduce redundant computations, achieved by maintaining and updating intermediate state (e.g., `currentBlock` in Commit 1, `delta` in Commit 2, and `eqvars` in Commit 3) instead of recalculating values.",
+        "The common optimization strategy across these commits involves **reducing redundant computations by caching or reusing previously computed results**, such as block positions, delta values, or variable mappings, to improve performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function.",
+        "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant iterations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the completion function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results for repeating variables.",
+        "The optimization strategy involved reducing redundant computations within the `get_model` function by caching or reusing previously computed results.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results during the creation of extra selections."
+      ]
+    }
+  ],
+  "metadata": {
+    "use_diff_info": true,
+    "use_commit_message": false,
+    "max_diff_length": 2000,
+    "skip_truncated_diff": true,
+    "max_commits_per_cluster": 3,
+    "consistency_repeats": 5,
+    "use_new_condition_prompt": true,
+    "threshold": 24,
+    "total_clusters_analyzed": 2,
+    "total_used_commits": 6,
+    "total_truncated_diffs": 0
+  }
+}

@@ -1,0 +1,144 @@
+buffer_pos(0),
+            prefetch_seq(NULL),
+            prefetcher(NULL),
+            losers(NULL),
+            seqs(NULL),
+            buffers(NULL)
+#if STXXL_CHECK_ORDER_IN_SORTS
+            , last_element(cmp.min_value())
+#endif //STXXL_CHECK_ORDER_IN_SORTS
+        {
+            if (empty())
+                return;
+
+            if (!sruns.small_.empty()) // we have a small input < B,
+            // that is kept in the main memory
+            {
+                STXXL_VERBOSE1("runs_merger: small input optimization, input length: " << elements_remaining);
+                assert(elements_remaining == size_type(sruns.small_.size()));
+                current_block = new out_block_type;
+                std::copy(sruns.small_.begin(), sruns.small_.end(), current_block->begin());
+                current_value = current_block->elem[0];
+                buffer_pos = 1;
+
+                return;
+            }
+
+#if STXXL_CHECK_ORDER_IN_SORTS
+            assert(check_sorted_runs(r, cmp));
+#endif //STXXL_CHECK_ORDER_IN_SORTS
+
+            disk_queues::get_instance()->set_priority_op(disk_queue::WRITE);
+
+            unsigned_type max_fan_in = (memory_to_use - sizeof(out_block_type)) / block_type::raw_size;
+            unsigned_type nruns = sruns.runs.size();
+
+            if (max_fan_in < nruns)
+            {
+                // can not merge runs in one pass
+                // merge recursively:
+                STXXL_ERRMSG("The implementation of sort requires more than one merge pass, therefore for a better");
+                STXXL_ERRMSG("efficiency decrease block size of run storage (a parameter of the run_creator)");
+                STXXL_ERRMSG("or increase the amount memory dedicated to the merger.");
+                STXXL_ERRMSG("m = " << max_fan_in << " nruns=" << nruns);
+
+                // insufficient memory, can not merge at all
+                if (max_fan_in < 2) {
+                    STXXL_ERRMSG("The merger requires memory to store at least two blocks internally. Aborting.");
+                    abort();
+                }
+
+                merge_recursively(memory_to_use);
+
+                nruns = sruns.runs.size();
+            }
+
+            assert(nruns <= max_fan_in);
+
+            unsigned_type i;
+            /*
+               const unsigned_type out_run_size =
+                  div_ceil(elements_remaining, block_type::size);
+             */
+            unsigned_type prefetch_seq_size = 0;
+            for (i = 0; i < nruns; ++i)
+            {
+                __builtin_prefetch(&sruns.runs[i], 0, 1); // Prefetch the next run's metadata
+                prefetch_seq_size += sruns.runs[i].size();
+            }
+
+            consume_seq.resize(prefetch_seq_size);
+
+            prefetch_seq = new int_type[prefetch_seq_size];
+
+            typename run_type::iterator copy_start = consume_seq.begin();
+            for (i = 0; i < nruns; ++i)
+            {
+                __builtin_prefetch(&sruns.runs[i], 0, 1); // Prefetch the next run's metadata
+                copy_start = std::copy(
+                    sruns.runs[i].begin(),
+                    sruns.runs[i].end(),
+                    copy_start);
+            }
+
+            std::stable_sort(consume_seq.begin(), consume_seq.end(),
+                             sort_local::trigger_entry_cmp<bid_type, value_type, value_cmp>(cmp));
+
+            int_type disks_number = config::get_instance()->disks_number();
+
+            const int_type n_prefetch_buffers = STXXL_MAX<int_type>(2 * disks_number, max_fan_in - nruns);
+
+
+#if STXXL_SORT_OPTIMAL_PREFETCHING
+            // heuristic
+            const int_type n_opt_prefetch_buffers = 2 * disks_number + (3 * (n_prefetch_buffers - 2 * disks_number)) / 10;
+
+            compute_prefetch_schedule(
+                consume_seq,
+                prefetch_seq,
+                n_opt_prefetch_buffers,
+                disks_number);
+#else
+            for (i = 0; i < prefetch_seq_size; ++i)
+                prefetch_seq[i] = i;
+#endif //STXXL_SORT_OPTIMAL_PREFETCHING
+
+            prefetcher = new prefetcher_type(
+                consume_seq.begin(),
+                consume_seq.end(),
+                prefetch_seq,
+                nruns + n_prefetch_buffers);
+
+            if (do_parallel_merge())
+            {
+#if STXXL_PARALLEL_MULTIWAY_MERGE
+// begin of STL-style merging
+                seqs = new std::vector<sequence>(nruns);
+                buffers = new std::vector<block_type *>(nruns);
+
+                for (unsigned_type i = 0; i < nruns; ++i)                                       //initialize sequences
+                {
+                    __builtin_prefetch(prefetcher->pull_block(), 0, 1); // Prefetch the next block
+                    (*buffers)[i] = prefetcher->pull_block();                                   //get first block of each run
+                    (*seqs)[i] = std::make_pair((*buffers)[i]->begin(), (*buffers)[i]->end());  //this memory location stays the same, only the data is exchanged
+                }
+
+// end of STL-style merging
+#else
+                STXXL_THROW_UNREACHABLE();
+#endif //STXXL_PARALLEL_MULTIWAY_MERGE
+            }
+            else
+            {
+// begin of native merging procedure
+
+                losers = new loser_tree_type(prefetcher, nruns, run_cursor2_cmp_type(cmp));
+// end of native merging procedure
+            }
+
+            current_block = new out_block_type;
+            fill_current_block();
+
+            current_value = current_block->elem[0];
+            buffer_pos = 1;
+        }

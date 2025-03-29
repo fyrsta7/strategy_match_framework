@@ -1,0 +1,1 @@
+该函数将 TableFileDeletionInfo 的赋值方式改为统一初始化，同时用 const auto& 迭代监听器数组，从而使代码更加简洁、现代，并提升了可读性和维护性。

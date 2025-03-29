@@ -1,0 +1,136 @@
+inline void Serialize(Stream& s) const {
+        // Write the utxo
+        if (non_witness_utxo) {
+            SerializeToVector(s, CompactSizeWriter(PSBT_IN_NON_WITNESS_UTXO));
+            SerializeToVector(s, TX_NO_WITNESS(non_witness_utxo));
+        }
+        if (!witness_utxo.IsNull()) {
+            SerializeToVector(s, CompactSizeWriter(PSBT_IN_WITNESS_UTXO));
+            SerializeToVector(s, witness_utxo);
+        }
+
+        if (final_script_sig.empty() && final_script_witness.IsNull()) {
+            // Write any partial signatures
+            for (const auto& sig_pair : partial_sigs) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_PARTIAL_SIG), Span{sig_pair.second.first});
+                s << sig_pair.second.second;
+            }
+
+            // Write the sighash type
+            if (sighash_type != std::nullopt) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_SIGHASH));
+                SerializeToVector(s, *sighash_type);
+            }
+
+            // Write the redeem script
+            if (!redeem_script.empty()) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_REDEEMSCRIPT));
+                s << redeem_script;
+            }
+
+            // Write the witness script
+            if (!witness_script.empty()) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_WITNESSSCRIPT));
+                s << witness_script;
+            }
+
+            // Write any hd keypaths
+            SerializeHDKeypaths(s, hd_keypaths, CompactSizeWriter(PSBT_IN_BIP32_DERIVATION));
+
+            // Write any ripemd160 preimage
+            for (const auto& [hash, preimage] : ripemd160_preimages) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_RIPEMD160), Span{hash});
+                s << preimage;
+            }
+
+            // Write any sha256 preimage
+            for (const auto& [hash, preimage] : sha256_preimages) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_SHA256), Span{hash});
+                s << preimage;
+            }
+
+            // Write any hash160 preimage
+            for (const auto& [hash, preimage] : hash160_preimages) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_HASH160), Span{hash});
+                s << preimage;
+            }
+
+            // Write any hash256 preimage
+            for (const auto& [hash, preimage] : hash256_preimages) {
+                SerializeToVector(s, CompactSizeWriter(PSBT_IN_HASH256), Span{hash});
+                s << preimage;
+            }
+
+            // Write taproot key sig
+            if (!m_tap_key_sig.empty()) {
+                SerializeToVector(s, PSBT_IN_TAP_KEY_SIG);
+                s << m_tap_key_sig;
+            }
+
+            // Write taproot script sigs
+            for (const auto& [pubkey_leaf, sig] : m_tap_script_sigs) {
+                const auto& [xonly, leaf_hash] = pubkey_leaf;
+                SerializeToVector(s, PSBT_IN_TAP_SCRIPT_SIG, xonly, leaf_hash);
+                s << sig;
+            }
+
+            // Write taproot leaf scripts
+            for (const auto& [leaf, control_blocks] : m_tap_scripts) {
+                const auto& [script, leaf_ver] = leaf;
+                for (const auto& control_block : control_blocks) {
+                    SerializeToVector(s, PSBT_IN_TAP_LEAF_SCRIPT, Span{control_block});
+                    std::vector<unsigned char> value_v(script.begin(), script.end());
+                    value_v.push_back((uint8_t)leaf_ver);
+                    s << value_v;
+                }
+            }
+
+            // Write taproot bip32 keypaths
+            for (const auto& [xonly, leaf_origin] : m_tap_bip32_paths) {
+                const auto& [leaf_hashes, origin] = leaf_origin;
+                SerializeToVector(s, PSBT_IN_TAP_BIP32_DERIVATION, xonly);
+                std::vector<unsigned char> value;
+                VectorWriter s_value{value, 0};
+                s_value << leaf_hashes;
+                SerializeKeyOrigin(s_value, origin);
+                s << value;
+            }
+
+            // Write taproot internal key
+            if (!m_tap_internal_key.IsNull()) {
+                SerializeToVector(s, PSBT_IN_TAP_INTERNAL_KEY);
+                s << ToByteVector(m_tap_internal_key);
+            }
+
+            // Write taproot merkle root
+            if (!m_tap_merkle_root.IsNull()) {
+                SerializeToVector(s, PSBT_IN_TAP_MERKLE_ROOT);
+                SerializeToVector(s, m_tap_merkle_root);
+            }
+        }
+
+        // Write script sig
+        if (!final_script_sig.empty()) {
+            SerializeToVector(s, CompactSizeWriter(PSBT_IN_SCRIPTSIG));
+            s << final_script_sig;
+        }
+        // write script witness
+        if (!final_script_witness.IsNull()) {
+            SerializeToVector(s, CompactSizeWriter(PSBT_IN_SCRIPTWITNESS));
+            SerializeToVector(s, final_script_witness.stack);
+        }
+
+        // Write proprietary things
+        for (const auto& entry : m_proprietary) {
+            s << entry.key;
+            s << entry.value;
+        }
+
+        // Write unknown things
+        for (const auto& entry : unknown) {
+            s << entry.first;
+            s << entry.second;
+        }
+
+        s << PSBT_SEPARATOR;
+    }

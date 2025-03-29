@@ -1,0 +1,207 @@
+{
+  "cluster_count_by_threshold": {
+    "24": 1,
+    "17": 2,
+    "16": 3,
+    "15": 7,
+    "14": 9,
+    "13": 10,
+    "12": 12,
+    "11": 14,
+    "10": 19,
+    "9": 33,
+    "8": 44,
+    "7": 59,
+    "6": 85,
+    "5": 124,
+    "4": 202,
+    "3": 319,
+    "2": 669,
+    "1": 3000
+  },
+  "cluster_summaries": [
+    {
+      "cluster_id": "199",
+      "size": 24,
+      "used_commits_count": 3,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 1,
+      "consistency_best_similarity": 0.9903652667999268,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration in various contexts.",
+        "code_examples": [
+          [
+            "// Before\nfor (const auto value : values) {\n    process(value);\n}",
+            "// After\nfor (const auto& value : values) {\n    process(value);\n}"
+          ],
+          [
+            "// Before\nfor (BaseObjectPtr obj : objects) {\n    obj->update();\n}",
+            "// After\nfor (BaseObjectPtr& obj : objects) {\n    obj->update();\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop that iterates over a container of objects or values.",
+          "The loop uses value-based iteration (e.g., `for (auto value : container)`) instead of reference-based iteration (e.g., `for (auto& value : container)`).",
+          "The objects or values being iterated over are non-trivial types (e.g., not primitive types like `int` or `float`)."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves reducing copy overhead by replacing value-based loop iteration with reference-based iteration.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration in various contexts.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration in various contexts.",
+        "The common optimization strategy across these commits involves reducing copy overhead by transitioning from value-based loop iteration to reference-based iteration.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing the loop iteration from value-based to reference-based to reduce copy overhead.",
+        "The optimization strategy involved avoiding copying the loop variable by using a reference-based iteration instead of value-based iteration to reduce overhead.",
+        "The optimization strategy involved reducing the overhead of copying objects by changing value-based loop iteration to reference-based iteration.",
+        "The optimization strategy involved reducing unnecessary value copies by using reference-based iteration when pushing values.",
+        "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the ColumnLowCardinality implementation.",
+        "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the `classicDrawSprite` function.",
+        "The optimization strategy involves changing value-based loop iteration to reference-based iteration to reduce copy overhead of BaseObjectPtrs.",
+        "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the SOA numeric table implementation.",
+        "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the LiveIntervalAnalysis.cpp file."
+      ]
+    },
+    {
+      "cluster_id": "83",
+      "size": 17,
+      "used_commits_count": 3,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 2,
+      "consistency_best_similarity": 0.9367101192474365,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reordering operations or checks to eliminate unnecessary computations or processing steps, thereby improving efficiency.",
+        "code_examples": [
+          [
+            "// Before\nif (shouldRandomize()) {\n    randomize();\n    if (budgetExhausted()) {\n        return;\n    }\n}\nnormalize();",
+            "// After\nif (budgetExhausted()) {\n    return;\n}\nif (shouldRandomize()) {\n    randomize();\n}\nnormalize();"
+          ],
+          [
+            "// Before\npushPacket(packet);\nif (packet.isSYN()) {\n    handleSYN();\n}",
+            "// After\nif (packet.isSYN()) {\n    handleSYN();\n}\npushPacket(packet);"
+          ],
+          [
+            "// Before\ncheckMatcherA();\ncheckMatcherB();\ncheckMatcherC(); // Slow matcher",
+            "// After\ncheckMatcherA();\ncheckMatcherB();\ncheckMatcherC(); // Moved slow matcher to end"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a conditional check that is performed after an expensive operation or computation.",
+          "The expensive operation or computation does not affect the outcome of the conditional check.",
+          "The reordering of the conditional check before the expensive operation does not alter the program's correctness or behavior."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **reordering or relocating checks or operations to earlier stages in the process to avoid unnecessary computations or steps**.",
+        "The common optimization strategy across these commits involves reordering operations or checks to prioritize faster or essential tasks, thereby reducing unnecessary processing and improving efficiency.",
+        "The common optimization strategy across these commits involves reordering operations or checks to eliminate unnecessary computations or processing steps, thereby improving efficiency.",
+        "The common optimization strategy across these commits involves reordering operations or checks to eliminate unnecessary computations by performing conditional evaluations earlier in the process.",
+        "The common optimization strategy across these commits involves **reordering or relocating conditional checks or operations to earlier stages in the process to avoid unnecessary computations or steps**."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involves reordering a conditional check to avoid unnecessary evaluations, improving performance by ensuring the more expensive check is only executed when needed.",
+        "The optimization strategy involves reordering conditional checks to prioritize more common cases, reducing the average number of checks needed.",
+        "The optimization strategy involves adding a check to avoid redundant buff operations if the target is already buffed.",
+        "The optimization strategy involves reordering checks to prioritize non-GC things first, reducing the number of comparisons for common cases.",
+        "The optimization strategy involves reordering merge checks to perform an expensive reachability check only when necessary, reducing compilation time.",
+        "The optimization strategy involves tweaking the LazyCompoundVal reuse check to ignore qualifiers, reducing unnecessary checks and improving performance.",
+        "The optimization strategy involves moving a conditional check to only execute when the TX bounce buffer is used, reducing unnecessary comparisons.",
+        "The optimization strategy removes a redundant check by leveraging an already verified condition, specifically by not checking *ref when ref is already checked.",
+        "The optimization strategy involves moving the check in %OptimizeFunctionOnNextCall to a later point to reduce unnecessary checks and improve performance.",
+        "The optimization strategy involves reducing redundant operations by eliminating double ISZERO checks in the code.",
+        "The optimization strategy involves adding a conditional check to skip unnecessary operations when the source has no name, reducing overhead in such cases.",
+        "The optimization strategy involves refactoring code to check for immediate values before involving the RegCache, allowing for more efficient register usage and instruction selection.",
+        "The optimization strategy involved reordering conditional checks to first verify if a block is in the current chain before performing a costly ancestry check, thereby reducing unnecessary computations.",
+        "The optimization strategy involves reordering conditional checks to first verify if unread items are shown before checking for category matches, reducing unnecessary computations.",
+        "The optimization strategy involved reordering slower matchers to the end to improve the performance of the performance-unnecessary-value-param check.",
+        "The optimization strategy involves reordering a conditional check for SYN packets to occur before the push operation to reduce unnecessary processing.",
+        "The optimization strategy involves checking the budget before performing randomization to avoid unnecessary randomization steps."
+      ]
+    },
+    {
+      "cluster_id": "1574",
+      "size": 16,
+      "used_commits_count": 3,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 1,
+      "consistency_best_similarity": 0.9178190231323242,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves restructuring code execution—moving tasks outside loops, standardizing atomic operations, and optimizing loop efficiency—to reduce latency, improve contention handling, and minimize overhead.",
+        "code_examples": [
+          [
+            "// Before\nfor (int i = 0; i < N; i++) {\n    S9xMainLoop();\n    performTask();\n}",
+            "// After\nperformTask();\nfor (int i = 0; i < N; i++) {\n    S9xMainLoop();\n}"
+          ],
+          [
+            "// Before\nwhile (true) {\n    if (compare_and_swap(&flag, 0, 1)) {\n        break;\n    }\n}",
+            "// After\nwhile (!compare_exchange_weak(&flag, 0, 1)) {}"
+          ],
+          [
+            "// Before\nfor (int i = 0; i < N; i++) {\n    sprintf(buffer, \"%d\", i);\n}",
+            "// After\nchar *ptr = buffer;\nfor (int i = 0; i < N; i++) {\n    ptr += sprintf(ptr, \"%d\", i);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop that executes a task that could be moved outside the loop without affecting correctness.",
+          "The code uses non-standard or inefficient atomic operations that could be replaced with a compare-and-exchange loop.",
+          "The code includes a loop with repeated calls to a high-overhead function (e.g., `sprintf`) that could be optimized or replaced with a more efficient alternative."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **reducing latency and improving efficiency by restructuring loops and memory operations** to minimize contention, overhead, and unnecessary processing.",
+        "The common optimization strategy across these commits involves restructuring code execution—moving tasks outside loops, standardizing atomic operations, and optimizing loop efficiency—to reduce latency, improve contention handling, and minimize overhead.",
+        "The common optimization strategy across these commits involves restructuring code execution—moving tasks outside loops, standardizing atomic operations, and improving loop efficiency—to reduce latency, contention, and overhead.",
+        "The common optimization strategy across these commits involves reducing latency and improving efficiency by restructuring loops and operations to minimize contention, overhead, and unnecessary execution within critical paths.",
+        "The common optimization strategy across these commits involves reducing latency and improving efficiency by restructuring loops and operations, such as moving tasks outside the main loop, standardizing compare-and-exchange loops, and optimizing `sprintf` loops to minimize overhead and prevent buffer issues."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved improving loop performance by reducing unnecessary operations within the loop.",
+        "The optimization strategy involved improving loop bounds to reduce unnecessary operations within the loop.",
+        "The optimization strategy involved removing an unnecessary loop to improve efficiency.",
+        "The optimization strategy involved improving the efficiency of a busy loop by reducing unnecessary computations or iterations.",
+        "The optimization strategy involved reducing dereference operations in the inner loop to improve performance.",
+        "The optimization strategy involved reducing the number of memory accesses in a commonly executed loop by precomputing values outside the loop.",
+        "The optimization strategy involved improving the search loop efficiency, likely by reducing unnecessary computations or iterations, resulting in a 10% performance gain in benchmarks.",
+        "The optimization strategy involved improving the loop for copying output results by reducing unnecessary operations or improving memory access patterns.",
+        "The optimization strategy involved changing the loop variable type to improve performance.",
+        "The optimization strategy involved improving the efficiency of the swap loop by reducing unnecessary operations within the loop.",
+        "The optimization strategy involved removing an unnecessary loop in the constructor to reduce computational overhead.",
+        "The optimization strategy involved improving the loop efficiency when closing multiple buffers by reducing unnecessary iterations and checks.",
+        "The optimization strategy involved removing one instruction to streamline the execution of the game loop.",
+        "The optimization strategy involved improving the efficiency of a `sprintf` loop to reduce overhead and prevent buffer overrun.",
+        "The optimization strategy involves using a standard compare-and-exchange loop style to potentially improve performance in contended cases.",
+        "The optimization strategy involved moving a task outside of the main loop to reduce latency."
+      ]
+    }
+  ],
+  "metadata": {
+    "use_diff_info": false,
+    "use_commit_message": true,
+    "max_diff_length": null,
+    "skip_truncated_diff": null,
+    "max_commits_per_cluster": 3,
+    "consistency_repeats": 5,
+    "USE_PROMPT": false,
+    "threshold": 16,
+    "total_clusters_analyzed": 3,
+    "total_used_commits": 9,
+    "total_truncated_diffs": 0
+  }
+}

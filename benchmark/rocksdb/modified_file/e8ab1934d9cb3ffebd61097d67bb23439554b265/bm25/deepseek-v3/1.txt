@@ -1,0 +1,42 @@
+Iterator* DBImpl::NewInternalIterator(const ReadOptions& options,
+                                      SequenceNumber* latest_snapshot) {
+  IterState* cleanup = new IterState;
+  mutex_.Lock();
+  *latest_snapshot = versions_->LastSequence();
+
+  // Collect together all needed child iterators
+  std::vector<Iterator*> list;
+  list.reserve(1 + imm_.Size() + 10); // Reserve space for mem_, imm_, and some files
+
+  // Add mem_ iterator
+  mem_->Ref();
+  list.push_back(mem_->NewIterator(options));
+  cleanup->mem.push_back(mem_);
+
+  // Add imm_ iterators
+  std::vector<MemTable*> immutables;
+  imm_.GetMemTables(&immutables);
+  for (MemTable* m : immutables) {
+    m->Ref();
+    list.push_back(m->NewIterator(options));
+    cleanup->mem.push_back(m);
+  }
+
+  // Add file iterators
+  versions_->current()->AddIterators(options, storage_options_, &list);
+  
+  // Create merging iterator
+  Iterator* internal_iter =
+      NewMergingIterator(env_, &internal_comparator_, list.data(), list.size());
+  versions_->current()->Ref();
+
+  // Setup cleanup
+  cleanup->mu = &mutex_;
+  cleanup->db = this;
+  cleanup->version = versions_->current();
+  internal_iter->RegisterCleanup(CleanupIteratorState, cleanup, nullptr);
+
+  mutex_.Unlock();
+  LogFlush(options_.info_log);
+  return internal_iter;
+}

@@ -1,0 +1,167 @@
+bool VersionEdit::EncodeTo(std::string* dst,
+                           std::optional<size_t> ts_sz) const {
+  // Helper lambda to reduce code duplication
+  auto PutVarint32If = [&dst](bool condition, uint32_t tag) {
+    if (condition) PutVarint32(dst, tag);
+  };
+
+  auto PutVarint32Varint64If = [&dst](bool condition, uint32_t tag, uint64_t value) {
+    if (condition) PutVarint32Varint64(dst, tag, value);
+  };
+
+  auto PutVarint32Varint32If = [&dst](bool condition, uint32_t tag, uint32_t value) {
+    if (condition) PutVarint32Varint32(dst, tag, value);
+  };
+
+  auto PutLengthPrefixedSliceIf = [&dst](bool condition, const Slice& value) {
+    if (condition) PutLengthPrefixedSlice(dst, value);
+  };
+
+  // Encode fields using helper lambdas
+  PutVarint32If(has_db_id_, kDbId);
+  PutLengthPrefixedSliceIf(has_db_id_, db_id_);
+
+  if (has_comparator_) {
+    assert(has_persist_user_defined_timestamps_);
+    PutVarint32(dst, kComparator);
+    PutLengthPrefixedSlice(dst, comparator_);
+  }
+
+  PutVarint32Varint64If(has_log_number_, kLogNumber, log_number_);
+  PutVarint32Varint64If(has_prev_log_number_, kPrevLogNumber, prev_log_number_);
+  PutVarint32Varint64If(has_next_file_number_, kNextFileNumber, next_file_number_);
+  PutVarint32Varint32If(has_max_column_family_, kMaxColumnFamily, max_column_family_);
+  PutVarint32Varint64If(has_min_log_number_to_keep_, kMinLogNumberToKeep, min_log_number_to_keep_);
+  PutVarint32Varint64If(has_last_sequence_, kLastSequence, last_sequence_);
+
+  // Encode compact cursors
+  for (const auto& cursor : compact_cursors_) {
+    if (cursor.second.Valid()) {
+      PutVarint32(dst, kCompactCursor);
+      PutVarint32(dst, cursor.first);  // level
+      PutLengthPrefixedSlice(dst, cursor.second.Encode());
+    }
+  }
+
+  // Encode deleted files
+  for (const auto& deleted : deleted_files_) {
+    PutVarint32Varint32Varint64(dst, kDeletedFile, deleted.first /* level */,
+                               deleted.second /* file number */);
+  }
+
+  // Encode new files
+  assert(new_files_.empty() || ts_sz.has_value());
+  for (const auto& new_file : new_files_) {
+    const FileMetaData& f = new_file.second;
+    if (!f.smallest.Valid() || !f.largest.Valid() ||
+        f.epoch_number == kUnknownEpochNumber) {
+      return false;
+    }
+
+    PutVarint32(dst, kNewFile4);
+    PutVarint32Varint64(dst, new_file.first /* level */, f.fd.GetNumber());
+    PutVarint64(dst, f.fd.GetFileSize());
+    EncodeFileBoundaries(dst, f, ts_sz.value());
+    PutVarint64Varint64(dst, f.fd.smallest_seqno, f.fd.largest_seqno);
+
+    // Encode custom fields
+    auto EncodeCustomField = [&](NewFileCustomTag tag, auto value, auto encode_fn) {
+      PutVarint32(dst, tag);
+      std::string encoded;
+      encode_fn(&encoded, value);
+      PutLengthPrefixedSlice(dst, Slice(encoded));
+    };
+
+    EncodeCustomField(NewFileCustomTag::kOldestAncesterTime, f.oldest_ancester_time, PutVarint64);
+    EncodeCustomField(NewFileCustomTag::kFileCreationTime, f.file_creation_time, PutVarint64);
+    EncodeCustomField(NewFileCustomTag::kEpochNumber, f.epoch_number, PutVarint64);
+    PutVarint32(dst, NewFileCustomTag::kFileChecksum);
+    PutLengthPrefixedSlice(dst, Slice(f.file_checksum));
+    PutVarint32(dst, NewFileCustomTag::kFileChecksumFuncName);
+    PutLengthPrefixedSlice(dst, Slice(f.file_checksum_func_name));
+
+    PutVarint32If(f.fd.GetPathId() != 0, NewFileCustomTag::kPathId);
+    PutLengthPrefixedSliceIf(f.fd.GetPathId() != 0, Slice(&static_cast<char>(f.fd.GetPathId()), 1));
+
+    PutVarint32If(f.temperature != Temperature::kUnknown, NewFileCustomTag::kTemperature);
+    PutLengthPrefixedSliceIf(f.temperature != Temperature::kUnknown, Slice(&static_cast<char>(f.temperature), 1));
+
+    PutVarint32If(f.marked_for_compaction, NewFileCustomTag::kNeedCompaction);
+    PutLengthPrefixedSliceIf(f.marked_for_compaction, Slice(&static_cast<char>(1), 1));
+
+    if (has_min_log_number_to_keep_ && !min_log_num_written) {
+      PutVarint32(dst, NewFileCustomTag::kMinLogNumberToKeepHack);
+      std::string varint_log_number;
+      PutFixed64(&varint_log_number, min_log_number_to_keep_);
+      PutLengthPrefixedSlice(dst, Slice(varint_log_number));
+      min_log_num_written = true;
+    }
+
+    PutVarint32If(f.oldest_blob_file_number != kInvalidBlobFileNumber, NewFileCustomTag::kOldestBlobFileNumber);
+    PutLengthPrefixedSliceIf(f.oldest_blob_file_number != kInvalidBlobFileNumber, Slice(&f.oldest_blob_file_number, sizeof(f.oldest_blob_file_number)));
+
+    if (f.unique_id != kNullUniqueId64x2) {
+      PutVarint32(dst, NewFileCustomTag::kUniqueId);
+      std::string unique_id_str = EncodeUniqueIdBytes(&f.unique_id);
+      PutLengthPrefixedSlice(dst, Slice(unique_id_str));
+    }
+
+    PutVarint32If(f.compensated_range_deletion_size, kCompensatedRangeDeletionSize);
+    PutLengthPrefixedSliceIf(f.compensated_range_deletion_size, Slice(&f.compensated_range_deletion_size, sizeof(f.compensated_range_deletion_size)));
+
+    PutVarint32If(f.tail_size, NewFileCustomTag::kTailSize);
+    PutLengthPrefixedSliceIf(f.tail_size, Slice(&f.tail_size, sizeof(f.tail_size)));
+
+    PutVarint32If(!f.user_defined_timestamps_persisted, NewFileCustomTag::kUserDefinedTimestampsPersisted);
+    PutLengthPrefixedSliceIf(!f.user_defined_timestamps_persisted, Slice(&static_cast<char>(0), 1));
+
+    PutVarint32(dst, NewFileCustomTag::kTerminate);
+  }
+
+  // Encode blob files
+  for (const auto& blob_file_addition : blob_file_additions_) {
+    PutVarint32(dst, kBlobFileAddition);
+    blob_file_addition.EncodeTo(dst);
+  }
+
+  for (const auto& blob_file_garbage : blob_file_garbages_) {
+    PutVarint32(dst, kBlobFileGarbage);
+    blob_file_garbage.EncodeTo(dst);
+  }
+
+  // Encode WAL entries
+  for (const auto& wal_addition : wal_additions_) {
+    PutVarint32(dst, kWalAddition2);
+    std::string encoded;
+    wal_addition.EncodeTo(&encoded);
+    PutLengthPrefixedSlice(dst, encoded);
+  }
+
+  if (!wal_deletion_.IsEmpty()) {
+    PutVarint32(dst, kWalDeletion2);
+    std::string encoded;
+    wal_deletion_.EncodeTo(&encoded);
+    PutLengthPrefixedSlice(dst, encoded);
+  }
+
+  // Encode column family info
+  PutVarint32Varint32If(column_family_ != 0, kColumnFamily, column_family_);
+  PutVarint32If(is_column_family_add_, kColumnFamilyAdd);
+  PutLengthPrefixedSliceIf(is_column_family_add_, Slice(column_family_name_));
+  PutVarint32If(is_column_family_drop_, kColumnFamilyDrop);
+  PutVarint32If(is_in_atomic_group_, kInAtomicGroup);
+  PutVarint32If(is_in_atomic_group_, remaining_entries_);
+
+  // Encode timestamp info
+  PutVarint32If(HasFullHistoryTsLow(), kFullHistoryTsLow);
+  PutLengthPrefixedSliceIf(HasFullHistoryTsLow(), full_history_ts_low_);
+
+  if (HasPersistUserDefinedTimestamps()) {
+    assert(has_comparator_);
+    PutVarint32(dst, kPersistUserDefinedTimestamps);
+    char p = static_cast<char>(persist_user_defined_timestamps_);
+    PutLengthPrefixedSlice(dst, Slice(&p, 1));
+  }
+
+  return true;
+}

@@ -1,0 +1,16 @@
+void CompactionPicker::GetGrandparents(
+    VersionStorageInfo* vstorage, const CompactionInputFiles& inputs,
+    const CompactionInputFiles& output_level_inputs,
+    std::vector<FileMetaData*>* grandparents) {
+  // Early return if there's no grandparent level
+  if (output_level_inputs.level + 1 >= NumberLevels()) {
+    return;
+  }
+
+  InternalKey start, limit;
+  GetRange(inputs, output_level_inputs, &start, &limit);
+  
+  // Compute the set of grandparent files that overlap this compaction
+  vstorage->GetOverlappingInputs(output_level_inputs.level + 1, &start,
+                                 &limit, grandparents);
+}

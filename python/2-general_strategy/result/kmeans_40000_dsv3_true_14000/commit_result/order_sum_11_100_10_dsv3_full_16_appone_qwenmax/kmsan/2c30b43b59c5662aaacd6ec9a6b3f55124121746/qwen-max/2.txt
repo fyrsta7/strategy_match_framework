@@ -1,0 +1,17 @@
+static void _vlv_enable_pll(struct intel_crtc *crtc,
+			    const struct intel_crtc_state *pipe_config)
+{
+	struct drm_i915_private *dev_priv = to_i915(crtc->base.dev);
+	enum pipe pipe = crtc->pipe;
+
+	I915_WRITE(DPLL(pipe), pipe_config->dpll_hw_state.dpll);
+	POSTING_READ(DPLL(pipe));
+	udelay(150);
+
+	if (intel_wait_for_register(dev_priv,
+				    DPLL(pipe),
+				    DPLL_LOCK_VLV,
+				    DPLL_LOCK_VLV,
+				    1))
+		DRM_ERROR("DPLL %d failed to lock\n", pipe);
+}

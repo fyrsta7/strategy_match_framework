@@ -1,0 +1,87 @@
+int main(int /*argc*/, char** /*argv*/) {
+  const int kWindowSizes[] = {1000, 10000, 10000, 127, 128, 129, 255, 256, 257, 2, 10000};
+  const int kDeletionTriggers[] = {500, 9500, 4323, 47, 61, 128, 250, 250, 250, 2, 2};
+  rocksdb::TablePropertiesCollectorFactory::Context context;
+  context.column_family_id = rocksdb::TablePropertiesCollectorFactory::Context::kUnknownColumnFamily;
+
+  std::vector<int> window_sizes(std::begin(kWindowSizes), std::end(kWindowSizes));
+  std::vector<int> deletion_triggers(std::begin(kDeletionTriggers), std::end(kDeletionTriggers));
+
+  // Randomize tests
+  rocksdb::Random rnd(301);
+  const int kMaxTestSize = 100000;
+  for (int random_test = 0; random_test < 30; random_test++) {
+    int window_size = rnd.Uniform(kMaxTestSize) + 1;
+    int deletion_trigger = rnd.Uniform(window_size);
+    window_sizes.emplace_back(window_size);
+    deletion_triggers.emplace_back(deletion_trigger);
+  }
+
+  assert(window_sizes.size() == deletion_triggers.size());
+
+  for (size_t test = 0; test < window_sizes.size(); ++test) {
+    const int kBucketSize = 128;
+    const int kWindowSize = window_sizes[test];
+    const int kPaddedWindowSize = kBucketSize * ((kWindowSize + kBucketSize - 1) / kBucketSize);
+    const int kNumDeletionTrigger = deletion_triggers[test];
+    const int kBias = (kNumDeletionTrigger + kBucketSize - 1) / kBucketSize;
+
+    auto factory = rocksdb::NewCompactOnDeletionCollectorFactory(kWindowSize, kNumDeletionTrigger);
+
+    auto run_test = [&](int delete_rate, int sections = 1) {
+      std::unique_ptr<rocksdb::TablePropertiesCollector> collector(factory->CreateTablePropertiesCollector(context));
+      int deletions = 0;
+      for (int section = 0; section < sections; ++section) {
+        for (int i = 0; i < kPaddedWindowSize; ++i) {
+          if (i % 10 < delete_rate) {
+            collector->AddUserKey("hello", "rocksdb", rocksdb::kEntryDelete, 0, 0);
+            deletions++;
+          } else {
+            collector->AddUserKey("hello", "rocksdb", rocksdb::kEntryPut, 0, 0);
+          }
+        }
+      }
+      if (collector->NeedCompact() != (deletions >= kNumDeletionTrigger && std::abs(deletions - kNumDeletionTrigger) > kBias)) {
+        fprintf(stderr, "[Error] collector->NeedCompact() != (%d >= %d) with kWindowSize = %d and kNumDeletionTrigger = %d\n",
+                deletions, kNumDeletionTrigger, kWindowSize, kNumDeletionTrigger);
+        assert(false);
+      }
+      collector->Finish(nullptr);
+    };
+
+    // Simple test
+    for (int delete_rate = 0; delete_rate <= 10; ++delete_rate) {
+      run_test(delete_rate);
+    }
+
+    // Only one section of a file satisfies the compaction trigger
+    for (int delete_rate = 0; delete_rate <= 10; ++delete_rate) {
+      run_test(delete_rate, 11);
+    }
+
+    // TEST 3: Issues a lot of deletes, but their density is not high enough to trigger compaction.
+    {
+      std::unique_ptr<rocksdb::TablePropertiesCollector> collector(factory->CreateTablePropertiesCollector(context));
+      assert(!collector->NeedCompact());
+      const int kDeletionsPerSection = kNumDeletionTrigger * 95 / 100;
+      if (kDeletionsPerSection >= 0) {
+        for (int section = 0; section < 200; ++section) {
+          for (int i = 0; i < kPaddedWindowSize; ++i) {
+            if (i < kDeletionsPerSection) {
+              collector->AddUserKey("hello", "rocksdb", rocksdb::kEntryDelete, 0, 0);
+            } else {
+              collector->AddUserKey("hello", "rocksdb", rocksdb::kEntryPut, 0, 0);
+            }
+          }
+        }
+        if (collector->NeedCompact() && std::abs(kDeletionsPerSection - kNumDeletionTrigger) > kBias) {
+          fprintf(stderr, "[Error] collector->NeedCompact() != false with kWindowSize = %d and kNumDeletionTrigger = %d\n",
+                  kWindowSize, kNumDeletionTrigger);
+          assert(false);
+        }
+        collector->Finish(nullptr);
+      }
+    }
+  }
+  fprintf(stderr, "PASSED\n");
+}

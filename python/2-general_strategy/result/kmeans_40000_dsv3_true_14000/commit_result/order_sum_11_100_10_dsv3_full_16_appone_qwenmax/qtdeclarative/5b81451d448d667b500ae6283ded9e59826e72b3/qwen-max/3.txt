@@ -1,0 +1,17 @@
+bool QQuickMultiPointHandler::grabPoints(QPointerEvent *event, const QVector<QEventPoint> &points)
+{
+    if (points.isEmpty())
+        return false;
+    bool allowed = true;
+    for (auto &point : points) {
+        if (event->exclusiveGrabber(point) != this && !canGrab(event, point)) {
+            allowed = false;
+            break;
+        }
+    }
+    if (allowed) {
+        for (const auto &point : points)
+            setExclusiveGrab(event, point);
+    }
+    return allowed;
+}

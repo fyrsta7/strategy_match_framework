@@ -1,0 +1,47 @@
+Iterator* DBImpl::NewInternalIterator(const ReadOptions& options,
+                                      SequenceNumber* latest_snapshot) {
+  // Allocate cleanup state
+  IterState* cleanup = new IterState;
+
+  // Lock mutex to access shared state
+  mutex_.Lock();
+  *latest_snapshot = versions_->LastSequence();
+
+  // Reserve space for iterators and memtables to avoid reallocations
+  std::vector<Iterator*> list;
+  list.reserve(1 + imm_.NumMemTables() + versions_->current()->NumLevelFiles());
+
+  cleanup->mem.reserve(1 + imm_.NumMemTables());
+
+  // Add iterator for the active memtable
+  mem_->Ref();
+  list.push_back(mem_->NewIterator(options));
+  cleanup->mem.push_back(mem_);
+
+  // Add iterators for immutable memtables
+  for (MemTable* m : imm_.GetMemTables()) {
+    m->Ref();
+    list.push_back(m->NewIterator(options));
+    cleanup->mem.push_back(m);
+  }
+
+  // Add iterators for files in L0 - Ln
+  versions_->current()->AddIterators(options, storage_options_, &list);
+
+  // Create a merging iterator
+  Iterator* internal_iter =
+      NewMergingIterator(env_, &internal_comparator_, list.data(), list.size());
+
+  // Set up cleanup state
+  versions_->current()->Ref();
+  cleanup->mu = &mutex_;
+  cleanup->db = this;
+  cleanup->version = versions_->current();
+  internal_iter->RegisterCleanup(CleanupIteratorState, cleanup, nullptr);
+
+  // Unlock mutex and flush logs
+  mutex_.Unlock();
+  LogFlush(options_.info_log);
+
+  return internal_iter;
+}

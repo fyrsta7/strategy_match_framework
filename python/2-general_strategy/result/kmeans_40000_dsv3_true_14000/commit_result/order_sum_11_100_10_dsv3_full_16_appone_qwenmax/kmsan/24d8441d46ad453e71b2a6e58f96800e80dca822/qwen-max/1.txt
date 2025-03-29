@@ -1,0 +1,53 @@
+static void hsw_disable_lcpll(struct drm_i915_private *dev_priv,
+			      bool switch_to_fclk, bool allow_power_down)
+{
+	uint32_t val;
+
+	assert_can_disable_lcpll(dev_priv);
+
+	val = I915_READ(LCPLL_CTL);
+
+	if (switch_to_fclk) {
+		val |= LCPLL_CD_SOURCE_FCLK;
+		I915_WRITE(LCPLL_CTL, val);
+
+		if (intel_wait_for_register(dev_priv,
+					    LCPLL_CTL,
+					    LCPLL_CD_SOURCE_FCLK_DONE,
+					    LCPLL_CD_SOURCE_FCLK_DONE,
+					    1))
+			DRM_ERROR("Switching to FCLK failed\n");
+
+		val = I915_READ(LCPLL_CTL);
+	}
+
+	val |= LCPLL_PLL_DISABLE;
+	I915_WRITE(LCPLL_CTL, val);
+	POSTING_READ(LCPLL_CTL);
+
+	if (intel_wait_for_register(dev_priv,
+				    LCPLL_CTL,
+				    LCPLL_PLL_LOCK,
+				    0,
+				    1))
+		DRM_ERROR("LCPLL still locked\n");
+
+	val = hsw_read_dcomp(dev_priv);
+	val |= D_COMP_COMP_DISABLE;
+	hsw_write_dcomp(dev_priv, val);
+	ndelay(100);
+
+	if (intel_wait_for_register(dev_priv,
+				    D_COMP_STATUS,
+				    D_COMP_RCOMP_IN_PROGRESS,
+				    0,
+				    1))
+		DRM_ERROR("D_COMP RCOMP still in progress\n");
+
+	if (allow_power_down) {
+		val = I915_READ(LCPLL_CTL);
+		val |= LCPLL_POWER_DOWN_ALLOW;
+		I915_WRITE(LCPLL_CTL, val);
+		POSTING_READ(LCPLL_CTL);
+	}
+}

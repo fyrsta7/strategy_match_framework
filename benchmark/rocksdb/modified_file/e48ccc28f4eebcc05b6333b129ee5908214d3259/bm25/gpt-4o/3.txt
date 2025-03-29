@@ -1,0 +1,160 @@
+bool VersionEdit::EncodeTo(std::string* dst,
+                           std::optional<size_t> ts_sz) const {
+  auto putVarint32WithSlice = [&](uint32_t tag, const Slice& slice) {
+    PutVarint32(dst, tag);
+    PutLengthPrefixedSlice(dst, slice);
+  };
+
+  if (has_db_id_) {
+    putVarint32WithSlice(kDbId, db_id_);
+  }
+  if (has_comparator_) {
+    assert(has_persist_user_defined_timestamps_);
+    putVarint32WithSlice(kComparator, comparator_);
+  }
+  if (has_log_number_) {
+    PutVarint32Varint64(dst, kLogNumber, log_number_);
+  }
+  if (has_prev_log_number_) {
+    PutVarint32Varint64(dst, kPrevLogNumber, prev_log_number_);
+  }
+  if (has_next_file_number_) {
+    PutVarint32Varint64(dst, kNextFileNumber, next_file_number_);
+  }
+  if (has_max_column_family_) {
+    PutVarint32Varint32(dst, kMaxColumnFamily, max_column_family_);
+  }
+  if (has_min_log_number_to_keep_) {
+    PutVarint32Varint64(dst, kMinLogNumberToKeep, min_log_number_to_keep_);
+  }
+  if (has_last_sequence_) {
+    PutVarint32Varint64(dst, kLastSequence, last_sequence_);
+  }
+
+  for (const auto& cursor : compact_cursors_) {
+    if (cursor.second.Valid()) {
+      PutVarint32(dst, kCompactCursor);
+      PutVarint32(dst, cursor.first);  // level
+      putVarint32WithSlice(kCompactCursor, cursor.second.Encode());
+    }
+  }
+
+  for (const auto& deleted : deleted_files_) {
+    PutVarint32Varint32Varint64(dst, kDeletedFile, deleted.first, deleted.second);
+  }
+
+  bool min_log_num_written = false;
+
+  assert(new_files_.empty() || ts_sz.has_value());
+  for (const auto& new_file : new_files_) {
+    const FileMetaData& f = new_file.second;
+    if (!f.smallest.Valid() || !f.largest.Valid() || f.epoch_number == kUnknownEpochNumber) {
+      return false;
+    }
+
+    PutVarint32(dst, kNewFile4);
+    PutVarint32Varint64(dst, new_file.first, f.fd.GetNumber());
+    PutVarint64(dst, f.fd.GetFileSize());
+    EncodeFileBoundaries(dst, f, ts_sz.value());
+    PutVarint64Varint64(dst, f.fd.smallest_seqno, f.fd.largest_seqno);
+
+    auto encodeCustomField = [&](uint32_t tag, const std::string& value) {
+      PutVarint32(dst, tag);
+      PutLengthPrefixedSlice(dst, Slice(value));
+    };
+
+    encodeCustomField(NewFileCustomTag::kOldestAncesterTime, EncodeVarint64(f.oldest_ancester_time));
+    encodeCustomField(NewFileCustomTag::kFileCreationTime, EncodeVarint64(f.file_creation_time));
+    encodeCustomField(NewFileCustomTag::kEpochNumber, EncodeVarint64(f.epoch_number));
+    putVarint32WithSlice(NewFileCustomTag::kFileChecksum, Slice(f.file_checksum));
+    putVarint32WithSlice(NewFileCustomTag::kFileChecksumFuncName, Slice(f.file_checksum_func_name));
+
+    if (f.fd.GetPathId() != 0) {
+      char path_id = static_cast<char>(f.fd.GetPathId());
+      putVarint32WithSlice(NewFileCustomTag::kPathId, Slice(&path_id, 1));
+    }
+    if (f.temperature != Temperature::kUnknown) {
+      char temp = static_cast<char>(f.temperature);
+      putVarint32WithSlice(NewFileCustomTag::kTemperature, Slice(&temp, 1));
+    }
+    if (f.marked_for_compaction) {
+      char compaction_flag = static_cast<char>(1);
+      putVarint32WithSlice(NewFileCustomTag::kNeedCompaction, Slice(&compaction_flag, 1));
+    }
+    if (has_min_log_number_to_keep_ && !min_log_num_written) {
+      encodeCustomField(NewFileCustomTag::kMinLogNumberToKeepHack, EncodeFixed64(min_log_number_to_keep_));
+      min_log_num_written = true;
+    }
+    if (f.oldest_blob_file_number != kInvalidBlobFileNumber) {
+      encodeCustomField(NewFileCustomTag::kOldestBlobFileNumber, EncodeVarint64(f.oldest_blob_file_number));
+    }
+    if (f.unique_id != kNullUniqueId64x2) {
+      encodeCustomField(NewFileCustomTag::kUniqueId, EncodeUniqueIdBytes(&f.unique_id));
+    }
+    if (f.compensated_range_deletion_size) {
+      encodeCustomField(kCompensatedRangeDeletionSize, EncodeVarint64(f.compensated_range_deletion_size));
+    }
+    if (f.tail_size) {
+      encodeCustomField(NewFileCustomTag::kTailSize, EncodeVarint64(f.tail_size));
+    }
+    if (!f.user_defined_timestamps_persisted) {
+      char udts_flag = static_cast<char>(0);
+      putVarint32WithSlice(NewFileCustomTag::kUserDefinedTimestampsPersisted, Slice(&udts_flag, 1));
+    }
+
+    PutVarint32(dst, NewFileCustomTag::kTerminate);
+  }
+
+  for (const auto& blob_file_addition : blob_file_additions_) {
+    PutVarint32(dst, kBlobFileAddition);
+    blob_file_addition.EncodeTo(dst);
+  }
+
+  for (const auto& blob_file_garbage : blob_file_garbages_) {
+    PutVarint32(dst, kBlobFileGarbage);
+    blob_file_garbage.EncodeTo(dst);
+  }
+
+  for (const auto& wal_addition : wal_additions_) {
+    PutVarint32(dst, kWalAddition2);
+    std::string encoded;
+    wal_addition.EncodeTo(&encoded);
+    PutLengthPrefixedSlice(dst, encoded);
+  }
+
+  if (!wal_deletion_.IsEmpty()) {
+    PutVarint32(dst, kWalDeletion2);
+    std::string encoded;
+    wal_deletion_.EncodeTo(&encoded);
+    PutLengthPrefixedSlice(dst, encoded);
+  }
+
+  if (column_family_ != 0) {
+    PutVarint32Varint32(dst, kColumnFamily, column_family_);
+  }
+
+  if (is_column_family_add_) {
+    putVarint32WithSlice(kColumnFamilyAdd, Slice(column_family_name_));
+  }
+
+  if (is_column_family_drop_) {
+    PutVarint32(dst, kColumnFamilyDrop);
+  }
+
+  if (is_in_atomic_group_) {
+    PutVarint32(dst, kInAtomicGroup);
+    PutVarint32(dst, remaining_entries_);
+  }
+
+  if (HasFullHistoryTsLow()) {
+    putVarint32WithSlice(kFullHistoryTsLow, full_history_ts_low_);
+  }
+
+  if (HasPersistUserDefinedTimestamps()) {
+    assert(has_comparator_);
+    char persist_flag = static_cast<char>(persist_user_defined_timestamps_);
+    putVarint32WithSlice(kPersistUserDefinedTimestamps, Slice(&persist_flag, 1));
+  }
+
+  return true;
+}

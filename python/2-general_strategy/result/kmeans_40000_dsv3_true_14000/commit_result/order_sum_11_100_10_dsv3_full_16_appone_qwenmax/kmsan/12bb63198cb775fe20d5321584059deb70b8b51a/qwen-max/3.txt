@@ -1,0 +1,48 @@
+static void intel_psr_work(struct work_struct *work)
+{
+	struct drm_i915_private *dev_priv =
+		container_of(work, typeof(*dev_priv), psr.work.work);
+	struct intel_dp *intel_dp = dev_priv->psr.enabled;
+	struct drm_crtc *crtc = dp_to_dig_port(intel_dp)->base.base.crtc;
+	enum pipe pipe = to_intel_crtc(crtc)->pipe;
+
+	/* We have to make sure PSR is ready for re-enable
+	 * otherwise it keeps disabled until next full enable/disable cycle.
+	 * PSR might take some time to get fully disabled
+	 * and be ready for re-enable.
+	 */
+	if (HAS_DDI(dev_priv)) {
+		if (intel_wait_for_register(dev_priv,
+					    EDP_PSR_STATUS_CTL,
+					    EDP_PSR_STATUS_STATE_MASK, 0,
+					    50)) {
+			DRM_ERROR("Timed out waiting for PSR Idle for re-enable\n");
+			return;
+		}
+	} else {
+		if (intel_wait_for_register(dev_priv,
+					    VLV_PSRSTAT(pipe),
+					    VLV_EDP_PSR_IN_TRANS, 0,
+					    1)) {
+			DRM_ERROR("Timed out waiting for PSR Idle for re-enable\n");
+			return;
+		}
+	}
+	mutex_lock(&dev_priv->psr.lock);
+	intel_dp = dev_priv->psr.enabled;
+
+	if (!intel_dp)
+		goto unlock;
+
+	/*
+	 * The delayed work can race with an invalidate hence we need to
+	 * recheck. Since psr_flush first clears this and then reschedules we
+	 * won't ever miss a flush when bailing out here.
+	 */
+	if (dev_priv->psr.busy_frontbuffer_bits)
+		goto unlock;
+
+	intel_psr_activate(intel_dp);
+unlock:
+	mutex_unlock(&dev_priv->psr.lock);
+}

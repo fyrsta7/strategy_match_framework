@@ -1,0 +1,716 @@
+{
+  "metadata": {
+    "model": "dsv3",
+    "total_assessments": 24,
+    "applicable_count": 4,
+    "repeated_evaluations": 5,
+    "generated_at": "2025-03-18T22:11:18.439585"
+  },
+  "cluster_statistics": {
+    "199": {
+      "total_commits": 24,
+      "applicable_commits": 4,
+      "applicable_percentage": 0.16666666666666666
+    }
+  },
+  "cluster_assessments": {
+    "199": [
+      {
+        "commit_hash": "39a95d7e95a61913916fa1d50960985018a0f6fd",
+        "repository": "Seamly2D",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The optimization strategy is not applicable because the loop iterates over a container of `QSharedPointer<VGObject>` objects, which are smart pointers. The loop body calls `clear()` on the smart pointer, which does not require a copy of the underlying object. Since the elements are already accessed via pointers, there is no unnecessary object duplication to eliminate."
+          },
+          {
+            "applicable": false,
+            "explanation": "The optimization strategy is not applicable because the loop iterates over a container of `QSharedPointer<VGObject>` objects, which are smart pointers. The loop body calls `clear()` on the smart pointer, which does not require a copy of the underlying object. Since the elements are already handled by reference (via the smart pointer), there is no unnecessary object duplication to eliminate."
+          },
+          {
+            "applicable": false,
+            "explanation": "The optimization strategy is not applicable because the loop iterates over a container of `QSharedPointer<VGObject>` objects, which are smart pointers. The loop body calls `clear()` on the smart pointer, which does not require a copy of the underlying object. Since the elements are already lightweight smart pointers, replacing value-based iteration with reference-based iteration would not provide significant performance benefits."
+          },
+          {
+            "applicable": false,
+            "explanation": "The optimization strategy is not applicable because the loop iterates over a container of `QSharedPointer<VGObject>` objects, which are smart pointers. The loop body calls `clear()` on the smart pointer, which does not require a copy of the underlying object. Since `QSharedPointer` already manages the object's lifetime efficiently, replacing value-based iteration with reference-based iteration would not provide any performance benefit."
+          },
+          {
+            "applicable": false,
+            "explanation": "The optimization strategy is not applicable because the loop iterates over a container of `QSharedPointer<VGObject>` objects, which are smart pointers. The loop body calls `clear()` on the smart pointer, which does not require a copy of the underlying object. Since the elements are already accessed via smart pointers, there is no unnecessary object duplication to eliminate."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The optimization strategy is not applicable because the loop iterates over a container of `QSharedPointer<VGObject>` objects, which are smart pointers. The loop body calls `clear()` on the smart pointer, which does not require a copy of the underlying object. Since the elements are already accessed via pointers, there is no unnecessary object duplication to eliminate."
+      },
+      {
+        "commit_hash": "7480941f2d6d46dd1c7ce0ebf9f7e311736e928d",
+        "repository": "tensorflow",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The loop in the code iterates over a container of objects (`*output_shape`), but the elements are accessed via a reference (`const auto &dim`), which already avoids unnecessary copying. Since the optimization strategy aims to replace value-based iteration with reference-based iteration, and the code already uses reference-based iteration, the optimization is not applicable."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. The loop iterates over a container of objects (`output_shape`), but the elements are accessed via a reference (`const auto &dim`), which already avoids unnecessary copying. Additionally, the elements are not modified within the loop, so there is no need to switch to reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The loop iterates over `output_shape` using a reference (`const auto &dim`), which already avoids unnecessary copying. Since the elements are accessed by reference and no additional copying is happening, the optimization strategy is not applicable."
+          },
+          {
+            "applicable": false,
+            "explanation": "The loop in the code already uses reference-based iteration (`for (const auto &dim : *output_shape)`), which avoids unnecessary object duplication. Since the optimization strategy aims to replace value-based iteration with reference-based iteration, and the code already employs the latter, the optimization is not applicable."
+          },
+          {
+            "applicable": false,
+            "explanation": "The loop in the code iterates over `output_shape` using a reference (`const auto &dim`), which already avoids unnecessary copying. Since the loop already uses reference-based iteration, the optimization strategy of replacing value-based iteration with reference-based iteration is not applicable here."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The loop in the code iterates over a container of objects (`*output_shape`), but the elements are accessed via a reference (`const auto &dim`), which already avoids unnecessary copying. Since the optimization strategy aims to replace value-based iteration with reference-based iteration, and the code already uses reference-based iteration, the optimization is not applicable."
+      },
+      {
+        "commit_hash": "7cd12d8543e899ad4993ade30a2fdcb6add86a08",
+        "repository": "ssde",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not iterate over a container of objects or values in a way that would benefit from reference-based iteration. Instead, it processes binary data directly using pointer arithmetic, which does not involve copying objects or values."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not iterate over a container of objects or values in a way that would benefit from reference-based iteration. Instead, it processes a binary structure using pointer arithmetic, which does not involve copying elements. The optimization strategy is not relevant here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not iterate over a container of objects or values in a way that would benefit from reference-based iteration. Instead, it uses pointer arithmetic to traverse a binary structure, which does not involve copying elements. Therefore, the optimization strategy of reducing copy overhead by replacing value-based iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not iterate over a container of objects or values in a way that would benefit from reference-based iteration. Instead, it processes binary data directly using pointer arithmetic, which does not involve copying objects or values."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not iterate over a container of objects or values in a way that would benefit from reference-based iteration. Instead, it processes binary data directly using pointer arithmetic, which does not involve copying objects or values. The optimization strategy is not relevant here."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not iterate over a container of objects or values in a way that would benefit from reference-based iteration. Instead, it processes binary data directly using pointer arithmetic, which does not involve copying objects or values."
+      },
+      {
+        "commit_hash": "982b79df43b05910cca9fa19777072a02c2529ff",
+        "repository": "tensorflow",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily involves operations on indices, dimensions, and memory layouts, which do not involve non-primitive types or unnecessary object duplication."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are primarily focused on computing strides and sizes, and they do not involve iterating over a container of complex objects or structs."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops in the code primarily deal with indices and values, not complex objects or structs."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where the loop body accesses or modifies elements without requiring a copy. Instead, the loops in the code are primarily focused on computing strides and sizes for memory operations, and they do not involve iterating over complex data types that would benefit from reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops in the code primarily manipulate indices and values directly, rather than iterating over a container of complex objects."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily involves operations on indices, dimensions, and memory layouts, which do not involve non-primitive types or unnecessary object duplication."
+      },
+      {
+        "commit_hash": "4e2019530f30bc4e1f850f307efddb1d9337cf7a",
+        "repository": "osgearth",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., `contenders` and `offsets`), the elements being accessed are pointers (`ElevationLayer*`), which are lightweight and do not incur significant copy overhead. Additionally, the loop bodies do not require modifications that would benefit from reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., `contenders` and `offsets`), the elements being accessed are pointers (`ElevationLayer*`), which are lightweight and do not incur significant copy overhead. Additionally, the loop bodies do not require or benefit from reference-based iteration since the elements are already accessed via pointers."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. The loops in the code primarily iterate over indices and access elements directly from containers like `contenders` and `offsets` using `[]` operator, which does not involve unnecessary object duplication. The elements accessed are pointers or references, so there is no significant copy overhead to reduce."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers, the elements being accessed are primarily pointers (e.g., `ElevationLayer*`), which do not incur copy overhead. The optimization strategy focuses on reducing copy overhead by replacing value-based iteration with reference-based iteration, which is not relevant here since the elements are already accessed via pointers."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that this optimization strategy is designed to address. While there are loops iterating over containers (e.g., `contenders` and `offsets`), the elements being accessed are pointers (`ElevationLayer*`) or references (`TileKey&`), which already avoid unnecessary object duplication. The optimization strategy focuses on replacing value-based iteration with reference-based iteration, but the code already uses references or pointers where appropriate."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., `contenders` and `offsets`), the elements being accessed are pointers (`ElevationLayer*`), which are lightweight and do not incur significant copy overhead. Additionally, the loop bodies do not require modifications that would benefit from reference-based iteration."
+      },
+      {
+        "commit_hash": "8a4073ca0890a53aeb571781657e8a57ee50a7ee",
+        "repository": "NPLRuntime",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns targeted by the optimization strategy. While it contains loops iterating over containers (e.g., `luabind::iterator`), the elements being accessed are already handled as references (e.g., `const object& key` and `const object& value`). There is no evidence of unnecessary object duplication that could be avoided by switching from value-based to reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops in the code primarily iterate over Lua objects using `luabind::iterator`, and the elements are accessed directly without unnecessary copying, so the optimization strategy does not apply."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values in a way that would benefit from reference-based iteration. The primary loops in the code iterate over Lua tables using `luabind::iterator`, which already avoids unnecessary copying by accessing elements directly. Additionally, the elements being iterated over are Lua objects, which are typically handled by reference in Lua bindings, further reducing the need for this optimization."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains loops that iterate over a container of objects (specifically, `luabind::iterator` and `std::vector<sortItem>`), and the loop body accesses or modifies elements without requiring a copy of the element. Since the elements are non-primitive types (e.g., `luabind::object`), the optimization strategy of replacing value-based iteration with reference-based iteration can be applied to reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., `luabind::iterator`), the elements being accessed are already handled by reference (`const object& key` and `const object& value`). Therefore, there is no unnecessary object duplication that can be optimized by switching from value-based to reference-based iteration."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 0.8,
+        "majority_explanation": "The code does not exhibit the patterns targeted by the optimization strategy. While it contains loops iterating over containers (e.g., `luabind::iterator`), the elements being accessed are already handled as references (e.g., `const object& key` and `const object& value`). There is no evidence of unnecessary object duplication that could be avoided by switching from value-based to reference-based iteration."
+      },
+      {
+        "commit_hash": "5e0db672b677752b19ab2c7b52d3a32b7e3ae8b7",
+        "repository": "tensorflow",
+        "individual_assessments": [
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container (`components`) of non-primitive types (`ShapedTypeComponents`). The loop body accesses and modifies elements of the container without requiring a copy of the element, making it a good candidate for replacing value-based iteration with reference-based iteration to reduce copy overhead."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container (`components`) of non-primitive types (`ShapedTypeComponents`). The loop body accesses and modifies elements of the container without requiring a copy of the element, making it a good candidate for replacing value-based iteration with reference-based iteration to reduce copy overhead."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container of objects (components) using `llvm::enumerate`. The loop body accesses and modifies elements of the container (setting attributes on `new_op`) without requiring a copy of the element. Since the elements are non-primitive types (ShapedTypeComponents), the optimization strategy of replacing value-based iteration with reference-based iteration can be applied to reduce copy overhead."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container (`components`) of non-primitive types (`ShapedTypeComponents`). The loop body accesses and modifies elements of the container without requiring a copy of the element, making it suitable for reference-based iteration to reduce copy overhead."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container (`components`) of non-primitive types (`ShapedTypeComponents`). The loop body accesses and modifies elements of the container without requiring a copy of the element, making it a good candidate for replacing value-based iteration with reference-based iteration to reduce copy overhead."
+          }
+        ],
+        "voting_result": true,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code contains a loop that iterates over a container (`components`) of non-primitive types (`ShapedTypeComponents`). The loop body accesses and modifies elements of the container without requiring a copy of the element, making it a good candidate for replacing value-based iteration with reference-based iteration to reduce copy overhead."
+      },
+      {
+        "commit_hash": "064772d6f1bc3048dd3c8dd8da5c2a27179b972f",
+        "repository": "tensorflow",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are either iterating over indices or performing operations that do not involve copying container elements."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are either iterating over indices or performing specific operations that do not involve unnecessary object duplication."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are either iterating over indices or performing operations on tensor slices, which do not involve the unnecessary copying of complex objects."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are either iterating over indices or performing operations on tensor slices, which do not involve the kind of object duplication that the optimization strategy aims to reduce."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are either iterating over indices or performing operations that do not involve container elements directly."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are either iterating over indices or performing operations that do not involve copying container elements."
+      },
+      {
+        "commit_hash": "5567aefdacf30ab65952b2ec5b82bced5b2b7ed0",
+        "repository": "spades",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it processes a single `Kmer` object and a vector of `EdgeId` objects directly, without any iteration. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it processes a single `Kmer` object and a vector of `EdgeId` objects directly, without any iteration. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values, which is a primary condition for applying the optimization strategy. The function processes a single `Kmer` object and a vector of `EdgeId` without iterating over the vector elements."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it processes a single `Kmer` object and a vector of `EdgeId` objects directly, without any iteration over the vector. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it processes a single `Kmer` object and a vector of `EdgeId` objects directly, without any iteration over the vector. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it processes a single `Kmer` object and a vector of `EdgeId` objects directly, without any iteration. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable."
+      },
+      {
+        "commit_hash": "a7e8e22c3b6de7f6c9ab8751f838e440300aa2f7",
+        "repository": "kate",
+        "individual_assessments": [
+          {
+            "applicable": true,
+            "explanation": "The code iterates over a container of `QString` objects using value-based iteration, which incurs unnecessary copying of each string. Since the loop only checks the string's content and does not require a copy, replacing the value-based iteration with reference-based iteration would eliminate the copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop iterating over a container of `QString` objects. Since `QString` is a non-primitive type and the loop body only accesses the elements without requiring a copy, replacing value-based iteration with reference-based iteration would reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code iterates over a container of `QString` objects using value-based iteration, which creates a copy of each element. Since `QString` is a non-primitive type and the loop only accesses the elements without modifying them, replacing the value-based iteration with reference-based iteration would eliminate unnecessary copying and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code iterates over a container of `QString` objects using value-based iteration, which incurs copy overhead. Since the loop only checks the elements without modifying them, replacing the value-based iteration with reference-based iteration would avoid unnecessary copying and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop iterating over a container of `QString` objects. Since `QString` is a non-primitive type and the loop body only accesses the elements without requiring a copy, replacing value-based iteration with reference-based iteration would avoid unnecessary object duplication and improve performance."
+          }
+        ],
+        "voting_result": true,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code iterates over a container of `QString` objects using value-based iteration, which incurs unnecessary copying of each string. Since the loop only checks the string's content and does not require a copy, replacing the value-based iteration with reference-based iteration would eliminate the copy overhead and improve performance."
+      },
+      {
+        "commit_hash": "8f9fafaa74162bc48ea3c6c4b2e2ff5ff01f0141",
+        "repository": "spades",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The given code does not contain a loop that iterates over a container of objects or values. Instead, it simply accesses an element from a container using an index. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The given code does not contain a loop that iterates over a container of objects or values. Instead, it simply accesses an element from a container using an index. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The given code does not contain a loop that iterates over a container of objects or values. Instead, it directly accesses an element from a container using an index. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The given code does not contain a loop that iterates over a container of objects or values. Instead, it simply accesses an element in a container using an index. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable."
+          },
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values. Instead, it simply accesses an element from a container using an index. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The given code does not contain a loop that iterates over a container of objects or values. Instead, it simply accesses an element from a container using an index. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+      },
+      {
+        "commit_hash": "5fc734781021cf467482af25378195389a9f97df",
+        "repository": "operon",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it involves a function call that processes data and returns a vector. The optimization strategy focuses on reducing copy overhead in loops, which is not relevant here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it involves function calls and the creation of a `std::vector<T>`. The optimization strategy focuses on reducing copy overhead in loops, which is not relevant here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it calls another function `Evaluate` with a `gsl::span<T>` parameter, which does not involve element-wise iteration or copying within the visible code. Therefore, the optimization strategy of replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it calls another function `Evaluate` and returns a `std::vector<T>`. Therefore, the optimization strategy of replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it initializes a vector and passes it to another function. Therefore, the conditions for applying the optimization strategy are not met."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of objects or values. Instead, it involves a function call that processes data and returns a vector. The optimization strategy focuses on reducing copy overhead in loops, which is not relevant here."
+      },
+      {
+        "commit_hash": "310d1654a43bd8091c006b66a8933d24082a372f",
+        "repository": "tensorflow",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops in the code primarily deal with operations and their operands/results, not with containers of objects or complex data types."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the pattern of iterating over a container of non-primitive types where elements are accessed or modified without requiring a copy. Instead, it primarily deals with operations on `Operation` objects and their uses, which do not involve value-based loop iteration that could benefit from reference-based optimization."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present are primarily focused on traversing operations and their operands, not on iterating over a container of objects or values."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns targeted by the optimization strategy. While it contains loops iterating over containers (e.g., `cluster`), the elements being iterated over are pointers (`Operation*`), which are lightweight and do not incur significant copy overhead. The optimization strategy focuses on reducing copy overhead for non-primitive types, which is not relevant here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns targeted by the optimization strategy. While it contains loops iterating over containers (e.g., `cluster` and `operand_set`), the elements being iterated over are primarily pointers or handles (e.g., `Operation*` and `Value`), which are lightweight and do not incur significant copy overhead. Additionally, the loop bodies do not require or benefit from reference-based iteration to avoid unnecessary object duplication."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops in the code primarily deal with operations and their operands/results, not with containers of objects or complex data types."
+      },
+      {
+        "commit_hash": "d3881dcc330f728aea4900fa058fbc95b686a923",
+        "repository": "tensorflow",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily deals with operations and their relationships within a block, which does not align with the conditions for the optimization strategy."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily deals with operations and their relationships within a block, which does not align with the conditions for the optimization strategy."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it involves operations on a linked list of nodes and cloning of operations, which does not align with the optimization strategy of reducing copy overhead through reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it focuses on operations and their relationships within a block, which does not align with the conditions for the optimization strategy."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily deals with operations and their relationships within a block, focusing on cloning and mapping operations rather than iterating over a container of non-primitive types."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily deals with operations and their relationships within a block, which does not align with the conditions for the optimization strategy."
+      },
+      {
+        "commit_hash": "8196f918be28db1bb2d8ebac511357e54cefadba",
+        "repository": "xbmc",
+        "individual_assessments": [
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container of strings (`g_fontManager.GetUserFontsFamilyNames()`), and the loop body accesses each element without requiring a copy. Since strings are non-primitive types, replacing the value-based iteration (`for (std::string familyName : ...)`) with reference-based iteration (`for (const std::string& familyName : ...)`) would reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container of strings (`g_fontManager.GetUserFontsFamilyNames()`), and the loop body accesses and modifies elements of the container (`list.emplace_back(familyName, familyName)`). Since the elements are non-primitive types (strings), replacing the value-based iteration (`for (std::string familyName : ...)`) with reference-based iteration (`for (const std::string& familyName : ...)`) would reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container of strings (`g_fontManager.GetUserFontsFamilyNames()`), and the loop body accesses and modifies elements of the container (`list.emplace_back(familyName, familyName)`). Since the elements are non-primitive types (strings), replacing the value-based iteration (`for (std::string familyName : ...)`) with reference-based iteration (`for (const std::string& familyName : ...)`) would avoid unnecessary copying of strings and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container of strings (`g_fontManager.GetUserFontsFamilyNames()`), and the loop body accesses each element (`familyName`) without requiring a copy. Since the elements are non-primitive types (strings), replacing the value-based iteration (`for (std::string familyName : ...)`) with reference-based iteration (`for (const std::string& familyName : ...)`) would reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container of non-primitive types (std::string) in the line 'for (std::string familyName : g_fontManager.GetUserFontsFamilyNames())'. The loop body accesses and modifies elements of the container without requiring a copy of the element, making it suitable for replacing value-based iteration with reference-based iteration to reduce copy overhead."
+          }
+        ],
+        "voting_result": true,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code contains a loop that iterates over a container of strings (`g_fontManager.GetUserFontsFamilyNames()`), and the loop body accesses each element without requiring a copy. Since strings are non-primitive types, replacing the value-based iteration (`for (std::string familyName : ...)`) with reference-based iteration (`for (const std::string& familyName : ...)`) would reduce copy overhead and improve performance."
+      },
+      {
+        "commit_hash": "e194811d4fe7762a747232616cd5c18b182dd12d",
+        "repository": "synfig",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. The loops present either iterate over indices or handle recursive function calls, and there is no explicit container iteration that would benefit from reference-based iteration to reduce copy overhead."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loops present either handle primitive types or do not involve container iteration that would benefit from reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. The loops present either handle pointers or perform operations that do not involve copying non-primitive types."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. The loops present either iterate over indices or handle specific types of nodes, but they do not involve iterating over a container of non-primitive types in a way that would benefit from reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. The loops present either process individual elements or handle recursive calls, but they do not involve iterating over a container of non-primitive types in a way that would benefit from reference-based iteration."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. The loops present either iterate over indices or handle recursive function calls, and there is no explicit container iteration that would benefit from reference-based iteration to reduce copy overhead."
+      },
+      {
+        "commit_hash": "e17744d9660e2a56c47392c986dfb0403387393e",
+        "repository": "patchelf",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The optimization strategy is not applicable because the loop iterates over a container of strings (`fileNames`), which are primitive types (or treated as such in this context). The strategy targets non-primitive types to avoid unnecessary object duplication, but strings in C++ are typically handled efficiently with move semantics and small string optimization, reducing the need for reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code iterates over `fileNames`, which is likely a container of strings (a primitive type in this context). The optimization strategy targets non-primitive types to reduce copy overhead, but strings in C++ are typically handled efficiently with move semantics, making the optimization unnecessary here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The optimization strategy is not applicable because the loop iterates over a container of strings (primitive types), and the loop body does not require modifying the elements themselves. Additionally, the loop does not involve copying complex objects or structs."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container `fileNames`, and the loop body accesses elements of the container without requiring a copy of the element. Since `fileName` is a non-primitive type (a `std::string`), replacing the value-based iteration with reference-based iteration would reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container `fileNames` of `std::string` objects. The loop body accesses elements of the container without requiring a copy of the element, as it only uses `fileName` to read files and construct other strings. Since `std::string` is a non-primitive type, replacing value-based iteration with reference-based iteration would reduce copy overhead and improve performance."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 0.6,
+        "majority_explanation": "The optimization strategy is not applicable because the loop iterates over a container of strings (`fileNames`), which are primitive types (or treated as such in this context). The strategy targets non-primitive types to avoid unnecessary object duplication, but strings in C++ are typically handled efficiently with move semantics and small string optimization, reducing the need for reference-based iteration."
+      },
+      {
+        "commit_hash": "4c69a0a36dc8816a4d58c6a34d687308ffcff2fe",
+        "repository": "cmssw",
+        "individual_assessments": [
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container (`trackIdToHitIndex_`) of objects (SimHits), and the loop body accesses elements of the container (`pSimHit`) without requiring a copy of the element. Since the container elements are non-primitive types (SimHits), the optimization strategy of replacing value-based iteration with reference-based iteration can be applied to reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container (`trackIdToHitIndex_`) of objects (`std::multimap<unsigned int, size_t>`), and the loop body accesses elements of the container (`simHits_`) without requiring a copy of the element. Since the elements are non-primitive types (e.g., `DetId`, `pSimHit`), the optimization strategy of replacing value-based iteration with reference-based iteration can be applied to reduce copy overhead."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loop in the code iterates over a `std::multimap` of indices and accesses elements from another container (`simHits_`), but it does not involve copying the elements themselves."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loop in the code iterates over a `std::multimap` of `unsigned int` and `size_t`, which are primitive types, and the elements are accessed via iterators, not by value."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loop in question iterates over a multimap of indices and accesses elements from a separate container (simHits_), but it does not directly iterate over a container of complex objects where the optimization could be applied."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 0.6,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of non-primitive types where elements are accessed or modified without requiring a copy. The loop in the code iterates over a `std::multimap` of indices and accesses elements from another container (`simHits_`), but it does not involve copying the elements themselves."
+      },
+      {
+        "commit_hash": "6a8f8a29ad094d6ac14775c888494013dc32a002",
+        "repository": "bg3se",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values, which is a key requirement for the optimization strategy. Instead, it performs a single operation on a property value and pushes it to a Lua state. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values, which is a primary condition for applying the optimization strategy. Instead, it performs a direct property access and value push operation, making the optimization irrelevant in this context."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values, which is a primary condition for applying the optimization strategy. Instead, it performs a single operation on a specific property value, making the optimization irrelevant in this context."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values, which is a primary condition for applying the optimization strategy. Additionally, the code does not involve any non-primitive types being accessed or modified within a loop, further making the optimization inapplicable."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values, which is a primary condition for applying the optimization strategy. Instead, it performs a direct property access and value push operation, making the optimization strategy irrelevant in this context."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of objects or values, which is a key requirement for the optimization strategy. Instead, it performs a single operation on a property value and pushes it to a Lua state. Therefore, the optimization strategy of reducing copy overhead by replacing value-based loop iteration with reference-based iteration is not applicable here."
+      },
+      {
+        "commit_hash": "c41dedc9223d1c2cd049949a298880ff9557f741",
+        "repository": "MyScaleDB",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values. Instead, it simply calls a template function `hasEqualValuesImpl` without any explicit iteration or element access. Therefore, the conditions for applying the optimization strategy are not met."
+          },
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values. Instead, it simply calls a template function `hasEqualValuesImpl` without any explicit iteration or element access. Therefore, the conditions for applying the optimization strategy are not met."
+          },
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values. Instead, it simply calls a template function `hasEqualValuesImpl` without any iteration or element access. Therefore, the optimization strategy of reducing copy overhead by using reference-based iteration is not applicable here."
+          },
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values. Instead, it simply calls a templated function `hasEqualValuesImpl` without any explicit iteration or element access. Therefore, the conditions for applying the optimization strategy are not met."
+          },
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values. Instead, it simply calls a template function `hasEqualValuesImpl` without any explicit iteration or element access. Therefore, the conditions for applying the optimization strategy are not met."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The provided code does not contain a loop that iterates over a container of objects or values. Instead, it simply calls a template function `hasEqualValuesImpl` without any explicit iteration or element access. Therefore, the conditions for applying the optimization strategy are not met."
+      },
+      {
+        "commit_hash": "b9e67132ccdaaec6ffcc915296f22e52f86841c9",
+        "repository": "NBlood",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily deals with sprite rendering and calculations, which do not align with the optimization strategy of reducing copy overhead through reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain any loops that iterate over a container of objects or values where elements are accessed or modified without requiring a copy. The optimization strategy focuses on reducing copy overhead by using reference-based iteration, but the provided code primarily deals with sprite rendering and does not exhibit the patterns this optimization targets."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain any loops that iterate over a container of objects or values where elements are accessed or modified without requiring a copy. The optimization strategy focuses on reducing copy overhead by replacing value-based iteration with reference-based iteration, but the given code primarily deals with sprite rendering and mathematical calculations, not container iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain loops that iterate over containers of objects or values where elements are accessed or modified without requiring a copy. The loops present are primarily focused on mathematical calculations and rendering operations, not on iterating over complex data structures."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily deals with sprite rendering and mathematical calculations, which do not involve the type of container iteration targeted by this optimization strategy."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not contain a loop that iterates over a container of objects or values where elements are accessed or modified without requiring a copy. Instead, it primarily deals with sprite rendering and calculations, which do not align with the optimization strategy of reducing copy overhead through reference-based iteration."
+      },
+      {
+        "commit_hash": "d2dce597295aefee9cef8ab36c81e1174227fe32",
+        "repository": "graaljs",
+        "individual_assessments": [
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container `host_objects_` of non-primitive types (BaseObjectPtr<BaseObject>). The loop body accesses elements of the container without requiring a copy of the element, making it suitable for reference-based iteration to reduce copy overhead."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop iterating over `nested_transferables`, which is a container of `BaseObjectPtr<BaseObject>` objects. Since the loop body accesses elements without requiring a copy, and the elements are non-primitive types (smart pointers), replacing value-based iteration with reference-based iteration would reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over `host_objects_`, a container of objects. The loop body accesses elements of `host_objects_` and `nested_transferables` without requiring a copy of the element. Since the elements are non-primitive types (e.g., `BaseObjectPtr<BaseObject>`), replacing value-based iteration with reference-based iteration can reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over `nested_transferables`, which is a container of `BaseObjectPtr<BaseObject>` objects. Since the loop body accesses elements of the container without requiring a copy, and the elements are non-primitive types (smart pointers), replacing the value-based iteration with reference-based iteration would reduce copy overhead and improve performance."
+          },
+          {
+            "applicable": true,
+            "explanation": "The code contains a loop that iterates over a container of objects (`host_objects_`), and the loop body accesses elements of the container without requiring a copy of the element. Additionally, the container elements are non-primitive types (`BaseObjectPtr<BaseObject>`), making the optimization strategy applicable to reduce copy overhead by using reference-based iteration."
+          }
+        ],
+        "voting_result": true,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code contains a loop that iterates over a container `host_objects_` of non-primitive types (BaseObjectPtr<BaseObject>). The loop body accesses elements of the container without requiring a copy of the element, making it suitable for reference-based iteration to reduce copy overhead."
+      },
+      {
+        "commit_hash": "38a60484fcf685015edd31145b705f49410da148",
+        "repository": "oneDAL",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values in a way that would benefit from replacing value-based iteration with reference-based iteration. The code primarily deals with memory management, data allocation, and access to arrays, but it does not exhibit the specific pattern of iterating over a container where elements are copied unnecessarily."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values in a way that would benefit from replacing value-based iteration with reference-based iteration. The primary operations involve memory management, array manipulation, and data access, but these do not involve unnecessary object duplication that could be optimized by the proposed strategy."
+          },
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain a loop that iterates over a container of objects or values in a way that would benefit from replacing value-based iteration with reference-based iteration. The code primarily deals with memory management, data allocation, and access patterns for a numeric table, but it does not exhibit the specific patterns targeted by the optimization strategy."
+          },
+          {
+            "applicable": false,
+            "explanation": "The provided code does not contain any explicit loops that iterate over a container of non-primitive types where elements are accessed or modified without requiring a copy. The code primarily deals with memory management, array manipulation, and data block handling, but it does not exhibit the specific pattern of value-based loop iteration that the optimization strategy targets."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not contain a loop that iterates over a container of objects or values in a way that would benefit from replacing value-based iteration with reference-based iteration. The primary operations involve memory management, array manipulation, and data access, but these do not involve unnecessary object duplication within a loop context."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The provided code does not contain a loop that iterates over a container of objects or values in a way that would benefit from replacing value-based iteration with reference-based iteration. The code primarily deals with memory management, data allocation, and access to arrays, but it does not exhibit the specific pattern of iterating over a container where elements are copied unnecessarily."
+      },
+      {
+        "commit_hash": "774785a79d14c95d467dd0224761723d51b5f9da",
+        "repository": "BsodSurvivor",
+        "individual_assessments": [
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., MachineFunction and MachineBasicBlock), the elements being iterated over are primarily pointers or primitive types (e.g., MachineInstr*, unsigned), not complex objects or structs that would benefit from reference-based iteration to avoid copy overhead."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., MachineFunction and MachineBasicBlock), the elements being iterated over are primarily pointers or primitive types, not complex objects or structs that would benefit from reference-based iteration to avoid copy overhead."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns targeted by the optimization strategy. While it contains loops iterating over containers, the elements being accessed are primarily primitive types (e.g., registers, instructions) or handled through pointers, not non-primitive types that would benefit from reference-based iteration to avoid copy overhead."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers, the elements being accessed are primarily primitive types (e.g., `MachineInstr*`, `unsigned`) or simple structs, and there is no evidence of unnecessary object duplication that could be avoided by switching to reference-based iteration."
+          },
+          {
+            "applicable": false,
+            "explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., MachineFunction and MachineBasicBlock), the elements being iterated over are primarily pointers or primitive types, not complex objects or structs that would benefit from reference-based iteration to avoid copy overhead."
+          }
+        ],
+        "voting_result": false,
+        "voting_confidence": 1.0,
+        "majority_explanation": "The code does not exhibit the patterns that the optimization strategy is designed to address. While there are loops iterating over containers (e.g., MachineFunction and MachineBasicBlock), the elements being iterated over are primarily pointers or primitive types (e.g., MachineInstr*, unsigned), not complex objects or structs that would benefit from reference-based iteration to avoid copy overhead."
+      }
+    ]
+  }
+}

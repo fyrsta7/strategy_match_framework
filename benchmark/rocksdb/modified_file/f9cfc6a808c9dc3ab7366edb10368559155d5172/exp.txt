@@ -1,0 +1,19 @@
+本次提交主要针对 NewDataBlockIterator 函数做了改进，核心思路是在获取数据块时，区分是否为数据块（Data Block）与非数据块（例如索引块）。在之前的实现中，无论块的类型如何，只要存在 uncompression_dict_reader，就会尝试获取（或读取）压缩解压缩字典；而实际上对于非数据块来说，这个字典既不被使用，也没有必要获取（index block 即使压缩了，其内部也使用的是空字典）。
+
+主要修改点和思路如下：
+
+1. 修改前的实现始终会检查 rep_->uncompression_dict_reader 是否存在，然后调用 GetOrReadUncompressionDictionary 来获取 uncompression dict。这样一来，在使用分区索引（partitioned index）且字典压缩（dictionary compression）开启的情况下，即使该块是索引块（非数据块），也会进行字典获取，导致不必要的 CPU 开销（大约1~2%的 CPU 时间占用）。
+
+2. 修改后的实现在调用字典获取逻辑前，增加了对块类型的判断。只有在块类型为 kData（数据块）时，才会尝试获取 uncompression dict；否则直接传入空字典（UncompressionDict::GetEmptyDict()）给 RetrieveBlock。这一改动使得对于非数据块（例如索引块），不会再进行无意义的字典获取操作。
+
+3. 修改目的：  
+   - 避免在 partitioned index 以及字典压缩场景下，对非数据块进行不必要的字典获取操作。  
+   - 从而优化 CPU 使用率，提高整体操作吞吐率（在相关测试中，读操作的每秒操作量从 143950 提升到了 146176 ops/sec，大约提升了1.5%）。  
+   - 同时保证在常规配置（无 partitioned index 且无字典压缩）下不会引入性能回退。
+
+4. 预期优化效果：  
+   - 减少不必要的计算和 I/O 操作，降低 CPU 开销。  
+   - 在 partitioned index 和字典压缩配置下，显著提高读取性能。  
+   - 由于改动仅针对特定场景（针对非数据块跳过字典获取），不会对其他工作流程或默认配置产生负面影响。
+
+总的来说，此次提交通过对 NewDataBlockIterator 函数的改进，有效减少了在特定场景下不必要的无压缩字典获取步骤，从而优化了性能、降低了 CPU 资源消耗，并提高了分区索引环境下的读取吞吐。而修改逻辑较为简单清晰，既满足了优化需求，也确保了对其他场景的兼容性。

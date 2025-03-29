@@ -1,0 +1,860 @@
+{
+  "metadata": {
+    "min_cluster_size": 24,
+    "total_clusters": 1,
+    "clusters_with_summaries": 1,
+    "missing_summaries_count": 0
+  },
+  "combined_clusters": [
+    {
+      "cluster_id": "199",
+      "size": 24,
+      "repositories_distribution": {
+        "ssde": 1,
+        "tensorflow": 6,
+        "osgearth": 1,
+        "NPLRuntime": 1,
+        "MyScaleDB": 1,
+        "oneDAL": 1,
+        "BsodSurvivor": 1,
+        "graaljs": 1,
+        "Seamly2D": 1,
+        "bg3se": 1,
+        "xbmc": 1,
+        "spades": 2,
+        "kate": 1,
+        "synfig": 1,
+        "NBlood": 1,
+        "operon": 1,
+        "cmssw": 1,
+        "patchelf": 1
+      },
+      "generic_ratio": 1.0,
+      "summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves replacing value-based loop iteration with reference-based iteration to eliminate unnecessary copy overhead and improve performance.",
+        "code_examples": [
+          [
+            "// Before\nfor (auto value : container) {\n    process(value);\n}",
+            "// After\nfor (const auto& value : container) {\n    process(value);\n}"
+          ],
+          [
+            "// Before\nfor (auto element : vector) {\n    modify(element);\n}",
+            "// After\nfor (auto& element : vector) {\n    modify(element);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a range-based for loop iterating over a container of non-primitive types.",
+          "The loop variable is declared as a value type (e.g., `auto x` or `T x`) rather than a reference type (e.g., `auto& x` or `const auto& x`).",
+          "The container being iterated over is not a temporary object or rvalue."
+        ]
+      },
+      "commits": [
+        {
+          "repository_name": "ssde",
+          "hash": "7cd12d8543e899ad4993ade30a2fdcb6add86a08",
+          "author": "Valentin Radu",
+          "date": "2021-08-28T01:30:32+03:00",
+          "message": "Small performance improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "common.h"
+          ],
+          "github_commit_url": "https://github.com/valinet/ssde/commit/7cd12d8543e899ad4993ade30a2fdcb6add86a08",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "HandlePolicyBinary"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved reducing the number of conditional checks by consolidating redundant conditions in the `HandlePolicyBinary` function.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "tensorflow",
+          "hash": "982b79df43b05910cca9fa19777072a02c2529ff",
+          "author": "Mehdi Amini",
+          "date": "2021-12-28T19:13:03-08:00",
+          "message": "Apply clang-tidy fixes for performance-for-range-copy in hlo_legalize_to_memref.cc (NFC)\n\nPiperOrigin-RevId: 418709823\nChange-Id: I151f9ab6dad865d7921a5cbda4d2b85c6ff293d7",
+          "modified_files_count": 1,
+          "modified_files": [
+            "tensorflow/compiler/mlir/hlo/lib/Dialect/mhlo/transforms/hlo_legalize_to_memref.cc"
+          ],
+          "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/982b79df43b05910cca9fa19777072a02c2529ff",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "InsertDynamicMemrefCastOp"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead in the `InsertDynamicMemrefCastOp` function.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "osgearth",
+          "hash": "4e2019530f30bc4e1f850f307efddb1d9337cf7a",
+          "author": "Jason Beverage",
+          "date": "2017-10-03T12:48:15-04:00",
+          "message": "Applying reference optimization to offset codepath",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/osgEarth/ElevationLayer.cpp"
+          ],
+          "github_commit_url": "https://github.com/gwaldron/osgearth/commit/4e2019530f30bc4e1f850f307efddb1d9337cf7a",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ElevationLayerVector::populateHeightFieldAndNormalMap"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead in the offset codepath.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "NPLRuntime",
+          "hash": "8a4073ca0890a53aeb571781657e8a57ee50a7ee",
+          "author": "kkvskkkk",
+          "date": "2017-08-02T16:10:46+08:00",
+          "message": "optimize performance",
+          "modified_files_count": 1,
+          "modified_files": [
+            "Client/trunk/ParaEngineClient/NPL/NPLHelper.cpp"
+          ],
+          "github_commit_url": "https://github.com/LiXizhi/NPLRuntime/commit/8a4073ca0890a53aeb571781657e8a57ee50a7ee",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "NPLHelper::SerializeToSCode"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved replacing a string concatenation operation with a more efficient method to reduce overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved reducing unnecessary string copying by using `std::string_view` instead of `std::string` in the `SerializeToSCode` function.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "tensorflow",
+          "hash": "5e0db672b677752b19ab2c7b52d3a32b7e3ae8b7",
+          "author": "Mehdi Amini",
+          "date": "2021-12-28T23:32:24-08:00",
+          "message": "Apply clang-tidy fixes for performance-for-range-copy in test_infer_shaped_type_pass.cc (NFC)\n\nPiperOrigin-RevId: 418732883\nChange-Id: Ic34888d9edd04c28367ac8e6b6d4557980c7f023",
+          "modified_files_count": 1,
+          "modified_files": [
+            "tensorflow/compiler/mlir/hlo/lib/Dialect/mhlo/transforms/test_infer_shaped_type_pass.cc"
+          ],
+          "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/5e0db672b677752b19ab2c7b52d3a32b7e3ae8b7",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "matchAndRewrite"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead in the `matchAndRewrite` function.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead in the `matchAndRewrite` function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "tensorflow",
+          "hash": "064772d6f1bc3048dd3c8dd8da5c2a27179b972f",
+          "author": "Mehdi Amini",
+          "date": "2021-12-28T22:26:49-08:00",
+          "message": "Apply clang-tidy fixes for performance-for-range-copy in optimize_mhlo.cc (NFC)\n\nPiperOrigin-RevId: 418727791\nChange-Id: I0eb619996990f46f4b0150257909974772220e5e",
+          "modified_files_count": 1,
+          "modified_files": [
+            "tensorflow/compiler/mlir/hlo/lib/Dialect/mhlo/transforms/optimize_mhlo.cc"
+          ],
+          "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/064772d6f1bc3048dd3c8dd8da5c2a27179b972f",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "matchAndRewrite"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead in the `matchAndRewrite` function.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead in the `matchAndRewrite` function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "MyScaleDB",
+          "hash": "c41dedc9223d1c2cd049949a298880ff9557f741",
+          "author": "Amos Bird",
+          "date": "2021-03-02T11:55:58+08:00",
+          "message": "optimize for ColumnLowCardinality",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/Columns/ColumnLowCardinality.cpp"
+          ],
+          "github_commit_url": "https://github.com/myscale/MyScaleDB/commit/c41dedc9223d1c2cd049949a298880ff9557f741",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the ColumnLowCardinality implementation.",
+            "The optimization strategy involved reducing the overhead of type checks and conversions in the ColumnLowCardinality implementation by streamlining the handling of low-cardinality data.",
+            "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in ColumnLowCardinality.",
+            "The optimization strategy involved improving the performance of the `ColumnLowCardinality` class by reducing unnecessary memory allocations and improving data access patterns.",
+            "The optimization strategy involved reducing the overhead of handling low-cardinality columns by improving the efficiency of data access and storage mechanisms."
+          ],
+          "is_generic_optimization": [
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the ColumnLowCardinality implementation.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "oneDAL",
+          "hash": "38a60484fcf685015edd31145b705f49410da148",
+          "author": "dmitrypa",
+          "date": "2020-03-05T16:26:52+03:00",
+          "message": "fix performance gap",
+          "modified_files_count": 1,
+          "modified_files": [
+            "include/data_management/data/soa_numeric_table.h"
+          ],
+          "github_commit_url": "https://github.com/uxlfoundation/oneDAL/commit/38a60484fcf685015edd31145b705f49410da148",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing the overhead of accessing elements in a Structure of Arrays (SoA) numeric table by minimizing unnecessary memory access and improving data locality.",
+            "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the SOA numeric table implementation.",
+            "The optimization strategy involved reducing the overhead of accessing elements in a structure of arrays (SoA) numeric table by minimizing unnecessary memory accesses and improving data locality.",
+            "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the SOA numeric table implementation.",
+            "The optimization strategy involved reducing overhead by changing value-based loop iteration to reference-based iteration in the SOA numeric table implementation."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the SOA numeric table implementation.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "BsodSurvivor",
+          "hash": "774785a79d14c95d467dd0224761723d51b5f9da",
+          "author": "Chris Lattner",
+          "date": "2006-09-03T07:53:50+00:00",
+          "message": "minor speedup\n\nllvm-svn: 30065",
+          "modified_files_count": 1,
+          "modified_files": [
+            "llvm/lib/CodeGen/LiveIntervalAnalysis.cpp"
+          ],
+          "github_commit_url": "https://github.com/ykfre/BsodSurvivor/commit/774785a79d14c95d467dd0224761723d51b5f9da",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the LiveIntervalAnalysis.cpp file.",
+            "The optimization strategy involved reducing the number of redundant calculations by caching frequently accessed values within a loop.",
+            "The optimization strategy involved reducing the number of redundant calculations by caching frequently accessed values within the LiveIntervalAnalysis.cpp file.",
+            "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the LiveIntervalAnalysis.cpp file.",
+            "The commit likely implements a minor speedup by optimizing loop iteration or condition checks in the LiveIntervalAnalysis.cpp file."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing the overhead of copying values by changing value-based loop iteration to reference-based iteration in the LiveIntervalAnalysis.cpp file.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "graaljs",
+          "hash": "d2dce597295aefee9cef8ab36c81e1174227fe32",
+          "author": "Tobias Nießen",
+          "date": "2022-08-22T19:37:28-04:00",
+          "message": "src: avoid copying BaseObjectPtrs in loop\n\nWhile copying BaseObjectPtrs is cheap, it is not a no-op, so it is best\nto iterate over references to BaseObjectPtrs only.\n\nPR-URL: https://github.com/nodejs/node/pull/44270\nReviewed-By: Richard Lau <rlau@redhat.com>\nReviewed-By: Darshan Sen <raisinten@gmail.com>\nReviewed-By: Luigi Pinca <luigipinca@gmail.com>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/node_messaging.cc"
+          ],
+          "github_commit_url": "https://github.com/oracle/graaljs/commit/d2dce597295aefee9cef8ab36c81e1174227fe32",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "AddNestedHostObjects"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involves changing value-based loop iteration to reference-based iteration to reduce copy overhead of BaseObjectPtrs.",
+            "The optimization strategy involves changing value-based loop iteration to reference-based iteration to reduce copy overhead of BaseObjectPtrs.",
+            "The optimization strategy involves changing value-based loop iteration to reference-based iteration to reduce copy overhead of BaseObjectPtrs.",
+            "The optimization strategy involves changing value-based loop iteration to reference-based iteration to reduce copy overhead for BaseObjectPtrs.",
+            "The optimization strategy involves changing value-based loop iteration to reference-based iteration to avoid copying BaseObjectPtrs."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involves changing value-based loop iteration to reference-based iteration to reduce copy overhead of BaseObjectPtrs.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "Seamly2D",
+          "hash": "39a95d7e95a61913916fa1d50960985018a0f6fd",
+          "author": "Roman Telezhynskyi",
+          "date": "2017-08-04T21:25:59+03:00",
+          "message": "Performance optimization.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/libs/vpatterndb/vcontainer.cpp"
+          ],
+          "github_commit_url": "https://github.com/FashionFreedom/Seamly2D/commit/39a95d7e95a61913916fa1d50960985018a0f6fd",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The commit replaces a loop that iterates over a container using indices with a range-based for loop to reduce overhead and improve readability.",
+            "The optimization strategy involved replacing a loop that used value-based iteration with reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "tensorflow",
+          "hash": "7480941f2d6d46dd1c7ce0ebf9f7e311736e928d",
+          "author": "Mehdi Amini",
+          "date": "2021-12-29T00:15:57-08:00",
+          "message": "Apply clang-tidy fixes for performance-for-range-copy in reshape_simplifier.cc (NFC)\n\nPiperOrigin-RevId: 418737195\nChange-Id: I80c6acdac10978cb59d7030c94c7cb650522250d",
+          "modified_files_count": 1,
+          "modified_files": [
+            "tensorflow/compiler/mlir/hlo/lib/Transforms/reshape_simplifier.cc"
+          ],
+          "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/7480941f2d6d46dd1c7ce0ebf9f7e311736e928d",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "matchAndRewrite"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead in the `reshape_simplifier.cc` file.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "bg3se",
+          "hash": "6a8f8a29ad094d6ac14775c888494013dc32a002",
+          "author": "Norbyte",
+          "date": "2024-08-14T23:25:32+02:00",
+          "message": "Fix minor performance gotcha when pushing values",
+          "modified_files_count": 1,
+          "modified_files": [
+            "BG3Extender/Lua/Shared/Proxies/LuaPropertyMapHelpers.h"
+          ],
+          "github_commit_url": "https://github.com/Norbyte/bg3se/commit/6a8f8a29ad094d6ac14775c888494013dc32a002",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "GenericGetOffsetProperty"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing unnecessary value copies when pushing values by using reference-based iteration instead of value-based iteration.",
+            "The optimization strategy involved reducing unnecessary value copying by using reference-based iteration when pushing values.",
+            "The optimization strategy involved reducing unnecessary value copies by using reference-based iteration when pushing values.",
+            "The optimization strategy involved reducing unnecessary value copies by using reference-based iteration when pushing values in the `GenericGetOffsetProperty` function.",
+            "The optimization strategy involved reducing unnecessary value copying by using reference-based iteration when pushing values in the `GenericGetOffsetProperty` function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing unnecessary value copies by using reference-based iteration when pushing values.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "xbmc",
+          "hash": "8196f918be28db1bb2d8ebac511357e54cefadba",
+          "author": "Rechi",
+          "date": "2022-03-01T23:31:00+00:00",
+          "message": "[clang-tidy] performance-for-range-copy",
+          "modified_files_count": 1,
+          "modified_files": [
+            "xbmc/settings/SubtitlesSettings.cpp"
+          ],
+          "github_commit_url": "https://github.com/xbmc/xbmc/commit/8196f918be28db1bb2d8ebac511357e54cefadba",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "CSubtitlesSettings::SettingOptionsSubtitleFontsFiller"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based range iteration with reference-based iteration to avoid unnecessary object copying.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "spades",
+          "hash": "5567aefdacf30ab65952b2ec5b82bced5b2b7ed0",
+          "author": "Anton",
+          "date": "2012-05-03T19:23:39+04:00",
+          "message": "mapper speed improve",
+          "modified_files_count": 1,
+          "modified_files": [
+            "assembler/src/debruijn/utils.hpp"
+          ],
+          "github_commit_url": "https://github.com/ablab/spades/commit/5567aefdacf30ab65952b2ec5b82bced5b2b7ed0",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved improving the speed of the mapper by enhancing the efficiency of the DeBruijn graph utility functions.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing a value-based loop iteration with reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            false,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "kate",
+          "hash": "a7e8e22c3b6de7f6c9ab8751f838e440300aa2f7",
+          "author": "Albert Astals Cid",
+          "date": "2008-02-08T21:48:10+00:00",
+          "message": "microoptimization\nconst & for foreach\n\nsvn path=/trunk/KDE/kdesdk/kate/; revision=772481",
+          "modified_files_count": 1,
+          "modified_files": [
+            "kate/app/katemain.cpp"
+          ],
+          "github_commit_url": "https://github.com/KDE/kate/commit/a7e8e22c3b6de7f6c9ab8751f838e440300aa2f7",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "foreach"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration using `const &` in a `foreach` loop to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration using `const &` in a `foreach` loop to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "synfig",
+          "hash": "e194811d4fe7762a747232616cd5c18b182dd12d",
+          "author": "Rodolfo Ribeiro Gomes",
+          "date": "2020-06-08T19:51:11+07:00",
+          "message": "minor efficiency improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "synfig-core/src/synfig/valuenodes/valuenode_bone.cpp"
+          ],
+          "github_commit_url": "https://github.com/synfig/synfig/commit/e194811d4fe7762a747232616cd5c18b182dd12d",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ValueNode_Bone::get_bones_referenced_by"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing the loop iteration from using a value-based iterator to a reference-based iterator to reduce copy overhead.",
+            "The optimization strategy involved changing the loop iteration from value-based to reference-based to reduce copy overhead.",
+            "The optimization strategy involved changing the loop iteration from using a value-based approach to a reference-based approach to reduce copy overhead.",
+            "The optimization strategy involved reducing the number of redundant calls to `get_bone()` by caching its result in a local variable within the `ValueNode_Bone::get_bones_referenced_by` function.",
+            "The optimization strategy involved changing the loop iteration to use references instead of values to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing the loop iteration from value-based to reference-based to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "spades",
+          "hash": "8f9fafaa74162bc48ea3c6c4b2e2ff5ff01f0141",
+          "author": "Anton Korobeynikov",
+          "date": "2019-01-21T17:23:29+03:00",
+          "message": "Speedup",
+          "modified_files_count": 1,
+          "modified_files": [
+            "assembler/src/common/assembly_graph/core/graph_core.hpp"
+          ],
+          "github_commit_url": "https://github.com/ablab/spades/commit/8f9fafaa74162bc48ea3c6c4b2e2ff5ff01f0141",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "NBlood",
+          "hash": "b9e67132ccdaaec6ffcc915296f22e52f86841c9",
+          "author": "Richard Gobeille",
+          "date": "2022-04-12T17:45:45-07:00",
+          "message": "engine: optimize 8cf7e9fbb0a49d9bdc3a3c8d80a9f63df7e4daa0\n\nAnd yes, I check the compiler output using godbolt.org :p",
+          "modified_files_count": 1,
+          "modified_files": [
+            "source/build/src/engine.cpp"
+          ],
+          "github_commit_url": "https://github.com/NBlood/NBlood/commit/b9e67132ccdaaec6ffcc915296f22e52f86841c9",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "classicDrawSprite"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved reducing redundant calculations and improving cache efficiency by precomputing values and reordering memory accesses in the `classicDrawSprite` function.",
+            "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the `classicDrawSprite` function.",
+            "The optimization strategy involved reducing redundant calculations and improving memory access patterns in the `classicDrawSprite` function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the `classicDrawSprite` function.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "operon",
+          "hash": "5fc734781021cf467482af25378195389a9f97df",
+          "author": "Bogdan Burlacu",
+          "date": "2019-08-05T17:58:59+02:00",
+          "message": "Small performance improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "include/operon/core/eval.hpp"
+          ],
+          "github_commit_url": "https://github.com/heal-research/operon/commit/5fc734781021cf467482af25378195389a9f97df",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved reducing the overhead of function calls by inlining a frequently used function.",
+            "The optimization strategy involved reducing the number of temporary object creations by directly passing values instead of creating intermediate objects.",
+            "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "cmssw",
+          "hash": "4c69a0a36dc8816a4d58c6a34d687308ffcff2fe",
+          "author": "Matti Kortelainen",
+          "date": "2017-02-02T09:41:57+01:00",
+          "message": "Small performance optimization",
+          "modified_files_count": 1,
+          "modified_files": [
+            "SimGeneral/TrackingAnalysis/plugins/TrackingTruthAccumulator.cc"
+          ],
+          "github_commit_url": "https://github.com/cms-sw/cmssw/commit/4c69a0a36dc8816a4d58c6a34d687308ffcff2fe",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "TrackingParticleFactory::createTrackingParticle"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved reducing the overhead of object creation by reusing existing objects instead of creating new ones.",
+            "The optimization strategy involved reducing the overhead of copying objects by changing value-based loop iteration to reference-based iteration.",
+            "The optimization strategy involved reducing the overhead of copying objects by changing value-based loop iteration to reference-based iteration.",
+            "The optimization strategy involved reducing the overhead of copying objects by changing value-based loop iteration to reference-based iteration."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing the overhead of copying objects by changing value-based loop iteration to reference-based iteration.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "tensorflow",
+          "hash": "310d1654a43bd8091c006b66a8933d24082a372f",
+          "author": "Mehdi Amini",
+          "date": "2021-12-28T22:32:14-08:00",
+          "message": "Apply clang-tidy fixes for performance-for-range-copy in rank_specialization.cc (NFC)\n\nPiperOrigin-RevId: 418728399\nChange-Id: I5c32d13934161c4e9af44bac47cfc182b7e4c44d",
+          "modified_files_count": 1,
+          "modified_files": [
+            "tensorflow/compiler/mlir/hlo/lib/Dialect/mhlo/transforms/rank_specialization.cc"
+          ],
+          "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/310d1654a43bd8091c006b66a8933d24082a372f",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "matchAndRewrite"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead in the `matchAndRewrite` function.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "patchelf",
+          "hash": "e17744d9660e2a56c47392c986dfb0403387393e",
+          "author": "Rosen Penev",
+          "date": "2021-02-14T17:47:17-08:00",
+          "message": "clang-tidy: avoid copying loop variable\n\nFound with performance-for-range-copy\n\nSigned-off-by: Rosen Penev <rosenp@gmail.com>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/patchelf.cc"
+          ],
+          "github_commit_url": "https://github.com/NixOS/patchelf/commit/e17744d9660e2a56c47392c986dfb0403387393e",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "patchElf"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy avoids copying the loop variable by using a reference-based iteration instead of value-based iteration in a loop.",
+            "The optimization strategy avoids copying the loop variable by using a reference-based iteration in a range-based for loop.",
+            "The optimization strategy involved avoiding copying the loop variable by using a reference-based iteration instead of value-based iteration to reduce overhead.",
+            "The optimization strategy involved avoiding copying the loop variable by using a reference-based iteration instead of value-based iteration to reduce overhead.",
+            "The optimization strategy involved avoiding copying the loop variable in a range-based for loop by using a reference instead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved avoiding copying the loop variable by using a reference-based iteration instead of value-based iteration to reduce overhead.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "tensorflow",
+          "hash": "d3881dcc330f728aea4900fa058fbc95b686a923",
+          "author": "Mehdi Amini",
+          "date": "2021-12-28T20:28:46-08:00",
+          "message": "Apply clang-tidy fixes for performance-for-range-copy in merge_assuming_ops.cc (NFC)\n\nPiperOrigin-RevId: 418717143\nChange-Id: I951af3d09387ccdacc90ff7bf72fe26fc4eeccb1",
+          "modified_files_count": 1,
+          "modified_files": [
+            "tensorflow/compiler/mlir/hlo/lib/Dialect/mhlo/transforms/merge_assuming_ops.cc"
+          ],
+          "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/d3881dcc330f728aea4900fa058fbc95b686a923",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "MoveIntoAssumingOpMatchAndRewrite"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+            "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+          "is_generic_optimization_final": true
+        }
+      ]
+    }
+  ]
+}

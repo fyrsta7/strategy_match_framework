@@ -1,0 +1,223 @@
+[
+    {
+        "hash": "e48ccc28f4eebcc05b6333b129ee5908214d3259",
+        "author": "Peter Dillinger",
+        "date": "2025-01-02T10:48:46-08:00",
+        "message": "Reduce unnecessary manifest data when no file checksum (#13250)\n\nSummary:\nDon't write file checksum manifest entries when unused, to avoid using extra manifest file space.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/13250\n\nTest Plan: very minor performance improvement, existing tests\n\nReviewed By: cbi42\n\nDifferential Revision: D67653954\n\nPulled By: pdillinger\n\nfbshipit-source-id: 9156e093ed5e4a5152cc55354a4beea9a841b89f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_edit.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/e48ccc28f4eebcc05b6333b129ee5908214d3259",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "VersionEdit::EncodeTo"
+        ]
+    },
+    {
+        "hash": "1fa5dff7d1ce7be64555e7bdc8371be562b3eac6",
+        "author": "奏之章",
+        "date": "2024-02-27T15:23:54-08:00",
+        "message": "WriteThread::EnterAsBatchGroupLeader reorder writers (#12138)\n\nSummary:\nReorder writers list to allow a leader can take as more commits as possible to maximize the throughput of the system and reduce IOPS.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/12138\n\nReviewed By: hx235\n\nDifferential Revision: D53955592\n\nPulled By: ajkr\n\nfbshipit-source-id: 4d899d038faef691b63801d9d85f5cc079b7bbb5",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/write_thread.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/1fa5dff7d1ce7be64555e7bdc8371be562b3eac6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WriteThread::EnterAsBatchGroupLeader"
+        ]
+    },
+    {
+        "hash": "d2b0652b32b8671c9ec4057e6da2fa564d1cc610",
+        "author": "Xinye Tao",
+        "date": "2023-08-07T12:29:31-07:00",
+        "message": "compute compaction score once for a batch of range file deletes (#10744)\n\nSummary:\nOnly re-calculate compaction score once for a batch of deletions. Fix performance regression brought by https://github.com/facebook/rocksdb/pull/8434.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/10744\n\nTest Plan:\nIn one of our production cluster that recently upgraded to RocksDB 6.29, it takes more than 10 minutes to delete files in 30,000 ranges. The RocksDB instance contains approximately 80,000 files. After this patch, the duration reduces to 100+ ms, which is on par with RocksDB 6.4.\n\nCherry-picking downstream PR: https://github.com/tikv/rocksdb/pull/316\n\nSigned-off-by: tabokie <xy.tao@outlook.com>\n\nReviewed By: cbi42\n\nDifferential Revision: D48002581\n\nPulled By: ajkr\n\nfbshipit-source-id: 7245607ee3ad79c53b648a6396c9159f166b9437",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/d2b0652b32b8671c9ec4057e6da2fa564d1cc610",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::DeleteFilesInRanges"
+        ]
+    },
+    {
+        "hash": "f9cfc6a808c9dc3ab7366edb10368559155d5172",
+        "author": "Changyu Bi",
+        "date": "2022-07-06T09:30:25-07:00",
+        "message": "Updated NewDataBlockIterator to not fetch compression dict for non-da… (#10310)\n\nSummary:\n…ta blocks\n\nDuring MyShadow testing, ajkr helped me find out that with partitioned index and dictionary compression enabled, `PartitionedIndexIterator::InitPartitionedIndexBlock()` spent considerable amount of time (1-2% CPU) on fetching uncompression dictionary. Fetching uncompression dict was not needed since the index blocks were not compressed (and even if they were, they use empty dictionary). This should only affect use cases with partitioned index, dictionary compression and without uncompression dictionary pinned. This PR updates NewDataBlockIterator to not fetch uncompression dictionary when it is not for data blocks.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/10310\n\nTest Plan:\n1. `make check`\n2. Perf benchmark: 1.5% (143950 -> 146176) improvement in op/sec for partitioned index + dict compression benchmark.\nFor default config without partitioned index and without dict compression, there is no regression in readrandom perf from multiple runs of db_bench.\n\n```\n# Set up for partitioned index with dictionary compression\nTEST_TMPDIR=/dev/shm ./db_bench_main -benchmarks=filluniquerandom,compact -max_background_jobs=24 -memtablerep=vector -allow_concurrent_memtable_write=false -partition_index=true  -compression_max_dict_bytes=16384 -compression_zstd_max_train_bytes=1638400\n\n# Pre PR\nTEST_TMPDIR=/dev/shm ./db_bench_main -use_existing_db=true -benchmarks=readrandom[-X50] -partition_index=true\nreadrandom [AVG    50 runs] : 143950 (± 1108) ops/sec;   15.9 (± 0.1) MB/sec\nreadrandom [MEDIAN 50 runs] : 144406 ops/sec;   16.0 MB/sec\n\n# Post PR\nTEST_TMPDIR=/dev/shm ./db_bench_opt -use_existing_db=true -benchmarks=readrandom[-X50] -partition_index=true\nreadrandom [AVG    50 runs] : 146176 (± 1121) ops/sec;   16.2 (± 0.1) MB/sec\nreadrandom [MEDIAN 50 runs] : 146014 ops/sec;   16.2 MB/sec\n\n# Set up for no partitioned index and no dictionary compression\nTEST_TMPDIR=/dev/shm/baseline ./db_bench_main -benchmarks=filluniquerandom,compact -max_background_jobs=24 -memtablerep=vector -allow_concurrent_memtable_write=false\n# Pre PR\nTEST_TMPDIR=/dev/shm/baseline/ ./db_bench_main --use_existing_db=true \"--benchmarks=readrandom[-X50]\"\nreadrandom [AVG    50 runs] : 158546 (± 1000) ops/sec;   17.5 (± 0.1) MB/sec\nreadrandom [MEDIAN 50 runs] : 158280 ops/sec;   17.5 MB/sec\n\n# Post PR\nTEST_TMPDIR=/dev/shm/baseline/ ./db_bench_opt --use_existing_db=true \"--benchmarks=readrandom[-X50]\"\nreadrandom [AVG    50 runs] : 161061 (± 1520) ops/sec;   17.8 (± 0.2) MB/sec\nreadrandom [MEDIAN 50 runs] : 161596 ops/sec;   17.9 MB/sec\n```\n\nReviewed By: ajkr\n\nDifferential Revision: D37631358\n\nPulled By: cbi42\n\nfbshipit-source-id: 6ca2665e270e63871968e061ba4a99d3136785d9",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/block_based/block_based_table_reader_impl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/f9cfc6a808c9dc3ab7366edb10368559155d5172",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BlockBasedTable::NewDataBlockIterator"
+        ]
+    },
+    {
+        "hash": "2e5a323dbd4dbfad5b1e3d45d489e6dca37f4257",
+        "author": "Ali Saidi",
+        "date": "2022-06-15T13:08:11-07:00",
+        "message": "Change the instruction used for a pause on arm64 (#10118)\n\nSummary:\nWhile the yield instruction conseptually sounds correct on most platforms it is\na simple nop that doesn't delay the execution anywhere close to what an x86\npause instruction does. In other projects with spin-wait loops an isb has been\nobserved to be much closer to the x86 behavior.\n\nOn a Graviton3 system the following test improves on average by 2x with this\nchange averaged over 20 runs:\n\n```\n./db_bench  -benchmarks=fillrandom -threads=64 -batch_size=1\n-memtablerep=skip_list -value_size=100 --num=100000\nlevel0_slowdown_writes_trigger=9999 -level0_stop_writes_trigger=9999\n-disable_auto_compactions --max_write_buffer_number=8 -max_background_flushes=8\n--disable_wal --write_buffer_size=160000000 --block_size=16384\n--allow_concurrent_memtable_write -compression_type none\n```\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/10118\n\nReviewed By: jay-zhuang\n\nDifferential Revision: D37120578\n\nfbshipit-source-id: c20bde4298222edfab7ff7cb6d42497e7012400d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "port/port_posix.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/2e5a323dbd4dbfad5b1e3d45d489e6dca37f4257",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AsmVolatilePause"
+        ]
+    },
+    {
+        "hash": "f053851af643755dc2ee252f92e3853b30a12be3",
+        "author": "sdong",
+        "date": "2021-10-19T12:48:18-07:00",
+        "message": "Ignore non-overlapping levels when determinig grandparent files (#9051)\n\nSummary:\nRight now, when picking a compaction, grand parent files are from output_level + 1. This usually works, but if the level doesn't have any overlapping file, it will be more efficient to go further down. This is because the files are likely to be trivial moved further and might create a violation of max_compaction_bytes. This situation can naturally happen and might happen even more with TTL compactions. There is no harm to fix it.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/9051\n\nTest Plan: Run existing tests and see it passes. Also briefly run crash test.\n\nReviewed By: ajkr\n\nDifferential Revision: D31748829\n\nfbshipit-source-id: 52b99ab4284dc816d22f34406d528a3c98ff6719",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/compaction/compaction_picker.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/f053851af643755dc2ee252f92e3853b30a12be3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CompactionPicker::GetGrandparents"
+        ]
+    },
+    {
+        "hash": "3f89af1c39da4991ef6c544fc5e3f164a688b375",
+        "author": "Levi Tamasi",
+        "date": "2019-07-26T15:53:34-07:00",
+        "message": "Reduce the number of random iterations in compact_on_deletion_collector_test (#5635)\n\nSummary:\nThis test frequently times out under TSAN; reducing the number of random\niterations to make it complete faster.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/5635\n\nTest Plan: buck test mode/dev-tsan internal_repo_rocksdb/repo:compact_on_deletion_collector_test\n\nDifferential Revision: D16523505\n\nPulled By: ltamasi\n\nfbshipit-source-id: 6a69909bce9d204c891150fcb3d536547b3253d0",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/table_properties_collectors/compact_on_deletion_collector_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/3f89af1c39da4991ef6c544fc5e3f164a688b375",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "main"
+        ]
+    },
+    {
+        "hash": "821887036e5235c827029d14decb185bea01ec4b",
+        "author": "Andrew Kryczka",
+        "date": "2017-10-03T16:27:28-07:00",
+        "message": "pin L0 filters/indexes for compaction outputs\n\nSummary:\nWe need to tell the iterator the compaction output file's level so it can apply proper optimizations, like pinning filter and index blocks when user enables `pin_l0_filter_and_index_blocks_in_cache` and the output file's level is zero.\nCloses https://github.com/facebook/rocksdb/pull/2949\n\nDifferential Revision: D5945597\n\nPulled By: ajkr\n\nfbshipit-source-id: 2389decf9026ffaa32d45801a77d002529f64a62",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/compaction_job.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/821887036e5235c827029d14decb185bea01ec4b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CompactionJob::FinishCompactionOutputFile"
+        ]
+    },
+    {
+        "hash": "20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "author": "Sagar Vemuri",
+        "date": "2017-08-05T00:15:35-07:00",
+        "message": "Optimize range-delete aggregator call in merge helper.\n\nSummary:\nIn the condition:\n```\nif (range_del_agg != nullptr &&\n    range_del_agg->ShouldDelete(\n        iter->key(),\n        RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&\n    filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {\n...\n}\n```\nit could be possible that all the work done in `range_del_agg->ShouldDelete` is wasted due to not having the right `filter` value later on.\nInstead, check `filter` value before even calling `range_del_agg->ShouldDelete`, which is a much more involved function.\nCloses https://github.com/facebook/rocksdb/pull/2690\n\nDifferential Revision: D5568931\n\nPulled By: sagar0\n\nfbshipit-source-id: 17512d52360425c7ae9de7675383f5d7bc3dad58",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/merge_helper.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MergeHelper::MergeUntil"
+        ]
+    },
+    {
+        "hash": "18eeb7b90e45af4bbac0777021711d8547f41eca",
+        "author": "Mike Kolupaev",
+        "date": "2017-02-21T16:09:10-08:00",
+        "message": "Fix interference between max_total_wal_size and db_write_buffer_size checks\n\nSummary:\nThis is a trivial fix for OOMs we've seen a few days ago in logdevice.\n\nRocksDB get into the following state:\n(1) Write throughput is too high for flushes to keep up. Compactions are out of the picture - automatic compactions are disabled, and for manual compactions we don't care that much if they fall behind. We write to many CFs, with only a few L0 sst files in each, so compactions are not needed most of the time.\n(2) total_log_size_ is consistently greater than GetMaxTotalWalSize(). It doesn't get smaller since flushes are falling ever further behind.\n(3) Total size of memtables is way above db_write_buffer_size and keeps growing. But the write_buffer_manager_->ShouldFlush() is not checked because (2) prevents it (for no good reason, afaict; this is what this commit fixes).\n(4) Every call to WriteImpl() hits the MaybeFlushColumnFamilies() path. This keeps flushing the memtables one by one in order of increasing log file number.\n(5) No write stalling trigger is hit. We rely on max_write_buffer_number\nCloses https://github.com/facebook/rocksdb/pull/1893\n\nDifferential Revision: D4593590\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: af79c5f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/18eeb7b90e45af4bbac0777021711d8547f41eca",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::WriteImpl"
+        ]
+    },
+    {
+        "hash": "9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+        "author": "Changli Gao",
+        "date": "2017-01-11T10:54:37-08:00",
+        "message": "Performance: Iterate vector by reference\n\nSummary: Closes https://github.com/facebook/rocksdb/pull/1763\n\nDifferential Revision: D4398796\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: b82636d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/event_helpers.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "EventHelpers::LogAndNotifyTableFileDeletion"
+        ]
+    },
+    {
+        "hash": "e94eea4527f2d7de82a6bf3303177977011e5dd9",
+        "author": "Haobo Xu",
+        "date": "2013-12-20T16:29:05-08:00",
+        "message": "[RocksDB] [Performance Branch] Minor fix, Remove string resize from WriteBatch::Clear\n\nSummary: tmp_batch_ will get re-allocated for every merged write batch because of the existing resize in WriteBatch::Clear. Note that in DBImpl::BuildBatchGroup, we have a hard coded upper limit of batch size 1<<20 = 1MB already.\n\nTest Plan: make check\n\nReviewers: dhruba, sdong\n\nCC: leveldb\n\nDifferential Revision: https://reviews.facebook.net/D14787",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/write_batch.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/e94eea4527f2d7de82a6bf3303177977011e5dd9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WriteBatch::Clear"
+        ]
+    },
+    {
+        "hash": "e8ab1934d9cb3ffebd61097d67bb23439554b265",
+        "author": "Siying Dong",
+        "date": "2013-12-12T11:30:00-08:00",
+        "message": "[RocksDB Performance Branch] DBImpl.NewInternalIterator() to reduce works inside mutex\n\nSummary: To reduce mutex contention caused by DBImpl.NewInternalIterator(), in this function, move all the iteration creation works out of mutex, only leaving object ref and get.\n\nTest Plan:\nmake all check\nwill run db_stress for a while too to make sure no problem.\n\nReviewers: haobo, dhruba, kailiu\n\nReviewed By: haobo\n\nCC: igor, leveldb\n\nDifferential Revision: https://reviews.facebook.net/D14589",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/e8ab1934d9cb3ffebd61097d67bb23439554b265",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::NewInternalIterator"
+        ]
+    }
+]

@@ -1,0 +1,37 @@
+void PagedVolume::prefetch(const Region& regPrefetch) {
+	// Convert the start and end positions into chunk space coordinates
+	const glm::ivec3& lower = regPrefetch.getLowerCorner();
+	const glm::ivec3 v3dStart {lower.x >> _chunkSideLengthPower, lower.y >> _chunkSideLengthPower, lower.z >> _chunkSideLengthPower};
+
+	const glm::ivec3& upper = regPrefetch.getUpperCorner();
+	const glm::ivec3 v3dEnd {upper.x >> _chunkSideLengthPower, upper.y >> _chunkSideLengthPower, upper.z >> _chunkSideLengthPower};
+
+	// Ensure we don't page in more chunks than the volume can hold.
+	const Region region(v3dStart, v3dEnd);
+	const uint32_t uNoOfChunks = static_cast<uint32_t>(region.getWidthInVoxels() * region.getHeightInVoxels() * region.getDepthInVoxels());
+	if (uNoOfChunks > _chunkCountLimit) {
+		Log::warn("Attempting to prefetch more than the maximum number of chunks (this will cause thrashing).");
+	}
+
+	// Loops over the specified positions and touch the corresponding chunks.
+	for (int32_t x = v3dStart.x; x <= v3dEnd.x; ++x) {
+		for (int32_t y = v3dStart.y; y <= v3dEnd.y; ++y) {
+			for (int32_t z = v3dStart.z; z <= v3dEnd.z; ++z) {
+				// Prefetch the next chunk along the z-axis to reduce cache misses.
+				if (z + 1 <= v3dEnd.z) {
+					__builtin_prefetch(&getChunk(x, y, z + 1), 0, 1);
+				}
+				// Prefetch the next row along the y-axis to reduce cache misses.
+				if (y + 1 <= v3dEnd.y && z == v3dStart.z) {
+					__builtin_prefetch(&getChunk(x, y + 1, z), 0, 1);
+				}
+				// Prefetch the next plane along the x-axis to reduce cache misses.
+				if (x + 1 <= v3dEnd.x && y == v3dStart.y && z == v3dStart.z) {
+					__builtin_prefetch(&getChunk(x + 1, y, z), 0, 1);
+				}
+				// Access the current chunk.
+				getChunk(x, y, z);
+			}
+		}
+	}
+}

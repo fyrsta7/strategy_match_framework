@@ -1,0 +1,13 @@
+diff --git a/db/event_helpers.cc b/db/event_helpers.cc
+index 9249837c2..5e5d23130 100644
+--- a/db/event_helpers.cc
++++ b/db/event_helpers.cc
+@@ -128,7 +128,7 @@ void EventHelpers::LogAndNotifyTableFileDeletion(
+   info.job_id = job_id;
+   info.file_path = file_path;
+   info.status = status;
+-  for (auto listener : listeners) {
++  for (auto& listener : listeners) {
+     listener->OnTableFileDeleted(info);
+   }
+ #endif  // !ROCKSDB_LITE

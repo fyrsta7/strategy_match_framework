@@ -1,0 +1,2152 @@
+[
+    {
+        "hash": "dbeaa0d397fd2d26e105817242782024d1e607b7",
+        "author": "Yanqin Jin",
+        "date": "2018-07-12T14:42:39-07:00",
+        "message": "Reduce #iterations to shorten execution time. (#4123)\n\nSummary:\nReduce #iterations from 5000 to 1000 so that\n`ExternalSSTFileTest.CompactDuringAddFileRandom` can finish faster.\nOn the one hand, 5000 iterations does not seem to improve the quality of unit\ntest in comparison with 1000. On the other hand, long running tests should belong to stress tests.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4123\n\nDifferential Revision: D8822514\n\nPulled By: riversand963\n\nfbshipit-source-id: 0f439b8d5ccd9a4aed84638f8bac16382de17245",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/external_sst_file_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/dbeaa0d397fd2d26e105817242782024d1e607b7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TEST_F"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reduces the number of iterations in a test to shorten execution time without significantly impacting test quality.",
+            "The optimization strategy reduces the number of iterations in a test to shorten execution time while maintaining sufficient test quality.",
+            "The optimization strategy reduces the number of iterations in a test to shorten execution time without significantly impacting test quality.",
+            "The optimization strategy reduces the number of iterations in a test to decrease execution time while maintaining test quality.",
+            "The optimization strategy reduces the number of iterations in a test to shorten execution time while maintaining test quality."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy reduces the number of iterations in a test to shorten execution time while maintaining test quality.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "fa4de6e30ffaf9188a48f5e30d2da1ac0e454917",
+        "author": "Andrey Zagrebin",
+        "date": "2018-08-17T10:57:25-07:00",
+        "message": "#3865 followup for fix performance degression introduced by switching order of operands (#4284)\n\nSummary:\nFollowup for #4266. There is one more place in **get_context.cc** where **MergeOperator::ShouldMerge** should be called with reversed list of operands.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4284\n\nDifferential Revision: D9380008\n\nPulled By: sagar0\n\nfbshipit-source-id: 70ec26e607e5b88465e1acbdcd6c6171bd76b9f2",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/get_context.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/fa4de6e30ffaf9188a48f5e30d2da1ac0e454917",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GetContext::SaveValue"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved reversing the order of operands in a function call to improve performance by ensuring more efficient merging operations.",
+            "The optimization strategy involves reversing the order of operands in a function call to improve performance by ensuring more efficient merging operations.",
+            "The optimization strategy involves reversing the order of operands in a function call to improve performance by ensuring more efficient merging operations.",
+            "The optimization strategy involves reversing the order of operands in a function call to improve performance by ensuring more efficient merging operations.",
+            "The optimization strategy involved reversing the order of operands in a function call to improve performance by ensuring more efficient merging operations."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involves reversing the order of operands in a function call to improve performance by ensuring more efficient merging operations.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "21171615c10ee1a636ea28f2303a93a4bc39dbde",
+        "author": "Yanqin Jin",
+        "date": "2018-07-13T17:27:39-07:00",
+        "message": "Reduce execution time of IngestFileWithGlobalSeqnoRandomized (#4131)\n\nSummary:\nMake `ExternalSSTFileTest.IngestFileWithGlobalSeqnoRandomized` run faster.\n\n`make format`\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4131\n\nDifferential Revision: D8839952\n\nPulled By: riversand963\n\nfbshipit-source-id: 4a7e842fde1cde4dc902e928a1cf511322578521",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/external_sst_file_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/21171615c10ee1a636ea28f2303a93a4bc39dbde",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TEST_F"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reduces the execution time by decreasing the number of randomized test iterations to focus on more critical test cases.",
+            "The optimization strategy reduces the execution time of a randomized test by decreasing the number of iterations or simplifying the test logic to focus on essential scenarios.",
+            "The optimization strategy reduces the number of random iterations in a test to decrease execution time.",
+            "The optimization strategy reduces the execution time of a randomized test by decreasing the number of iterations or simplifying the test logic to focus on essential scenarios.",
+            "The optimization strategy reduces the execution time of a randomized test by decreasing the number of iterations or simplifying the test logic to focus on essential scenarios."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy reduces the execution time of a randomized test by decreasing the number of iterations or simplifying the test logic to focus on essential scenarios.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "5c456c4c08ac046429c38792d242dd095c50b049",
+        "author": "SGZW",
+        "date": "2024-08-09T15:05:02-07:00",
+        "message": "fix compaction speedup for marked files ut (#12912)\n\nSummary: Pull Request resolved: https://github.com/facebook/rocksdb/pull/12912\n\nReviewed By: hx235\n\nDifferential Revision: D60973460\n\nPulled By: cbi42\n\nfbshipit-source-id: ebaa343757f09f7281884a512ebe3a7d6845c8b3",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/column_family_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/5c456c4c08ac046429c38792d242dd095c50b049",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TEST_P"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves fixing a test case to ensure accurate measurement of compaction speedup for marked files, thereby improving the reliability of performance testing.",
+            "The optimization strategy involves adjusting the unit test for compaction speedup to ensure it accurately reflects the performance improvements for marked files.",
+            "The optimization strategy involves adjusting the test logic to ensure that marked files are properly handled during compaction, thereby improving the efficiency and speed of the compaction process.",
+            "The optimization strategy involves adjusting the test logic to ensure accurate measurement and improvement of compaction speed for marked files.",
+            "The optimization strategy involves adjusting the test logic to ensure accurate measurement and validation of compaction speed improvements for marked files, thereby enhancing the reliability and performance of the testing process."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involves adjusting the test logic to ensure accurate measurement and improvement of compaction speed for marked files.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "48b0a045da0ef7c07b59c529fc9a5c5f682853b6",
+        "author": "Igor Canadi",
+        "date": "2015-04-16T19:31:34-07:00",
+        "message": "Speed up reduce_levels_test\n\nSummary: For some reason reduce_levels is opening the databse with 65.000 levels. This makes ComputeCompactionScore() function terribly slow and the tests is also very slow (20seconds).\n\nTest Plan: mr reduce_levels_test now takes 20ms\n\nReviewers: sdong, rven, kradhakrishnan, yhchiang\n\nReviewed By: yhchiang\n\nSubscribers: dhruba, leveldb\n\nDifferential Revision: https://reviews.facebook.net/D37059",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/ldb_cmd.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/48b0a045da0ef7c07b59c529fc9a5c5f682853b6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "old_levels_"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved reducing the number of levels in a database to significantly decrease the computation time of a critical function and improve overall test performance.",
+            "The optimization strategy involved reducing the number of levels in a database to significantly decrease the computation time of a critical function, thereby improving overall test performance.",
+            "The optimization strategy reduces the number of levels in the database to significantly decrease the computation time of the CompactionScore function, thereby improving test performance.",
+            "The optimization strategy involved reducing the number of levels in a database to significantly decrease the computation time of a critical function and improve overall test performance.",
+            "The optimization strategy involved reducing the number of levels in a database to significantly decrease the computation time of a critical function and improve overall test performance."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involved reducing the number of levels in a database to significantly decrease the computation time of a critical function, thereby improving overall test performance.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "f053851af643755dc2ee252f92e3853b30a12be3",
+        "author": "sdong",
+        "date": "2021-10-19T12:48:18-07:00",
+        "message": "Ignore non-overlapping levels when determinig grandparent files (#9051)\n\nSummary:\nRight now, when picking a compaction, grand parent files are from output_level + 1. This usually works, but if the level doesn't have any overlapping file, it will be more efficient to go further down. This is because the files are likely to be trivial moved further and might create a violation of max_compaction_bytes. This situation can naturally happen and might happen even more with TTL compactions. There is no harm to fix it.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/9051\n\nTest Plan: Run existing tests and see it passes. Also briefly run crash test.\n\nReviewed By: ajkr\n\nDifferential Revision: D31748829\n\nfbshipit-source-id: 52b99ab4284dc816d22f34406d528a3c98ff6719",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/compaction/compaction_picker.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/f053851af643755dc2ee252f92e3853b30a12be3",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CompactionPicker::GetGrandparents"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves skipping non-overlapping levels when determining grandparent files to avoid unnecessary compaction work and improve efficiency.",
+            "The optimization strategy involves skipping non-overlapping levels when determining grandparent files to avoid unnecessary compaction work and potential violations of size constraints.",
+            "The optimization strategy involves skipping non-overlapping levels when determining grandparent files for compaction to avoid unnecessary work and improve efficiency.",
+            "The optimization strategy involves skipping non-overlapping levels when determining grandparent files for compaction to avoid unnecessary work and improve efficiency.",
+            "The optimization strategy involves skipping non-overlapping levels when determining grandparent files to avoid unnecessary compaction work and improve efficiency."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involves skipping non-overlapping levels when determining grandparent files to avoid unnecessary compaction work and improve efficiency.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "025b85b4ac078110302c039556e4c12ba8e7a731",
+        "author": "Andrew Kryczka",
+        "date": "2017-09-12T11:26:47-07:00",
+        "message": "speedup DBTest.EncodeDecompressedBlockSizeTest\n\nSummary:\nit sometimes takes more than 10 minutes (i.e., times out) on our internal CI. mainly because bzip is super slow. so I reduced the amount of  work it tries to do.\nCloses https://github.com/facebook/rocksdb/pull/2856\n\nDifferential Revision: D5795883\n\nPulled By: ajkr\n\nfbshipit-source-id: e69f986ae60b44ecc26b6b024abd0f13bdf3a3c5",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/025b85b4ac078110302c039556e4c12ba8e7a731",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TEST_F"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved reducing the amount of work performed by a slow operation (bzip compression) to prevent timeouts and improve overall test execution speed.",
+            "The optimization strategy reduces the workload by decreasing the amount of data processed in a test to avoid timeouts caused by slow operations.",
+            "The optimization strategy reduces the workload by decreasing the amount of data processed in a test to avoid timeouts caused by slow operations.",
+            "The optimization strategy reduces the workload by decreasing the amount of data processed in a slow operation to prevent timeouts.",
+            "The optimization strategy reduces the workload by decreasing the amount of data processed in a slow operation to prevent timeouts."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy reduces the workload by decreasing the amount of data processed in a test to avoid timeouts caused by slow operations.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "01cbdd2aae8f998e3e532dec06f0f373a6cff719",
+        "author": "Igor Canadi",
+        "date": "2014-08-20T11:14:01-07:00",
+        "message": "Optimize storage parameters for spatialDB\n\nSummary: We need to start compression at level 1, while OptimizeForLevelComapaction() only sets up rocksdb to start compressing at level 2. I also adjusted some other things.\n\nTest Plan: compiles\n\nReviewers: yinwang\n\nReviewed By: yinwang\n\nDifferential Revision: https://reviews.facebook.net/D22203",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/spatialdb/spatial_db.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/01cbdd2aae8f998e3e532dec06f0f373a6cff719",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "GetRocksDBOptionsFromOptions"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves adjusting the compression level to start earlier in the storage hierarchy, reducing the amount of data processed at higher levels and improving overall performance.",
+            "The optimization strategy involves adjusting compression levels to start earlier, reducing storage overhead and improving performance by compressing data more efficiently.",
+            "The optimization strategy involves adjusting compression levels to start earlier, reducing the amount of data processed at higher levels and improving overall storage efficiency.",
+            "The optimization strategy involves adjusting storage parameters to start compression at an earlier level, reducing the amount of data processed in higher levels and improving overall performance.",
+            "The optimization strategy involves adjusting compression levels to start earlier, reducing the amount of data processed at higher levels and improving overall storage efficiency."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            true,
+            false,
+            true
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            false,
+            "NA",
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves adjusting compression levels to start earlier, reducing the amount of data processed at higher levels and improving overall storage efficiency.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "22028aa9ab27cf860b74d12e006f82ff551caee0",
+        "author": "Vijay Nadimpalli",
+        "date": "2019-06-21T21:31:49-07:00",
+        "message": "Compaction Reads should read no more than compaction_readahead_size bytes, when set! (#5498)\n\nSummary:\nAs a result of https://github.com/facebook/rocksdb/issues/5431 the compaction_readahead_size given by a user was not used exactly, the reason being the code behind readahead for user-read and compaction-read was unified in the above PR and the behavior for user-read is to read readahead_size+n bytes (see FilePrefetchBuffer::TryReadFromCache method). Before the unification the ReadaheadRandomAccessFileReader used compaction_readahead_size as it is.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/5498\n\nTest Plan:\nRan strace command : strace -e pread64 -f -T -t ./db_compaction_test --gtest_filter=DBCompactionTest.PartialManualCompaction\n\nIn the test the compaction_readahead_size was configured to 2MB and verified the pread syscall did indeed request 2MB. Before the change it was requesting more than 2MB.\n\nStrace Output:\nstrace: Process 3798982 attached\nNote: Google Test filter = DBCompactionTest.PartialManualCompaction\n[==========] Running 1 test from 1 test case.\n[----------] Global test environment set-up.\n[----------] 1 test from DBCompactionTest\n[ RUN      ] DBCompactionTest.PartialManualCompaction\nstrace: Process 3798983 attached\nstrace: Process 3798984 attached\nstrace: Process 3798985 attached\nstrace: Process 3798986 attached\nstrace: Process 3798987 attached\nstrace: Process 3798992 attached\n[pid 3798987] 12:07:05 +++ exited with 0 +++\nstrace: Process 3798993 attached\n[pid 3798993] 12:07:05 +++ exited with 0 +++\nstrace: Process 3798994 attached\nstrace: Process 3799008 attached\nstrace: Process 3799009 attached\n[pid 3799008] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799010 attached\n[pid 3799009] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799011 attached\n[pid 3799010] 12:07:05 +++ exited with 0 +++\n[pid 3799011] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799012 attached\n[pid 3799012] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799013 attached\nstrace: Process 3799014 attached\n[pid 3799013] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799015 attached\n[pid 3799014] 12:07:05 +++ exited with 0 +++\n[pid 3799015] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799016 attached\n[pid 3799016] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799017 attached\n[pid 3799017] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799019 attached\n[pid 3799019] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799020 attached\nstrace: Process 3799021 attached\n[pid 3799020] 12:07:05 +++ exited with 0 +++\n[pid 3799021] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799022 attached\n[pid 3799022] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799023 attached\n[pid 3799023] 12:07:05 +++ exited with 0 +++\nstrace: Process 3799047 attached\nstrace: Process 3799048 attached\n[pid 3799047] 12:07:06 +++ exited with 0 +++\n[pid 3799048] 12:07:06 +++ exited with 0 +++\n[pid 3798994] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799052 attached\n[pid 3799052] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799054 attached\nstrace: Process 3799069 attached\nstrace: Process 3799070 attached\n[pid 3799069] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799071 attached\n[pid 3799070] 12:07:06 +++ exited with 0 +++\n[pid 3799071] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799072 attached\nstrace: Process 3799073 attached\n[pid 3799072] 12:07:06 +++ exited with 0 +++\n[pid 3799073] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799074 attached\n[pid 3799074] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799075 attached\n[pid 3799075] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799076 attached\n[pid 3799076] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799077 attached\n[pid 3799077] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799078 attached\n[pid 3799078] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799079 attached\n[pid 3799079] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799080 attached\n[pid 3799080] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799081 attached\n[pid 3799081] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799082 attached\n[pid 3799082] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799083 attached\n[pid 3799083] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799086 attached\nstrace: Process 3799087 attached\n[pid 3798984] 12:07:06 pread64(9, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000121>\n[pid 3798984] 12:07:06 pread64(9, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000106>\n[pid 3798984] 12:07:06 pread64(9, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000081>\n[pid 3798984] 12:07:06 pread64(9, \"\\0\\v\\3foo\\2\\7\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\2\\3\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000138>\n[pid 3798984] 12:07:06 pread64(11, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000097>\n[pid 3798984] 12:07:06 pread64(11, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000086>\n[pid 3798984] 12:07:06 pread64(11, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000064>\n[pid 3798984] 12:07:06 pread64(11, \"\\0\\v\\3foo\\2\\21\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\2\\r\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000064>\n[pid 3798984] 12:07:06 pread64(12, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000080>\n[pid 3798984] 12:07:06 pread64(12, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000090>\n[pid 3798984] 12:07:06 pread64(12, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000059>\n[pid 3798984] 12:07:06 pread64(12, \"\\0\\v\\3foo\\2\\33\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\2\\27\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000065>\n[pid 3798984] 12:07:06 pread64(13, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000070>\n[pid 3798984] 12:07:06 pread64(13, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000059>\n[pid 3798984] 12:07:06 pread64(13, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000061>\n[pid 3798984] 12:07:06 pread64(13, \"\\0\\v\\3foo\\2%\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\2!\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000065>\n[pid 3798984] 12:07:06 pread64(14, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000118>\n[pid 3798984] 12:07:06 pread64(14, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000093>\n[pid 3798984] 12:07:06 pread64(14, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000050>\n[pid 3798984] 12:07:06 pread64(14, \"\\0\\v\\3foo\\2/\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\2+\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000082>\n[pid 3798984] 12:07:06 pread64(15, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000080>\n[pid 3798984] 12:07:06 pread64(15, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000086>\n[pid 3798984] 12:07:06 pread64(15, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000091>\n[pid 3798984] 12:07:06 pread64(15, \"\\0\\v\\3foo\\0029\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\0025\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000174>\n[pid 3798984] 12:07:06 pread64(16, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000080>\n[pid 3798984] 12:07:06 pread64(16, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000093>\n[pid 3798984] 12:07:06 pread64(16, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000194>\n[pid 3798984] 12:07:06 pread64(16, \"\\0\\v\\3foo\\2C\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\2?\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000086>\n[pid 3798984] 12:07:06 pread64(17, \"\\1\\203W!\\241QE\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 11177) = 53 <0.000079>\n[pid 3798984] 12:07:06 pread64(17, \"\\0\\22\\4rocksdb.properties\\353Q\\223\\5\\0\\0\\0\\0\\1\\0\\0\"..., 38, 11139) = 38 <0.000047>\n[pid 3798984] 12:07:06 pread64(17, \"\\0$\\4rocksdb.block.based.table.ind\"..., 664, 10475) = 664 <0.000045>\n[pid 3798984] 12:07:06 pread64(17, \"\\0\\v\\3foo\\2M\\0\\0\\0\\0\\0\\0\\0\\270 \\0\\v\\4foo\\2I\\0\\0\\0\\0\\0\\0\\275\"..., 74, 10401) = 74 <0.000107>\n[pid 3798983] 12:07:06 pread64(17, \"\\0\\v\\200\\10foo\\2P\\0\\0\\0\\0\\0\\0)U?MSg_)j(roFn($e\"..., 2097152, 0) = 11230 <0.000091>\n[pid 3798983] 12:07:06 pread64(17, \"\", 2085922, 11230) = 0 <0.000073>\n[pid 3798983] 12:07:06 pread64(16, \"\\0\\v\\200\\10foo\\2F\\0\\0\\0\\0\\0\\0k[h3%.OPH_^:\\\\S7T&\"..., 2097152, 0) = 11230 <0.000083>\n[pid 3798983] 12:07:06 pread64(16, \"\", 2085922, 11230) = 0 <0.000078>\n[pid 3798983] 12:07:06 pread64(15, \"\\0\\v\\200\\10foo\\2<\\0\\0\\0\\0\\0\\0+qToi_c{*S+4:N(:\"..., 2097152, 0) = 11230 <0.000095>\n[pid 3798983] 12:07:06 pread64(15, \"\", 2085922, 11230) = 0 <0.000067>\n[pid 3798983] 12:07:06 pread64(14, \"\\0\\v\\200\\10foo\\0022\\0\\0\\0\\0\\0\\0%hw%OMa\\\"}9I609Q!B\"..., 2097152, 0) = 11230 <0.000111>\n[pid 3798983] 12:07:06 pread64(14, \"\", 2085922, 11230) = 0 <0.000093>\n[pid 3798983] 12:07:06 pread64(13, \"\\0\\v\\200\\10foo\\2(\\0\\0\\0\\0\\0\\0p}Y&mu^DcaSGb2&nP\"..., 2097152, 0) = 11230 <0.000128>\n[pid 3798983] 12:07:06 pread64(13, \"\", 2085922, 11230) = 0 <0.000076>\n[pid 3798983] 12:07:06 pread64(12, \"\\0\\v\\200\\10foo\\2\\36\\0\\0\\0\\0\\0\\0YIyW#]oSs^6VHfB<`\"..., 2097152, 0) = 11230 <0.000092>\n[pid 3798983] 12:07:06 pread64(12, \"\", 2085922, 11230) = 0 <0.000073>\n[pid 3798983] 12:07:06 pread64(11, \"\\0\\v\\200\\10foo\\2\\24\\0\\0\\0\\0\\0\\0mfF8Jel/*Zf :-#s(\"..., 2097152, 0) = 11230 <0.000088>\n[pid 3798983] 12:07:06 pread64(11, \"\", 2085922, 11230) = 0 <0.000067>\n[pid 3798983] 12:07:06 pread64(9, \"\\0\\v\\200\\10foo\\2\\n\\0\\0\\0\\0\\0\\0\\\\X'cjiHX)D,RSj1X!\"..., 2097152, 0) = 11230 <0.000115>\n[pid 3798983] 12:07:06 pread64(9, \"\", 2085922, 11230) = 0 <0.000073>\n[pid 3798983] 12:07:06 pread64(8, \"\\1\\315\\5 \\36\\30\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\\0\"..., 53, 754) = 53 <0.000098>\n[pid 3798983] 12:07:06 pread64(8, \"\\0\\22\\3rocksdb.properties;\\215\\5\\0\\0\\0\\0\\1\\0\\0\\0\"..., 37, 717) = 37 <0.000064>\n[pid 3798983] 12:07:06 pread64(8, \"\\0$\\4rocksdb.block.based.table.ind\"..., 658, 59) = 658 <0.000074>\n[pid 3798983] 12:07:06 pread64(8, \"\\0\\v\\2foo\\1\\0\\0\\0\\0\\0\\0\\0\\0\\31\\0\\0\\0\\0\\1\\0\\0\\0\\0\\212\\216\\222P\", 29, 30) = 29 <0.000064>\n[pid 3799086] 12:07:06 +++ exited with 0 +++\n[pid 3799087] 12:07:06 +++ exited with 0 +++\n[pid 3799054] 12:07:06 +++ exited with 0 +++\nstrace: Process 3799104 attached\n[pid 3799104] 12:07:06 +++ exited with 0 +++\n[       OK ] DBCompactionTest.PartialManualCompaction (757 ms)\n[----------] 1 test from DBCompactionTest (758 ms total)\n\n[----------] Global test environment tear-down\n[==========] 1 test from 1 test case ran. (759 ms total)\n[  PASSED  ] 1 test.\n[pid 3798983] 12:07:06 +++ exited with 0 +++\n[pid 3798984] 12:07:06 +++ exited with 0 +++\n[pid 3798992] 12:07:06 +++ exited with 0 +++\n[pid 3798986] 12:07:06 +++ exited with 0 +++\n[pid 3798982] 12:07:06 +++ exited with 0 +++\n[pid 3798985] 12:07:06 +++ exited with 0 +++\n12:07:06 +++ exited with 0 +++\n\nDifferential Revision: D15948422\n\nPulled By: vjnadimpalli\n\nfbshipit-source-id: 9b189d1e8675d290c7784e4b33e5d3b5761d2ac8",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/file_reader_writer.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/22028aa9ab27cf860b74d12e006f82ff551caee0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "FilePrefetchBuffer::TryReadFromCache"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves limiting the amount of data read during compaction operations to the specified `compaction_readahead_size` to avoid unnecessary I/O overhead and improve performance by reducing excessive readahead.",
+            "The optimization strategy involves limiting the amount of data read during compaction operations to the specified `compaction_readahead_size`, reducing unnecessary I/O and improving performance by avoiding over-fetching data.",
+            "The optimization strategy involves limiting the read size during compaction operations to the specified `compaction_readahead_size` to prevent excessive memory usage and improve I/O efficiency.",
+            "The optimization strategy involves limiting the read size during compaction operations to the specified `compaction_readahead_size` to avoid unnecessary data fetching and improve I/O efficiency.",
+            "The optimization strategy involves limiting the amount of data read during compaction operations to the specified `compaction_readahead_size`, reducing unnecessary I/O and improving performance by avoiding excessive data fetching."
+        ],
+        "is_generic_optimization": [
+            true,
+            false,
+            true,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            false,
+            "NA",
+            false,
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involves limiting the amount of data read during compaction operations to the specified `compaction_readahead_size` to avoid unnecessary I/O overhead and improve performance by reducing excessive readahead.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "18eeb7b90e45af4bbac0777021711d8547f41eca",
+        "author": "Mike Kolupaev",
+        "date": "2017-02-21T16:09:10-08:00",
+        "message": "Fix interference between max_total_wal_size and db_write_buffer_size checks\n\nSummary:\nThis is a trivial fix for OOMs we've seen a few days ago in logdevice.\n\nRocksDB get into the following state:\n(1) Write throughput is too high for flushes to keep up. Compactions are out of the picture - automatic compactions are disabled, and for manual compactions we don't care that much if they fall behind. We write to many CFs, with only a few L0 sst files in each, so compactions are not needed most of the time.\n(2) total_log_size_ is consistently greater than GetMaxTotalWalSize(). It doesn't get smaller since flushes are falling ever further behind.\n(3) Total size of memtables is way above db_write_buffer_size and keeps growing. But the write_buffer_manager_->ShouldFlush() is not checked because (2) prevents it (for no good reason, afaict; this is what this commit fixes).\n(4) Every call to WriteImpl() hits the MaybeFlushColumnFamilies() path. This keeps flushing the memtables one by one in order of increasing log file number.\n(5) No write stalling trigger is hit. We rely on max_write_buffer_number\nCloses https://github.com/facebook/rocksdb/pull/1893\n\nDifferential Revision: D4593590\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: af79c5f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/18eeb7b90e45af4bbac0777021711d8547f41eca",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::WriteImpl"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves modifying the conditions under which memory buffers are flushed to prevent unnecessary checks and improve write performance by ensuring that memory usage stays within defined limits.",
+            "The optimization strategy involves adjusting the interaction between memory management checks to prevent unnecessary memory usage and improve write performance by ensuring appropriate flushing of memtables.",
+            "The optimization strategy involves adjusting the interaction between memory management checks to prevent unnecessary blocking and improve write throughput by ensuring that memory usage thresholds are properly evaluated and enforced.",
+            "The optimization strategy involves adjusting the interaction between memory management checks to prevent unnecessary memory growth and improve write performance by ensuring appropriate flushing behavior.",
+            "The optimization strategy involves adjusting the interaction between memory management checks to prevent unnecessary flushing and improve write performance under high throughput conditions."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involves adjusting the interaction between memory management checks to prevent unnecessary memory growth and improve write performance by ensuring appropriate flushing behavior.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "2e5a323dbd4dbfad5b1e3d45d489e6dca37f4257",
+        "author": "Ali Saidi",
+        "date": "2022-06-15T13:08:11-07:00",
+        "message": "Change the instruction used for a pause on arm64 (#10118)\n\nSummary:\nWhile the yield instruction conseptually sounds correct on most platforms it is\na simple nop that doesn't delay the execution anywhere close to what an x86\npause instruction does. In other projects with spin-wait loops an isb has been\nobserved to be much closer to the x86 behavior.\n\nOn a Graviton3 system the following test improves on average by 2x with this\nchange averaged over 20 runs:\n\n```\n./db_bench  -benchmarks=fillrandom -threads=64 -batch_size=1\n-memtablerep=skip_list -value_size=100 --num=100000\nlevel0_slowdown_writes_trigger=9999 -level0_stop_writes_trigger=9999\n-disable_auto_compactions --max_write_buffer_number=8 -max_background_flushes=8\n--disable_wal --write_buffer_size=160000000 --block_size=16384\n--allow_concurrent_memtable_write -compression_type none\n```\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/10118\n\nReviewed By: jay-zhuang\n\nDifferential Revision: D37120578\n\nfbshipit-source-id: c20bde4298222edfab7ff7cb6d42497e7012400d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "port/port_posix.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/2e5a323dbd4dbfad5b1e3d45d489e6dca37f4257",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AsmVolatilePause"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves replacing a less effective instruction with a more suitable one for pause operations in spin-wait loops to better align with the intended delay behavior on specific hardware architectures.",
+            "The optimization strategy involves replacing a less effective instruction with a more suitable one to better align with the intended pause behavior in spin-wait loops, thereby improving execution efficiency on specific hardware architectures.",
+            "The optimization strategy involves replacing a less effective yield instruction with a more suitable instruction (isb) on arm64 architecture to better mimic the behavior of the x86 pause instruction, thereby improving spin-wait loop performance.",
+            "The optimization strategy involves replacing a less effective instruction with a more suitable one for a specific architecture (arm64) to better mimic the behavior of a pause instruction, thereby improving spin-wait loop performance.",
+            "The optimization strategy involves replacing a less effective yield instruction with a more suitable instruction (isb) on arm64 architecture to better mimic the behavior of the x86 pause instruction, thereby improving spin-wait loop performance."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involves replacing a less effective instruction with a more suitable one for a specific architecture (arm64) to better mimic the behavior of a pause instruction, thereby improving spin-wait loop performance.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "8558457143bfa76d61e0d2f715e40ec2ddb6ffc2",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "ldb_cmd_execute_result.h: perform init in initialization list\n\nFix for:\n\n[util/ldb_cmd_execute_result.h:18]: (performance) Variable 'message_'\n is assigned in constructor body. Consider performing initialization\n in initialization list.\n[util/ldb_cmd_execute_result.h:23]: (performance) Variable 'message_'\n is assigned in constructor body. Consider performing initialization\n in initialization list.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/ldb_cmd_execute_result.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/8558457143bfa76d61e0d2f715e40ec2ddb6ffc2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LDBCommandExecuteResult"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves initializing member variables in the constructor's initialization list instead of the constructor body to avoid unnecessary default constructions and assignments, thereby improving performance.",
+            "The optimization strategy involves initializing member variables in the constructor's initialization list instead of the constructor body to avoid unnecessary default constructions and assignments, thereby improving performance.",
+            "The optimization strategy involves initializing member variables in the constructor's initialization list instead of the constructor body to avoid unnecessary default construction and assignment operations.",
+            "The optimization strategy involves initializing member variables in the constructor's initialization list instead of the constructor body to avoid unnecessary default construction and assignment operations.",
+            "The optimization strategy involves initializing member variables in the constructor's initialization list instead of the constructor body to avoid unnecessary default construction and assignment operations."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves initializing member variables in the constructor's initialization list instead of the constructor body to avoid unnecessary default construction and assignment operations.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "4704833357a8609e7c42df4f337f938a8e870c08",
+        "author": "jsteemann",
+        "date": "2015-09-18T20:20:32+02:00",
+        "message": "pass input string to WriteBatch() by const reference\n\nthis may lead to copying less data (in case compilers don't\noptimize away copying the string by themselves)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/rocksdb/write_batch.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/4704833357a8609e7c42df4f337f938a8e870c08",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WriteBatch"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing input strings by const reference to avoid unnecessary data copying, which reduces overhead and improves performance.",
+            "The optimization strategy involves passing input strings by const reference to avoid unnecessary data copying, thereby reducing overhead and improving performance.",
+            "The optimization strategy involves passing input strings by const reference to avoid unnecessary data copying, thereby reducing overhead and improving performance.",
+            "The optimization strategy involves passing input strings by const reference to avoid unnecessary data copying, thereby reducing overhead and improving performance.",
+            "The optimization strategy involves passing input strings by const reference to avoid unnecessary data copying, which reduces overhead and improves performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing input strings by const reference to avoid unnecessary data copying, thereby reducing overhead and improving performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "d438e1ec174bdf1474edcdf9902fe3cb14b8a1e2",
+        "author": "Andrew Kryczka",
+        "date": "2017-01-24T13:24:14-08:00",
+        "message": "Test range deletion block outlives table reader\n\nSummary:\nThis test ensures RangeDelAggregator can still access blocks even if it outlives the table readers that created them (detailed description in comments).\n\nI plan to optimize away the extra cache lookup we currently do in BlockBasedTable::NewRangeTombstoneIterator(), as it is ~5% CPU in my random read benchmark in a database with 1k tombstones. This test will help make sure nothing breaks in the process.\nCloses https://github.com/facebook/rocksdb/pull/1739\n\nDifferential Revision: D4375954\n\nPulled By: ajkr\n\nfbshipit-source-id: aef9357",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_range_del_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/d438e1ec174bdf1474edcdf9902fe3cb14b8a1e2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TEST_F"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves reducing redundant cache lookups to improve CPU efficiency by eliminating unnecessary operations in a specific function.",
+            "The optimization strategy involves reducing redundant cache lookups to improve CPU efficiency in a specific iterator creation function.",
+            "The optimization strategy involves reducing redundant cache lookups to improve CPU efficiency in a specific operation.",
+            "The optimization strategy involves reducing redundant cache lookups to improve CPU efficiency by eliminating unnecessary operations in a specific iterator function.",
+            "The optimization strategy involves reducing redundant cache lookups to improve CPU efficiency by eliminating unnecessary operations in a specific iterator function."
+        ],
+        "is_generic_optimization": [
+            true,
+            false,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            "NA",
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves reducing redundant cache lookups to improve CPU efficiency by eliminating unnecessary operations in a specific iterator function.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+        "author": "Changli Gao",
+        "date": "2017-01-11T10:54:37-08:00",
+        "message": "Performance: Iterate vector by reference\n\nSummary: Closes https://github.com/facebook/rocksdb/pull/1763\n\nDifferential Revision: D4398796\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: b82636d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/event_helpers.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "EventHelpers::LogAndNotifyTableFileDeletion"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves iterating over a vector by reference instead of by value to avoid unnecessary copying of elements, thereby improving performance by reducing overhead.",
+            "The optimization strategy involves iterating over a vector by reference instead of by value to avoid unnecessary copying of elements, thereby improving performance by reducing overhead.",
+            "The optimization strategy involves iterating over a vector by reference instead of by value to avoid unnecessary copying of elements, thereby improving performance.",
+            "The optimization strategy involves iterating over a vector by reference instead of by value to reduce copy overhead and improve performance.",
+            "The optimization strategy involves iterating over a vector by reference instead of by value to avoid unnecessary copying of elements, thereby improving performance by reducing overhead."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            false,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves iterating over a vector by reference instead of by value to avoid unnecessary copying of elements, thereby improving performance by reducing overhead.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "f82e693a31d07ab8b391888ff60eb7ff5b95bd13",
+        "author": "Siying Dong",
+        "date": "2019-05-16T15:24:28-07:00",
+        "message": "RangeDelAggregator::StripeRep::Invalidate() to be skipped if empty (#5312)\n\nSummary:\nRangeDelAggregator::StripeRep::Invalidate() clears up several vectors. If we know there isn't anything to there, we can safe these small CPUs. Profiling shows that it sometimes take non-negligible amount of CPU. Worth a small optimization.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/5312\n\nDifferential Revision: D15380511\n\nPulled By: siying\n\nfbshipit-source-id: 53c5f34c33b4cb1e743643c6086ac56d0b84ec2e",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/range_del_aggregator.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/f82e693a31d07ab8b391888ff60eb7ff5b95bd13",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Invalidate"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves skipping a function call that clears vectors when it is known that the vectors are already empty, thereby saving unnecessary CPU cycles.",
+            "The optimization strategy involves skipping a function call that clears vectors when it is known that the vectors are already empty, thereby saving CPU cycles.",
+            "The optimization strategy involves skipping a function call that clears vectors when it is known that the vectors are already empty, thereby saving CPU cycles.",
+            "The optimization strategy involves skipping a function call that clears vectors when it is known that the vectors are already empty, thereby saving CPU cycles.",
+            "The optimization strategy involves skipping a function call that clears vectors when it is known that the vectors are empty, thereby saving CPU cycles."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves skipping a function call that clears vectors when it is known that the vectors are already empty, thereby saving CPU cycles.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "e94eea4527f2d7de82a6bf3303177977011e5dd9",
+        "author": "Haobo Xu",
+        "date": "2013-12-20T16:29:05-08:00",
+        "message": "[RocksDB] [Performance Branch] Minor fix, Remove string resize from WriteBatch::Clear\n\nSummary: tmp_batch_ will get re-allocated for every merged write batch because of the existing resize in WriteBatch::Clear. Note that in DBImpl::BuildBatchGroup, we have a hard coded upper limit of batch size 1<<20 = 1MB already.\n\nTest Plan: make check\n\nReviewers: dhruba, sdong\n\nCC: leveldb\n\nDifferential Revision: https://reviews.facebook.net/D14787",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/write_batch.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/e94eea4527f2d7de82a6bf3303177977011e5dd9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WriteBatch::Clear"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves removing unnecessary string resizing operations to avoid repeated memory reallocations, thereby improving performance by reducing overhead.",
+            "The optimization strategy involves removing unnecessary string resizing operations to avoid repeated reallocations, thereby reducing memory overhead and improving performance.",
+            "The optimization strategy involves removing unnecessary memory reallocation operations to reduce overhead and improve performance.",
+            "The optimization strategy involves removing unnecessary string resizing operations to avoid repeated memory reallocations, thereby improving performance by reducing overhead.",
+            "The optimization strategy involves removing unnecessary memory reallocation by eliminating a redundant resize operation, thereby reducing overhead and improving performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves removing unnecessary string resizing operations to avoid repeated memory reallocations, thereby improving performance by reducing overhead.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "43c789c8f246a2a35864e3fca9585b55c40c2095",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "spatialdb/spatial_db.cc: use !empty() instead of 'size() > 0'\n\nUse empty() since it should be prefered as it has, following\nthe standard, a constant time complexity regardless of the\ncontainter type. The same is not guaranteed for size().\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/spatialdb/spatial_db.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/43c789c8f246a2a35864e3fca9585b55c40c2095",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SpatialIndexCursor"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves replacing `size() > 0` with `empty()` to leverage the constant time complexity of `empty()` across different container types, improving performance by reducing unnecessary computation.",
+            "The optimization strategy replaces the use of `size() > 0` with `empty()` to check for container emptiness, leveraging the constant time complexity of `empty()` for improved performance.",
+            "The optimization strategy involves replacing `size() > 0` with `empty()` to leverage constant time complexity for checking container emptiness, improving performance by reducing unnecessary computational overhead.",
+            "The optimization strategy involves replacing `size() > 0` with `empty()` to leverage constant time complexity for checking container emptiness, improving performance by avoiding potential linear time complexity of `size()`.",
+            "The optimization strategy involves replacing `size() > 0` with `empty()` to leverage the constant time complexity of `empty()` across different container types, improving performance by reducing unnecessary computation."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves replacing `size() > 0` with `empty()` to leverage constant time complexity for checking container emptiness, improving performance by reducing unnecessary computational overhead.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "93548ce8f451a701ad0967ba705f04fef80aa11a",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "table/cuckoo_table_reader.cc: pass func parameter by ref\n\nFix for:\n\n[table/cuckoo_table_reader.cc:198]: (performance) Function\n parameter 'file_data' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/cuckoo_table_reader.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/93548ce8f451a701ad0967ba705f04fef80aa11a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BucketComparator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying of data, thereby improving performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying of data, thereby improving performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying of data, thereby improving performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying of data, thereby improving performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying of data, thereby improving performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying of data, thereby improving performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "3f89af1c39da4991ef6c544fc5e3f164a688b375",
+        "author": "Levi Tamasi",
+        "date": "2019-07-26T15:53:34-07:00",
+        "message": "Reduce the number of random iterations in compact_on_deletion_collector_test (#5635)\n\nSummary:\nThis test frequently times out under TSAN; reducing the number of random\niterations to make it complete faster.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/5635\n\nTest Plan: buck test mode/dev-tsan internal_repo_rocksdb/repo:compact_on_deletion_collector_test\n\nDifferential Revision: D16523505\n\nPulled By: ltamasi\n\nfbshipit-source-id: 6a69909bce9d204c891150fcb3d536547b3253d0",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/table_properties_collectors/compact_on_deletion_collector_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/3f89af1c39da4991ef6c544fc5e3f164a688b375",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "main"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reduces the number of random iterations in a test to decrease execution time and prevent timeouts.",
+            "The optimization strategy reduces the number of random iterations in a test to decrease execution time and avoid timeouts under specific conditions.",
+            "The optimization strategy reduces the number of random iterations in a test to decrease execution time and avoid timeouts under TSAN.",
+            "The optimization strategy reduces the number of random iterations in a test to decrease execution time and prevent timeouts.",
+            "The optimization strategy involves reducing the number of iterations in a random test to decrease execution time and prevent timeouts."
+        ],
+        "is_generic_optimization": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            "NA",
+            "NA",
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy reduces the number of random iterations in a test to decrease execution time and prevent timeouts.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "68ca534169a4f9e1930f6511109e973b43cf5998",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:31+02:00",
+        "message": "corruption_test.cc: pass parameter by reference\n\nFix for:\n\n[db/corruption_test.cc:134]: (performance) Function parameter\n 'fname' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/corruption_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/68ca534169a4f9e1930f6511109e973b43cf5998",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CorruptFile"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to avoid unnecessary copying of data, thereby improving performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing function parameters by reference instead of by value to avoid unnecessary copying and improve performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "e8ab1934d9cb3ffebd61097d67bb23439554b265",
+        "author": "Siying Dong",
+        "date": "2013-12-12T11:30:00-08:00",
+        "message": "[RocksDB Performance Branch] DBImpl.NewInternalIterator() to reduce works inside mutex\n\nSummary: To reduce mutex contention caused by DBImpl.NewInternalIterator(), in this function, move all the iteration creation works out of mutex, only leaving object ref and get.\n\nTest Plan:\nmake all check\nwill run db_stress for a while too to make sure no problem.\n\nReviewers: haobo, dhruba, kailiu\n\nReviewed By: haobo\n\nCC: igor, leveldb\n\nDifferential Revision: https://reviews.facebook.net/D14589",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/e8ab1934d9cb3ffebd61097d67bb23439554b265",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::NewInternalIterator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+            "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+            "The optimization strategy involves moving time-consuming iteration creation work outside of a mutex lock to reduce contention and improve performance by minimizing the time spent holding the lock.",
+            "The optimization strategy involves reducing mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+            "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            false,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            "NA",
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "536e9973e30d70fd510e5ab6e423ef75248ed582",
+        "author": "Igor Canadi",
+        "date": "2014-08-27T11:05:41-07:00",
+        "message": "Remove assert in vector rep\n\nSummary: This assert makes Insert O(n^2) instead of O(n) in debug mode. Memtable insert is in the critical path. No need to assert uniqunnes of the key here, since we're adding a sequence number to it anyway.\n\nTest Plan: none\n\nReviewers: sdong, ljin\n\nReviewed By: ljin\n\nSubscribers: leveldb\n\nDifferential Revision: https://reviews.facebook.net/D22443",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/vectorrep.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/536e9973e30d70fd510e5ab6e423ef75248ed582",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "VectorRep::Insert"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves removing an assertion check in a critical path to reduce the time complexity from O(n^2) to O(n) by eliminating unnecessary uniqueness verification.",
+            "The optimization strategy involves removing an assertion check in a critical path to reduce the time complexity of an insertion operation from O(n^2) to O(n) in debug mode.",
+            "The optimization strategy involves removing an assertion check in a critical path to reduce the time complexity from O(n^2) to O(n) in debug mode, thereby improving performance.",
+            "The optimization strategy involves removing an assertion check that caused a significant performance bottleneck by reducing the time complexity of a critical path operation from O(n^2) to O(n).",
+            "The optimization strategy involves removing an expensive uniqueness assertion in a critical path to reduce the time complexity from O(n^2) to O(n) in debug mode."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves removing an assertion check in a critical path to reduce the time complexity from O(n^2) to O(n) in debug mode, thereby improving performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "063471bf7613544496a4d4b5a1e1ba4a7aa605cf",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "table/table_test.cc: pass func parameter by reference\n\nFix for:\n\n[table/table_test.cc:1218]: (performance) Function parameter\n 'prefix' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/table_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/063471bf7613544496a4d4b5a1e1ba4a7aa605cf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AddInternalKey"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce the overhead of copying data.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "c3c13db346749c3dfe45e167db2129c645377e9e",
+        "author": "Haobo Xu",
+        "date": "2013-05-21T13:40:38-07:00",
+        "message": "[RocksDB] [Performance Bug] MemTable::Get Slow\n\nSummary:\nThe merge operator diff introduced a performance problem in MemTable::Get.\nAn exit condition is missed when the current key does not match the user key.\nThis could lead to full memtable scan if the user key is not found.\n\nTest Plan: make check; db_bench\n\nReviewers: dhruba\n\nReviewed By: dhruba\n\nCC: leveldb\n\nDifferential Revision: https://reviews.facebook.net/D10851",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/memtable.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/c3c13db346749c3dfe45e167db2129c645377e9e",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MemTable::Get"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves adding an early exit condition to avoid unnecessary full scans when a key is not found, thereby reducing the search time.",
+            "The optimization strategy involves adding an early exit condition to avoid unnecessary full scans when a key is not found, thereby reducing redundant operations and improving lookup performance.",
+            "The optimization strategy involves adding an early exit condition to avoid unnecessary full scans when a key is not found, thereby reducing the worst-case time complexity of the lookup operation.",
+            "The optimization strategy involves adding an early exit condition to avoid unnecessary full scans when a key is not found, thereby reducing redundant computation.",
+            "The optimization strategy involves adding an early exit condition to avoid unnecessary full scans when a key is not found, thereby reducing the worst-case time complexity."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            true,
+            false,
+            true,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves adding an early exit condition to avoid unnecessary full scans when a key is not found, thereby reducing redundant operations and improving lookup performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "873f1356a1781e8d638973ea320b722d3240fc5a",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "db_ttl_impl.h: pass func parameter by reference\n\nFix for:\n\n[utilities/ttl/db_ttl_impl.h:209]: (performance) Function parameter\n 'merge_op' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/ttl/db_ttl_impl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/873f1356a1781e8d638973ea320b722d3240fc5a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TtlMergeOperator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to reduce unnecessary copying and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "d2b0652b32b8671c9ec4057e6da2fa564d1cc610",
+        "author": "Xinye Tao",
+        "date": "2023-08-07T12:29:31-07:00",
+        "message": "compute compaction score once for a batch of range file deletes (#10744)\n\nSummary:\nOnly re-calculate compaction score once for a batch of deletions. Fix performance regression brought by https://github.com/facebook/rocksdb/pull/8434.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/10744\n\nTest Plan:\nIn one of our production cluster that recently upgraded to RocksDB 6.29, it takes more than 10 minutes to delete files in 30,000 ranges. The RocksDB instance contains approximately 80,000 files. After this patch, the duration reduces to 100+ ms, which is on par with RocksDB 6.4.\n\nCherry-picking downstream PR: https://github.com/tikv/rocksdb/pull/316\n\nSigned-off-by: tabokie <xy.tao@outlook.com>\n\nReviewed By: cbi42\n\nDifferential Revision: D48002581\n\nPulled By: ajkr\n\nfbshipit-source-id: 7245607ee3ad79c53b648a6396c9159f166b9437",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/d2b0652b32b8671c9ec4057e6da2fa564d1cc610",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::DeleteFilesInRanges"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization reduces redundant computations by calculating the compaction score only once for a batch of file deletions instead of recalculating it for each individual deletion.",
+            "The optimization strategy reduces redundant computations by calculating the compaction score once for a batch of file deletions instead of recalculating it for each individual deletion.",
+            "The optimization reduces redundant calculations by computing the compaction score once for a batch of file deletions instead of recalculating it for each individual deletion.",
+            "The optimization reduces redundant calculations by computing the compaction score once for a batch of file deletions instead of recalculating it for each individual deletion, thereby improving performance.",
+            "The optimization reduces redundant computations by calculating the compaction score once for a batch of file deletions instead of recalculating it for each individual deletion, thereby improving performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization reduces redundant calculations by computing the compaction score once for a batch of file deletions instead of recalculating it for each individual deletion, thereby improving performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "53910ddb152fbcba95a3e04b058a997c40f654ae",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:31+02:00",
+        "message": "db_test.cc: pass parameter by reference\n\nFix for:\n\n[db/db_test.cc:6141]: (performance) Function parameter\n 'key' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/53910ddb152fbcba95a3e04b058a997c40f654ae",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "convertKey"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce the overhead of copying large objects.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "90d835507581324d0449f1ded4f56a8b16f20bf7",
+        "author": "xiusir",
+        "date": "2017-02-28T10:39:11-08:00",
+        "message": "Fix the wrong address for PREFETCH in DynamicBloom::Prefetch\n\nSummary:\n- Change data_[b] to data_[b / 8] in DynamicBloom::Prefetch, as b means the b-th bit in data_ and data_[b / 8] is the proper byte in data_.\nCloses https://github.com/facebook/rocksdb/pull/1935\n\nDifferential Revision: D4628696\n\nPulled By: siying\n\nfbshipit-source-id: bc5a0c6",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/dynamic_bloom.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/90d835507581324d0449f1ded4f56a8b16f20bf7",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DynamicBloom::Prefetch"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves correcting the memory address calculation for prefetching to ensure the correct byte is accessed, thereby improving cache efficiency and reducing unnecessary memory accesses.",
+            "The optimization strategy involves correcting the memory address calculation for prefetching to ensure the correct byte is accessed, improving cache efficiency and reducing unnecessary memory fetches.",
+            "The optimization strategy involves correcting the memory address calculation for prefetching to ensure the correct byte is accessed, improving cache efficiency and reducing unnecessary memory operations.",
+            "The optimization strategy involves correcting the memory address calculation for prefetching to ensure the correct byte is accessed, improving cache efficiency and reducing unnecessary memory operations.",
+            "The optimization strategy involves correcting the memory address calculation for prefetching to ensure the correct byte is accessed, improving cache efficiency by reducing unnecessary memory fetches."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves correcting the memory address calculation for prefetching to ensure the correct byte is accessed, improving cache efficiency and reducing unnecessary memory operations.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "beeee9dccc338ae7129016f2f2e17d2a40ecc5df",
+        "author": "Igor Canadi",
+        "date": "2014-04-08T11:06:39-07:00",
+        "message": "Small speedup of CompactionFilterV2\n\nSummary: ToString() is expensive. Profiling shows that most compaction threads are stuck in jemalloc, allocating a new string. This will help out a litte.\n\nTest Plan: make check\n\nReviewers: haobo, danguo\n\nReviewed By: danguo\n\nCC: leveldb\n\nDifferential Revision: https://reviews.facebook.net/D17583",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/beeee9dccc338ae7129016f2f2e17d2a40ecc5df",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::DoCompactionWork"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reduces the overhead of expensive string operations by minimizing the use of costly `ToString()` calls during compaction, thereby alleviating memory allocation bottlenecks.",
+            "The optimization strategy reduces the overhead of expensive string operations by minimizing the use of costly `ToString()` calls during compaction, thereby improving performance by decreasing memory allocation and processing time.",
+            "The optimization strategy reduces the overhead of expensive string operations by minimizing the use of costly `ToString()` calls during compaction, thereby decreasing memory allocation and improving performance.",
+            "The optimization strategy reduces the overhead of frequent string allocations by minimizing the use of expensive `ToString()` operations during compaction.",
+            "The optimization strategy reduces the overhead of expensive string operations by minimizing the use of `ToString()` calls, which were causing significant allocation delays in memory management."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy reduces the overhead of expensive string operations by minimizing the use of costly `ToString()` calls during compaction, thereby decreasing memory allocation and improving performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "b8cea7cc279fe609de85b7ce4f50d4ff4f90047f",
+        "author": "Changli Gao",
+        "date": "2017-10-17T10:12:37-07:00",
+        "message": "VersionBuilder: Erase with iterators for better performance\n\nSummary: Closes https://github.com/facebook/rocksdb/pull/3007\n\nDifferential Revision: D6077701\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: a6fd5b8a23f4feb1660b9ce027f651a7e90352b3",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_builder.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/b8cea7cc279fe609de85b7ce4f50d4ff4f90047f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Apply"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves using iterators for erasing elements, which generally improves performance by reducing the overhead associated with element removal in data structures.",
+            "The optimization strategy involves using iterators for erasing elements, which improves performance by reducing the overhead associated with element removal in data structures.",
+            "The optimization strategy involves using iterators to erase elements, which generally improves performance by reducing the overhead associated with element removal in data structures.",
+            "The optimization strategy involves using iterators for erasing elements, which generally improves performance by reducing the overhead associated with element removal in data structures.",
+            "The optimization strategy involves using iterators to erase elements, which generally improves performance by reducing the overhead associated with element removal in data structures."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            false,
+            false,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves using iterators for erasing elements, which generally improves performance by reducing the overhead associated with element removal in data structures.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "1fa5dff7d1ce7be64555e7bdc8371be562b3eac6",
+        "author": "奏之章",
+        "date": "2024-02-27T15:23:54-08:00",
+        "message": "WriteThread::EnterAsBatchGroupLeader reorder writers (#12138)\n\nSummary:\nReorder writers list to allow a leader can take as more commits as possible to maximize the throughput of the system and reduce IOPS.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/12138\n\nReviewed By: hx235\n\nDifferential Revision: D53955592\n\nPulled By: ajkr\n\nfbshipit-source-id: 4d899d038faef691b63801d9d85f5cc079b7bbb5",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/write_thread.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/1fa5dff7d1ce7be64555e7bdc8371be562b3eac6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WriteThread::EnterAsBatchGroupLeader"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reorders the writers list to allow a leader to batch more commits, thereby maximizing system throughput and reducing IOPS.",
+            "Reordering writers in a batch group to maximize throughput and reduce IOPS by allowing the leader to process more commits efficiently.",
+            "The optimization strategy involves reordering the writers list to allow a leader to process more commits in a batch, thereby maximizing system throughput and reducing IOPS.",
+            "The optimization strategy involves reordering the writers list to allow a leader to process more commits in a batch, thereby maximizing system throughput and reducing IOPS.",
+            "The optimization strategy involves reordering the writers list to allow a leader to process more commits in a batch, thereby maximizing system throughput and reducing IOPS."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves reordering the writers list to allow a leader to process more commits in a batch, thereby maximizing system throughput and reducing IOPS.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "9b51af5a17f3cfd754575894e090dd867fb47740",
+        "author": "Siying Dong",
+        "date": "2014-01-14T17:41:44-08:00",
+        "message": "[RocksDB Performance Branch] DBImpl.NewInternalIterator() to reduce works inside mutex\n\nSummary: To reduce mutex contention caused by DBImpl.NewInternalIterator(), in this function, move all the iteration creation works out of mutex, only leaving object ref and get.\n\nTest Plan:\nmake all check\nwill run db_stress for a while too to make sure no problem.\n\nReviewers: haobo, dhruba, kailiu\n\nReviewed By: haobo\n\nCC: igor, leveldb\n\nDifferential Revision: https://reviews.facebook.net/D14589\n\nConflicts:\n\tdb/db_impl.cc",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/9b51af5a17f3cfd754575894e090dd867fb47740",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBImpl::NewInternalIterator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+            "The optimization strategy involves moving iteration creation work outside of a mutex to reduce contention and improve performance by minimizing the time spent holding the lock.",
+            "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+            "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+            "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy reduces mutex contention by moving iteration creation work outside of the mutex, leaving only object reference and retrieval operations inside the mutex.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "e48ccc28f4eebcc05b6333b129ee5908214d3259",
+        "author": "Peter Dillinger",
+        "date": "2025-01-02T10:48:46-08:00",
+        "message": "Reduce unnecessary manifest data when no file checksum (#13250)\n\nSummary:\nDon't write file checksum manifest entries when unused, to avoid using extra manifest file space.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/13250\n\nTest Plan: very minor performance improvement, existing tests\n\nReviewed By: cbi42\n\nDifferential Revision: D67653954\n\nPulled By: pdillinger\n\nfbshipit-source-id: 9156e093ed5e4a5152cc55354a4beea9a841b89f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_edit.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/e48ccc28f4eebcc05b6333b129ee5908214d3259",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "VersionEdit::EncodeTo"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy reduces unnecessary data writing by skipping the generation of file checksum entries in the manifest when they are not used, thereby saving storage space and improving performance.",
+            "The optimization strategy reduces unnecessary data writing by skipping the inclusion of file checksum entries in the manifest when they are not used, thereby saving space and improving performance.",
+            "The optimization strategy reduces unnecessary data writing by omitting file checksum entries in the manifest when they are not used, thereby saving storage space and improving performance.",
+            "The optimization strategy reduces unnecessary data writing by skipping the generation of file checksum entries in the manifest when they are not used, thereby saving storage space and improving performance.",
+            "The optimization strategy reduces unnecessary data writing by omitting file checksum entries in the manifest when they are not used, thereby saving space and improving performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            false,
+            true,
+            true,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy reduces unnecessary data writing by skipping the generation of file checksum entries in the manifest when they are not used, thereby saving storage space and improving performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "82e8e9e26bb16d1af07a26741bcf63d8342e4336",
+        "author": "JiYou",
+        "date": "2018-09-14T19:43:04-07:00",
+        "message": "VersionBuilder: optmize SaveTo() to linear time. (#4366)\n\nSummary:\nBecause `base_files` and `added_files` both are sorted, using a merge\noperation to these two sorted arrays is more effective. The complexity\nis reduced to linear time.\n\n    - optmize the merge complexity.\n    - move the `NDEBUG` of sorted `added_files` out of merge process.\n\nSigned-off-by: JiYou <jiyou09@gmail.com>\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4366\n\nDifferential Revision: D9833592\n\nPulled By: ajkr\n\nfbshipit-source-id: dd32b67ebdca4c20e5e9546ab8082cecefe99fd0",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_builder.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/82e8e9e26bb16d1af07a26741bcf63d8342e4336",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SaveTo"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves leveraging the sorted nature of two arrays to merge them in linear time, reducing the complexity of the operation.",
+            "The optimization strategy involves leveraging the sorted nature of two arrays to perform a merge operation, reducing the complexity from a higher-order time complexity to linear time.",
+            "The optimization strategy involves leveraging the sorted nature of two arrays to perform a merge operation, reducing the complexity from quadratic to linear time.",
+            "The optimization strategy involves leveraging the sorted nature of two arrays to merge them in linear time, reducing the complexity from a higher-order operation.",
+            "The optimization strategy leverages the fact that two sorted arrays can be merged more efficiently in linear time, reducing the complexity of the operation."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            false,
+            false,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves leveraging the sorted nature of two arrays to merge them in linear time, reducing the complexity of the operation.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "92ad4a88f3199b013532b37d6598c442319355a5",
+        "author": "Changyu Bi",
+        "date": "2024-08-27T13:57:40-07:00",
+        "message": "Small CPU optimization in InlineSkipList::Insert() (#12975)\n\nSummary:\nreuse decode key in more places to avoid decoding length prefixed key x->Key().\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/12975\n\nTest Plan:\nran benchmarks simultaneously for \"before\" and \"after\"\n* fillseq:\n```\n(for I in $(seq 1 50); do ./db_bench --benchmarks=fillseq --disable_auto_compactions=1 --min_write_buffer_number_to_merge=100 --max_write_buffer_number=1000  --write_buffer_size=268435456 --num=5000000 --seed=1723056275 --disable_wal=1 2>&1 | grep \"fillseq\"\ndone;) | awk '{ t += $5; c++; print } END { printf (\"%9.3f\\n\", 1.0 * t / c) }';\n\nbefore: 1483191\nafter: 1490555 (+0.5%)\n```\n\n* fillrandom:\n```\n(for I in $(seq 1 2); do ./db_bench_imain --benchmarks=fillrandom --disable_auto_compactions=1 --min_write_buffer_number_to_merge=100 --max_write_buffer_number=1000  --write_buffer_size=268435456 --num=2500000 --seed=1723056275 --disable_wal=1 2>&1 | grep \"fillrandom\"\n\nbefore: 255463\nafter: 256128 (+0.26%)\n```\n\nReviewed By: anand1976\n\nDifferential Revision: D61835340\n\nPulled By: cbi42\n\nfbshipit-source-id: 70345510720e348bacd51269acb5d2dd5a62bf0a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "memtable/inlineskiplist.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/92ad4a88f3199b013532b37d6598c442319355a5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "compare_"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves reusing previously decoded keys to avoid redundant decoding operations, thereby reducing CPU overhead.",
+            "The optimization strategy involves reusing previously decoded key data to avoid redundant decoding operations, thereby reducing CPU overhead.",
+            "The optimization strategy involves reusing previously decoded key data to avoid redundant decoding operations, thereby reducing CPU overhead.",
+            "The optimization strategy involves reusing previously decoded keys to avoid redundant decoding operations, thereby reducing CPU overhead.",
+            "The optimization strategy involves reusing previously decoded key data to avoid redundant decoding operations, thereby reducing CPU overhead."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves reusing previously decoded key data to avoid redundant decoding operations, thereby reducing CPU overhead.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "55652043c83c463ce57b7748e01c6d12bb5bf9fe",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-10-01T10:49:08+02:00",
+        "message": "table/cuckoo_table_reader.cc: pass func parameter by reference\n\nFix for:\n\n[table/cuckoo_table_reader.cc:196]: (performance) Function\n parameter 'target' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/cuckoo_table_reader.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/55652043c83c463ce57b7748e01c6d12bb5bf9fe",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BucketComparator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+            "The optimization strategy involves passing a function parameter by reference instead of by value to avoid unnecessary copying and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing function parameters by reference instead of by value to reduce unnecessary copying and improve performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "4634c735a8bb4f83b8099928fb12b50ad8df7b88",
+        "author": "Alex Robinson",
+        "date": "2017-12-04T01:56:15-08:00",
+        "message": "Update DBOptions::IncreaseParallelism to use newer background settings\n\nSummary:\nThe Options header file recommends using max_background_jobs rather than\ndirectly setting max_background_compactions or max_background_flushes.\n\nI've personally seen a performance problem where stalls were happening\nbecause the one background flushing thread was blocked that was fixed\nby this change -\nhttps://github.com/cockroachdb/cockroach/issues/19699#issuecomment-347672485\nCloses https://github.com/facebook/rocksdb/pull/3208\n\nDifferential Revision: D6473178\n\nPulled By: ajkr\n\nfbshipit-source-id: 67c892ceb7b1909d251492640cb15a0f2262b7ed",
+        "modified_files_count": 1,
+        "modified_files": [
+            "options/options.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/4634c735a8bb4f83b8099928fb12b50ad8df7b88",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "DBOptions::IncreaseParallelism"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves increasing parallelism by adjusting background job settings to prevent stalls and improve throughput.",
+            "The optimization strategy involves increasing parallelism by adjusting background job settings to prevent stalls and improve throughput.",
+            "The optimization strategy involves increasing parallelism by adjusting background job settings to prevent thread blocking and improve overall system throughput.",
+            "The optimization strategy involves increasing parallelism by adjusting background job settings to prevent stalls and improve throughput.",
+            "The optimization strategy involves increasing parallelism by adjusting background job settings to prevent stalls and improve throughput."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves increasing parallelism by adjusting background job settings to prevent stalls and improve throughput.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "30a017fecae60aa7b87c4a1e283b6ac027724a92",
+        "author": "Yi Wu",
+        "date": "2018-01-05T16:41:58-08:00",
+        "message": "Blob DB: avoid having a separate read of checksum\n\nSummary:\nPreviously on a blob db read, we are making a read of the blob value, and then make another read to get CRC checksum. I'm combining the two read into one.\n\nreadrandom db_bench with 1G database with base db size of 13M, value size 1k:\n`./db_bench --db=/home/yiwu/tmp/db_bench --use_blob_db --value_size=1024 --num=1000000 --benchmarks=readrandom --use_existing_db --cache_size=32000000`\nmaster: throughput 234MB/s, get micros p50 5.984 p95 9.998 p99 20.817 p100 787\nthis PR: throughput 261MB/s, get micros p50 5.157 p95 9.928 p99 20.724 p100 190\nCloses https://github.com/facebook/rocksdb/pull/3301\n\nDifferential Revision: D6615950\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: 052410c6d8539ec0cc305d53793bbc8f3616baa3",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/blob_db/blob_db_impl.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/30a017fecae60aa7b87c4a1e283b6ac027724a92",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BlobDBImpl::GetBlobValue"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy combines multiple separate read operations into a single read operation to reduce I/O overhead and improve throughput.",
+            "The optimization strategy combines multiple separate read operations into a single read operation to reduce I/O overhead and improve throughput.",
+            "The optimization strategy combines multiple separate read operations into a single read operation to reduce I/O overhead and improve throughput.",
+            "The optimization strategy combines multiple separate read operations into a single read operation to reduce I/O overhead and improve throughput.",
+            "The optimization strategy combines multiple separate read operations into a single read operation to reduce I/O overhead and improve throughput."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy combines multiple separate read operations into a single read operation to reduce I/O overhead and improve throughput.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "d8df169b8498609eda28c0d6c2d91588b0aa925b",
+        "author": "Zhongyi Xie",
+        "date": "2018-11-13T17:08:34-08:00",
+        "message": "release db mutex when calling ApproximateSize (#4630)\n\nSummary:\n`GenSubcompactionBoundaries` calls `VersionSet::ApproximateSize` which gets BlockBasedTableReader for every file and seeks in its index block to find `key`'s offset. If the table or index block aren't in memory already, this involves I/O. This can be improved by releasing DB mutex when calling ApproximateSize.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4630\n\nDifferential Revision: D13052653\n\nPulled By: miasantreble\n\nfbshipit-source-id: cae31d46d10d0860fa8a26b8d5154b2d17d1685f",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/compaction_job.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/d8df169b8498609eda28c0d6c2d91588b0aa925b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CompactionJob::GenSubcompactionBoundaries"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves releasing a mutex lock during I/O operations to allow other threads to proceed, thereby reducing contention and improving overall performance.",
+            "The optimization strategy involves releasing a mutex lock during I/O operations to allow other threads to proceed, thereby reducing contention and improving overall performance.",
+            "The optimization strategy involves releasing a mutex lock during I/O operations to allow other threads to proceed, thereby reducing contention and improving overall performance.",
+            "The optimization strategy involves releasing a mutex lock during a potentially I/O-bound operation to reduce contention and improve concurrency.",
+            "The optimization strategy involves releasing a mutex lock during a potentially time-consuming I/O operation to reduce contention and improve concurrency."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves releasing a mutex lock during I/O operations to allow other threads to proceed, thereby reducing contention and improving overall performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "cd21e4e69d76ec4ec3b080c8cdae016ac2309cc5",
+        "author": "Levi Tamasi",
+        "date": "2023-12-13T17:34:18-08:00",
+        "message": "Some further cleanup in WriteBatchWithIndex::MultiGetFromBatchAndDB (#12143)\n\nSummary:\nPull Request resolved: https://github.com/facebook/rocksdb/pull/12143\n\nhttps://github.com/facebook/rocksdb/pull/11982 changed `WriteBatchWithIndex::MultiGetFromBatchDB` to preallocate space in the `autovector`s `key_contexts` and `merges` in order to prevent any reallocations, both as an optimization and in order to prevent pointers into the container from being invalidated during subsequent insertions. On second thought, this preallocation can actually be a pessimization in cases when only a small subset of keys require querying the underlying database. To prevent any memory regressions, the PR reverts this preallocation. In addition, it makes some small code hygiene improvements like incorporating the `PinnableWideColumns` object into `MergeTuple`.\n\nReviewed By: jaykorean\n\nDifferential Revision: D52136513\n\nfbshipit-source-id: 21aa835084433feab27b501d9d1fc5434acea609",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/write_batch_with_index/write_batch_with_index.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/cd21e4e69d76ec4ec3b080c8cdae016ac2309cc5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WriteBatchWithIndex::MultiGetFromBatchAndDB"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves reverting preallocation in containers to avoid unnecessary memory usage and potential performance degradation when only a small subset of keys require database querying.",
+            "The optimization strategy involved reverting preallocation of memory in containers to avoid unnecessary memory usage and potential performance degradation when only a small subset of keys require database querying.",
+            "The optimization strategy involves reverting preallocation in containers to avoid unnecessary memory usage and potential performance degradation when only a small subset of keys require database queries.",
+            "The optimization strategy involves reverting preallocation in containers to avoid unnecessary memory usage and potential performance degradation when only a small subset of keys require database querying.",
+            "The optimization strategy involved reverting preallocation in containers to avoid unnecessary memory usage and potential performance degradation when only a small subset of keys require database querying."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves reverting preallocation in containers to avoid unnecessary memory usage and potential performance degradation when only a small subset of keys require database querying.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "821887036e5235c827029d14decb185bea01ec4b",
+        "author": "Andrew Kryczka",
+        "date": "2017-10-03T16:27:28-07:00",
+        "message": "pin L0 filters/indexes for compaction outputs\n\nSummary:\nWe need to tell the iterator the compaction output file's level so it can apply proper optimizations, like pinning filter and index blocks when user enables `pin_l0_filter_and_index_blocks_in_cache` and the output file's level is zero.\nCloses https://github.com/facebook/rocksdb/pull/2949\n\nDifferential Revision: D5945597\n\nPulled By: ajkr\n\nfbshipit-source-id: 2389decf9026ffaa32d45801a77d002529f64a62",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/compaction_job.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/821887036e5235c827029d14decb185bea01ec4b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CompactionJob::FinishCompactionOutputFile"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves pinning filter and index blocks in cache for specific compaction outputs to reduce access latency and improve performance by keeping frequently accessed data readily available.",
+            "The optimization strategy involves pinning filter and index blocks in memory for Level 0 compaction outputs to reduce I/O overhead and improve cache efficiency.",
+            "The optimization strategy involves pinning filter and index blocks in cache for specific compaction outputs to reduce access latency and improve performance.",
+            "The optimization strategy involves pinning filter and index blocks in cache for Level 0 compaction outputs to reduce access latency and improve read performance.",
+            "The optimization strategy involves pinning filter and index blocks in cache for specific compaction outputs to reduce access latency and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            false,
+            false,
+            false
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            "NA",
+            "NA",
+            "NA"
+        ],
+        "optimization_summary_final": "The optimization strategy involves pinning filter and index blocks in cache for specific compaction outputs to reduce access latency and improve performance.",
+        "is_generic_optimization_final": false,
+        "is_strategy_equivalent_final": "NA"
+    },
+    {
+        "hash": "f9cfc6a808c9dc3ab7366edb10368559155d5172",
+        "author": "Changyu Bi",
+        "date": "2022-07-06T09:30:25-07:00",
+        "message": "Updated NewDataBlockIterator to not fetch compression dict for non-da… (#10310)\n\nSummary:\n…ta blocks\n\nDuring MyShadow testing, ajkr helped me find out that with partitioned index and dictionary compression enabled, `PartitionedIndexIterator::InitPartitionedIndexBlock()` spent considerable amount of time (1-2% CPU) on fetching uncompression dictionary. Fetching uncompression dict was not needed since the index blocks were not compressed (and even if they were, they use empty dictionary). This should only affect use cases with partitioned index, dictionary compression and without uncompression dictionary pinned. This PR updates NewDataBlockIterator to not fetch uncompression dictionary when it is not for data blocks.\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/10310\n\nTest Plan:\n1. `make check`\n2. Perf benchmark: 1.5% (143950 -> 146176) improvement in op/sec for partitioned index + dict compression benchmark.\nFor default config without partitioned index and without dict compression, there is no regression in readrandom perf from multiple runs of db_bench.\n\n```\n# Set up for partitioned index with dictionary compression\nTEST_TMPDIR=/dev/shm ./db_bench_main -benchmarks=filluniquerandom,compact -max_background_jobs=24 -memtablerep=vector -allow_concurrent_memtable_write=false -partition_index=true  -compression_max_dict_bytes=16384 -compression_zstd_max_train_bytes=1638400\n\n# Pre PR\nTEST_TMPDIR=/dev/shm ./db_bench_main -use_existing_db=true -benchmarks=readrandom[-X50] -partition_index=true\nreadrandom [AVG    50 runs] : 143950 (± 1108) ops/sec;   15.9 (± 0.1) MB/sec\nreadrandom [MEDIAN 50 runs] : 144406 ops/sec;   16.0 MB/sec\n\n# Post PR\nTEST_TMPDIR=/dev/shm ./db_bench_opt -use_existing_db=true -benchmarks=readrandom[-X50] -partition_index=true\nreadrandom [AVG    50 runs] : 146176 (± 1121) ops/sec;   16.2 (± 0.1) MB/sec\nreadrandom [MEDIAN 50 runs] : 146014 ops/sec;   16.2 MB/sec\n\n# Set up for no partitioned index and no dictionary compression\nTEST_TMPDIR=/dev/shm/baseline ./db_bench_main -benchmarks=filluniquerandom,compact -max_background_jobs=24 -memtablerep=vector -allow_concurrent_memtable_write=false\n# Pre PR\nTEST_TMPDIR=/dev/shm/baseline/ ./db_bench_main --use_existing_db=true \"--benchmarks=readrandom[-X50]\"\nreadrandom [AVG    50 runs] : 158546 (± 1000) ops/sec;   17.5 (± 0.1) MB/sec\nreadrandom [MEDIAN 50 runs] : 158280 ops/sec;   17.5 MB/sec\n\n# Post PR\nTEST_TMPDIR=/dev/shm/baseline/ ./db_bench_opt --use_existing_db=true \"--benchmarks=readrandom[-X50]\"\nreadrandom [AVG    50 runs] : 161061 (± 1520) ops/sec;   17.8 (± 0.2) MB/sec\nreadrandom [MEDIAN 50 runs] : 161596 ops/sec;   17.9 MB/sec\n```\n\nReviewed By: ajkr\n\nDifferential Revision: D37631358\n\nPulled By: cbi42\n\nfbshipit-source-id: 6ca2665e270e63871968e061ba4a99d3136785d9",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/block_based/block_based_table_reader_impl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/f9cfc6a808c9dc3ab7366edb10368559155d5172",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BlockBasedTable::NewDataBlockIterator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy avoids unnecessary fetching of uncompression dictionaries for non-data blocks, reducing CPU overhead in scenarios where such fetching is not required.",
+            "The optimization strategy involves avoiding unnecessary operations (fetching uncompression dictionaries) for non-data blocks to reduce CPU overhead and improve performance.",
+            "The optimization strategy avoids unnecessary fetching of uncompression dictionaries for non-data blocks, reducing CPU overhead in scenarios where such fetching is not required.",
+            "The optimization strategy involves avoiding unnecessary operations (fetching uncompression dictionaries) for non-data blocks to reduce CPU overhead and improve performance.",
+            "The optimization strategy involves avoiding unnecessary fetching of uncompression dictionaries for non-data blocks, which reduces redundant operations and improves performance in scenarios with partitioned index and dictionary compression."
+        ],
+        "is_generic_optimization": [
+            true,
+            false,
+            true,
+            false,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            "NA",
+            true,
+            "NA",
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves avoiding unnecessary operations (fetching uncompression dictionaries) for non-data blocks to reduce CPU overhead and improve performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "b278ae8e50466e8073a1754a506145df5bb27c72",
+        "author": "Lei Jin",
+        "date": "2014-07-08T11:40:42-07:00",
+        "message": "Apply fractional cascading in ForwardIterator::Seek()\n\nSummary:\nUse search hint to reduce FindFile range thus avoid comparison\nFor a small DB with 50M keys, perf_context counter shows it reduces\ncomparison from 2B to 1.3B for a 15-minute run. No perf change was\nobserved for 1 seek thread, but quite good improvement was seen for 32\nseek threads, when CPU was busy.\nwill post detail results when ready\n\nTest Plan: db_bench and db_test\n\nReviewers: haobo, sdong, dhruba, igor\n\nReviewed By: igor\n\nSubscribers: leveldb\n\nDifferential Revision: https://reviews.facebook.net/D18879",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/forward_iterator.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/b278ae8e50466e8073a1754a506145df5bb27c72",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ForwardIterator::SeekInternal"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy used fractional cascading to reduce the search range and minimize unnecessary comparisons, thereby improving search efficiency in a multi-threaded environment.",
+            "The optimization strategy used fractional cascading to reduce the search range and avoid unnecessary comparisons, thereby improving search efficiency in a multi-threaded environment.",
+            "The optimization strategy reduces the search range in a data structure using fractional cascading, thereby minimizing the number of comparisons needed during search operations.",
+            "The optimization strategy reduces the search range in a database iterator by using fractional cascading, thereby minimizing the number of comparisons needed during seek operations.",
+            "The optimization strategy used fractional cascading to reduce the search range and minimize unnecessary comparisons, thereby improving search efficiency in a multi-threaded environment."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy used fractional cascading to reduce the search range and avoid unnecessary comparisons, thereby improving search efficiency in a multi-threaded environment.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "08be1803eecb5ae464440812ea06e79b21289053",
+        "author": "Igor Canadi",
+        "date": "2015-04-13T15:58:45-07:00",
+        "message": "Fix bad performance in debug mode\n\nSummary:\nSee github issue 574: https://github.com/facebook/rocksdb/issues/574\n\nBasically when we're running in DEBUG mode we're calling `usleep(0)` on\nevery mutex lock. I bisected the issue to\nhttps://reviews.facebook.net/D36963. Instead of calling sleep(0), this\ndiff just avoids calling SleepForMicroseconds() when delay is not set.\n\nTest Plan:\n    bpl=10485760;overlap=10;mcz=2;del=300000000;levels=2;ctrig=10000000; delay=10000000; stop=10000000; wbn=30; mbc=20; mb=1073741824;wbs=268435456; dds=1; sync=0; r=100000; t=1; vs=800; bs=65536; cs=1048576; of=500000; si=1000000; ./db_bench --benchmarks=fillrandom --disable_seek_compaction=1 --mmap_read=0 --statistics=1 --histogram=1 --num=$r --threads=$t --value_size=$vs --block_size=$bs --cache_size=$cs --bloom_bits=10 --cache_numshardbits=4 --open_files=$of --verify_checksum=1 --db=/tmp/rdb10test --sync=$sync --disable_wal=1 --compression_type=snappy --stats_interval=$si --compression_ratio=0.5 --disable_data_sync=$dds --write_buffer_size=$wbs --target_file_size_base=$mb --max_write_buffer_number=$wbn --max_background_compactions=$mbc --level0_file_num_compaction_trigger=$ctrig --level0_slowdown_writes_trigger=$delay --level0_stop_writes_trigger=$stop --num_levels=$levels --delete_obsolete_files_period_micros=$del --min_level_to_compress=$mcz --max_grandparent_overlap_factor=$overlap --stats_per_interval=1 --max_bytes_for_level_base=$bpl --memtablerep=vector --use_existing_db=0 --disable_auto_compactions=1 --source_compaction_factor=10000000 | grep ops\n\nBefore:\nfillrandom   :     117.525 micros/op 8508 ops/sec;    6.6 MB/s\nAfter:\nfillrandom   :       1.283 micros/op 779502 ops/sec;  606.6 MB/s\n\nReviewers: rven, yhchiang, sdong\n\nReviewed By: sdong\n\nSubscribers: meyering, dhruba, leveldb\n\nDifferential Revision: https://reviews.facebook.net/D36963",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/thread_status_util_debug.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/08be1803eecb5ae464440812ea06e79b21289053",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "ThreadStatusUtil::TEST_StateDelay"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves avoiding unnecessary sleep calls in debug mode to reduce overhead and improve performance.",
+            "The optimization strategy involves avoiding unnecessary sleep calls in debug mode to reduce overhead and improve performance.",
+            "The optimization strategy involves avoiding unnecessary sleep calls in debug mode to reduce overhead and improve execution speed.",
+            "The optimization strategy involves avoiding unnecessary sleep calls in debug mode to reduce overhead and improve performance.",
+            "The optimization strategy involves avoiding unnecessary sleep calls in debug mode to reduce overhead and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves avoiding unnecessary sleep calls in debug mode to reduce overhead and improve performance.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "25403c2265cb700462d59fa3cb9dbec85d25d48f",
+        "author": "Andrew Kryczka",
+        "date": "2018-06-28T13:20:29-07:00",
+        "message": "Prefetch cache lines for filter lookup (#4068)\n\nSummary:\nSince the filter data is unaligned, even though we ensure all probes are within a span of `cache_line_size` bytes, those bytes can span two cache lines. In that case I doubt hardware prefetching does a great job considering we don't necessarily access those two cache lines in order. This guess seems correct since adding explicit prefetch instructions reduced filter lookup overhead by 19.4%.\nCloses https://github.com/facebook/rocksdb/pull/4068\n\nDifferential Revision: D8674189\n\nPulled By: ajkr\n\nfbshipit-source-id: 747427d9a17900151c17820488e3f7efe06b1871",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/bloom.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/25403c2265cb700462d59fa3cb9dbec85d25d48f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "FullFilterBitsReader::HashMayMatch"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves adding explicit prefetch instructions to reduce cache misses during filter lookup by ensuring data is fetched into the cache before it is needed.",
+            "The optimization strategy involves adding explicit prefetch instructions to reduce cache misses during filter lookup by ensuring data is fetched into the cache before it is needed.",
+            "The optimization strategy involves adding explicit prefetch instructions to reduce cache line misses during filter lookup, thereby improving data access efficiency.",
+            "The optimization strategy involves adding explicit prefetch instructions to improve cache line utilization and reduce filter lookup overhead by ensuring data is fetched in advance.",
+            "The optimization strategy involves adding explicit prefetch instructions to reduce cache line misses during filter lookup operations."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves adding explicit prefetch instructions to reduce cache misses during filter lookup by ensuring data is fetched into the cache before it is needed.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "b8b7117e97e649fc65d0a4dd397caf9a39fb71b1",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:31+02:00",
+        "message": "db/version_set.cc: use !empty() instead of 'size() > 0'\n\nUse empty() since it should be prefered as it has, following\nthe standard, a constant time complexity regardless of the\ncontainter type. The same is not guaranteed for size().\n\nFix for:\n[db/version_set.cc:2250]: (performance) Possible inefficient\n checking for 'column_families_not_found' emptiness.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_set.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/b8b7117e97e649fc65d0a4dd397caf9a39fb71b1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "VersionSet::Recover"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves replacing `size() > 0` with `empty()` to ensure constant time complexity when checking for container emptiness, improving performance by avoiding potential linear time complexity of `size()`.",
+            "The optimization strategy involves replacing a potentially inefficient size comparison with an empty() check to ensure constant time complexity for checking container emptiness.",
+            "The optimization strategy involves replacing `size() > 0` with `empty()` to ensure constant time complexity for checking container emptiness, improving performance by avoiding potential linear time complexity of `size()`.",
+            "The optimization strategy involves replacing size-based emptiness checks with the empty() method to ensure constant time complexity and improve performance across different container types.",
+            "The optimization strategy involves replacing `size() > 0` with `empty()` to ensure constant time complexity for checking container emptiness, improving performance by avoiding potential linear time complexity of `size()`."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves replacing `size() > 0` with `empty()` to ensure constant time complexity when checking for container emptiness, improving performance by avoiding potential linear time complexity of `size()`.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": true
+    },
+    {
+        "hash": "f69071265203edb0084f136b03bd4fcb42f16911",
+        "author": "Igor Canadi",
+        "date": "2015-03-13T14:45:15-07:00",
+        "message": "Speed up db_bench shutdown\n\nSummary: See t6489044\n\nTest Plan: compiles\n\nReviewers: MarkCallaghan\n\nReviewed By: MarkCallaghan\n\nSubscribers: dhruba, leveldb\n\nDifferential Revision: https://reviews.facebook.net/D34977",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_bench.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/f69071265203edb0084f136b03bd4fcb42f16911",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "~Benchmark"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves speeding up the shutdown process by reducing unnecessary operations or overhead during the termination phase.",
+            "The optimization strategy involves reducing unnecessary cleanup operations during shutdown to speed up the process.",
+            "The optimization strategy involves reducing unnecessary operations during the shutdown phase to speed up the process.",
+            "The optimization strategy involves speeding up the shutdown process by reducing unnecessary operations or overhead during the termination phase of the application.",
+            "The optimization strategy involves speeding up the shutdown process by reducing unnecessary operations or overhead during the termination phase of the benchmark."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves speeding up the shutdown process by reducing unnecessary operations or overhead during the termination phase of the application.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "author": "Sagar Vemuri",
+        "date": "2017-08-05T00:15:35-07:00",
+        "message": "Optimize range-delete aggregator call in merge helper.\n\nSummary:\nIn the condition:\n```\nif (range_del_agg != nullptr &&\n    range_del_agg->ShouldDelete(\n        iter->key(),\n        RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&\n    filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {\n...\n}\n```\nit could be possible that all the work done in `range_del_agg->ShouldDelete` is wasted due to not having the right `filter` value later on.\nInstead, check `filter` value before even calling `range_del_agg->ShouldDelete`, which is a much more involved function.\nCloses https://github.com/facebook/rocksdb/pull/2690\n\nDifferential Revision: D5568931\n\nPulled By: sagar0\n\nfbshipit-source-id: 17512d52360425c7ae9de7675383f5d7bc3dad58",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/merge_helper.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MergeHelper::MergeUntil"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves reordering conditional checks to avoid executing expensive operations when simpler conditions are not met, thereby reducing unnecessary computation.",
+            "The optimization strategy involves reordering conditional checks to evaluate simpler and more likely conditions first, avoiding unnecessary expensive function calls.",
+            "The optimization strategy involves reordering conditional checks to evaluate simpler and more likely conditions first, thereby avoiding unnecessary expensive function calls.",
+            "The optimization strategy involves reordering conditional checks to evaluate simpler conditions first, thereby avoiding unnecessary expensive function calls when possible.",
+            "The optimization strategy involves reordering conditional checks to evaluate simpler conditions first, thereby avoiding unnecessary expensive function calls."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            true,
+            true,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involves reordering conditional checks to evaluate simpler conditions first, thereby avoiding unnecessary expensive function calls.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    },
+    {
+        "hash": "a2de8e52bb6c13baf5f2323eba0ca356f1294f88",
+        "author": "Simon Liu",
+        "date": "2018-11-13T14:39:03-08:00",
+        "message": "optimized the performance of autovector::emplace_back. (#4606)\n\nSummary:\nIt called the autovector::push_back simply in autovector::emplace_back.\nThis was not efficient, and then optimazed this function through the\nperfect forwarding.\n\nThis was the src and result of the benchmark(using the google'benchmark library, the type of elem in\nautovector was std::string, and call emplace_back with the \"char *\" type):\n\nhttps://gist.github.com/monadbobo/93448b89a42737b08cbada81de75c5cd\n\nPS: The benchmark's result of  previous PR was not accurate, and so I update the test case and result.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4606\n\nDifferential Revision: D13046813\n\nPulled By: sagar0\n\nfbshipit-source-id: 19cde1bcadafe899aa454b703acb35737a1cc02d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/autovector.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/a2de8e52bb6c13baf5f2323eba0ca356f1294f88",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "emplace_back"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved replacing a less efficient function call with perfect forwarding to reduce overhead and improve performance in the `emplace_back` method.",
+            "The optimization strategy involved using perfect forwarding in the `emplace_back` function to avoid unnecessary copying or moving of objects, thereby improving performance by directly constructing objects in place.",
+            "The optimization strategy used perfect forwarding to eliminate unnecessary copying or moving of objects when emplacing elements into a container, improving performance by reducing overhead.",
+            "The optimization strategy involved replacing a less efficient function call with perfect forwarding to reduce unnecessary copying and improve performance in the `emplace_back` method.",
+            "The optimization strategy used perfect forwarding to eliminate unnecessary copying or moving of objects, thereby improving the efficiency of the `emplace_back` function in the `autovector` class."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "is_strategy_equivalent": [
+            false,
+            false,
+            false,
+            false,
+            false
+        ],
+        "optimization_summary_final": "The optimization strategy involved using perfect forwarding in the `emplace_back` function to avoid unnecessary copying or moving of objects, thereby improving performance by directly constructing objects in place.",
+        "is_generic_optimization_final": true,
+        "is_strategy_equivalent_final": false
+    }
+]

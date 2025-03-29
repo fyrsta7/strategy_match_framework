@@ -1,0 +1,76 @@
+L1TMuonCaloSumProducer::produce(edm::Event& iEvent, const edm::EventSetup& iSetup)
+{
+  using namespace edm;
+  std::unique_ptr<MuonCaloSumBxCollection> towerSums (new MuonCaloSumBxCollection());
+  std::unique_ptr<MuonCaloSumBxCollection> tower2x2s (new MuonCaloSumBxCollection());
+
+  edm::Handle<CaloTowerBxCollection> caloTowers;
+  // Make sure that you can get genParticles
+  std::map<int, MuonCaloSum> sums;
+  std::map<int, MuonCaloSum> regs;
+
+  if (iEvent.getByToken(m_caloTowerToken, caloTowers)) {
+    for (auto it = caloTowers->begin(0); it != caloTowers->end(0); ++it) {
+      const CaloTower& twr = *it;
+      int hwEta = twr.hwEta(); // Cache hwEta to avoid repeated calls
+      int hwPhi = twr.hwPhi(); // Cache hwPhi to avoid repeated calls
+
+      if (std::abs(hwEta) > 27) {
+        continue;
+      }
+      int ieta2x2 = (hwEta + 27) / 2; // Precompute ieta2x2
+      int iphi2x2 = hwPhi / 2;       // Precompute iphi2x2
+      int muon_idx = iphi2x2 * 28 + ieta2x2;
+      if (regs.count(muon_idx) == 0) {
+        regs[muon_idx] = MuonCaloSum(twr.hwPt(), iphi2x2, ieta2x2, muon_idx);
+      } else {
+        regs.at(muon_idx).setEtBits(regs.at(muon_idx).etBits() + twr.hwPt());
+      }
+
+      for (int ieta = -27; ieta < 28; ++ieta) {
+        int deta = std::abs(ieta - hwEta); // Use cached hwEta
+        int ietamu = (ieta + 27) / 2;     // Precompute ietamu outside inner loop
+        for (int iphi = 0; iphi < 72; ++iphi) {
+          int dphi = iphi - hwPhi; // Use cached hwPhi
+          if (dphi > 36) {
+            dphi -= 72;
+          }
+          if (dphi < -36) {
+            dphi += 72;
+          }
+          dphi = std::abs(dphi);
+          if (deta <= 4 && dphi <= 4) {
+            int iphimu = iphi / 2; // Precompute iphimu
+            int idxmu = iphimu * 28 + ietamu;
+            if (sums.count(idxmu) == 0) {
+              sums[idxmu] = MuonCaloSum(twr.hwPt(), iphimu, ietamu, idxmu);
+            } else {
+              sums.at(idxmu).setEtBits(sums.at(idxmu).etBits() + twr.hwPt());
+            }
+          }
+        }
+      }
+    }
+  } else {
+    LogError("GlobalMuon") << "CaloTowers not found." << std::endl;
+  }
+
+  for (auto it = sums.begin(); it != sums.end(); ++it) {
+    if (it->second.etBits() > 0) {
+      MuonCaloSum sum = MuonCaloSum(it->second);
+      // convert Et to correct scale:
+      if (sum.etBits() > 31) {
+        sum.setEtBits(31);
+      }
+      towerSums->push_back(0, sum);
+    }
+  }
+  for (auto it = regs.begin(); it != regs.end(); ++it) {
+    if (it->second.etBits() > 0) {
+      tower2x2s->push_back(0, it->second);
+    }
+  }
+
+  iEvent.put(std::move(towerSums), "TriggerTowerSums");
+  iEvent.put(std::move(tower2x2s), "TriggerTower2x2s");
+}

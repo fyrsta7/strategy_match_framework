@@ -1,0 +1,274 @@
+void RayCaster::_renderTriangleStrips(int whichPass, long castingMode) const
+{
+    /* Give bx, by, bz type of "unsigned int" for indexBuffer */
+    unsigned int bx = (unsigned int)_userCoordinates.dims[0];
+    unsigned int by = (unsigned int)_userCoordinates.dims[1];
+    unsigned int bz = (unsigned int)_userCoordinates.dims[2];
+    size_t       idx;
+
+    // Each strip will have the same numOfVertices for the first 4 faces
+    size_t        numOfVertices = bx * 2;
+    unsigned int *indexBuffer = new unsigned int[numOfVertices];
+
+    bool attrib1 = false;
+    int *attrib1Buffer = nullptr;
+    if (castingMode == 2 && whichPass == 3) attrib1 = true;
+
+    //
+    // Render front face:
+    //
+    glEnableVertexAttribArray(0);    // attribute 0 is vertex coordinates
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+    glBufferData(GL_ARRAY_BUFFER, bx * by * 3 * sizeof(float), _userCoordinates.frontFace, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+    if (attrib1) {
+        glEnableVertexAttribArray(1);    // attribute 1 is the logical indices
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexAttribId);
+        attrib1Buffer = new int[bx * by * 4];
+    }
+    for (unsigned int y = 0; y < by - 1; y++)    // strip by strip
+    {
+        idx = 0;
+        unsigned int yOffset = y * bx;
+        unsigned int yOffsetNext = (y + 1) * bx;
+        for (unsigned int x = 0; x < bx; x++) {
+            indexBuffer[idx++] = yOffsetNext + x;
+            indexBuffer[idx++] = yOffset + x;
+        }
+        if (attrib1) {
+            for (unsigned int x = 0; x < bx; x++) {
+                unsigned int attribIdx = (yOffsetNext + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = int(y);
+                attrib1Buffer[attribIdx + 2] = int(bz) - 2;
+                attrib1Buffer[attribIdx + 3] = 0;
+                attribIdx = (yOffset + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = int(y);
+                attrib1Buffer[attribIdx + 2] = int(bz) - 2;
+                attrib1Buffer[attribIdx + 3] = 0;
+            }
+            glBufferData(GL_ARRAY_BUFFER, bx * by * 4 * sizeof(int), attrib1Buffer, GL_STREAM_READ);
+            glVertexAttribIPointer(1, 4, GL_INT, 0, (void *)0);
+        }
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numOfVertices * sizeof(unsigned int), indexBuffer, GL_STREAM_READ);
+        glDrawElements(GL_TRIANGLE_STRIP, numOfVertices, GL_UNSIGNED_INT, (void *)0);
+    }
+    if (attrib1) delete[] attrib1Buffer;
+
+    //
+    // Render back face:
+    //
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+    glBufferData(GL_ARRAY_BUFFER, bx * by * 3 * sizeof(float), _userCoordinates.backFace, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+    if (attrib1) {
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexAttribId);
+        attrib1Buffer = new int[bx * by * 4];
+    }
+    for (unsigned int y = 0; y < by - 1; y++)    // strip by strip
+    {
+        idx = 0;
+        unsigned int yOffset = y * bx;
+        unsigned int yOffsetNext = (y + 1) * bx;
+        for (unsigned int x = 0; x < bx; x++) {
+            indexBuffer[idx++] = yOffset + x;
+            indexBuffer[idx++] = yOffsetNext + x;
+        }
+        if (attrib1) {
+            for (unsigned int x = 0; x < bx; x++) {
+                unsigned int attribIdx = (yOffset + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = int(y);
+                attrib1Buffer[attribIdx + 2] = 0;
+                attrib1Buffer[attribIdx + 3] = 1;
+                attribIdx = (yOffsetNext + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = int(y);
+                attrib1Buffer[attribIdx + 2] = 0;
+                attrib1Buffer[attribIdx + 3] = 1;
+            }
+            glBufferData(GL_ARRAY_BUFFER, bx * by * 4 * sizeof(int), attrib1Buffer, GL_STREAM_READ);
+            glVertexAttribIPointer(1, 4, GL_INT, 0, (void *)0);
+        }
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numOfVertices * sizeof(unsigned int), indexBuffer, GL_STREAM_READ);
+        glDrawElements(GL_TRIANGLE_STRIP, numOfVertices, GL_UNSIGNED_INT, (void *)0);
+    }
+    if (attrib1) delete[] attrib1Buffer;
+
+    //
+    // Render top face:
+    //
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+    glBufferData(GL_ARRAY_BUFFER, bx * bz * 3 * sizeof(float), _userCoordinates.topFace, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+    if (attrib1) {
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexAttribId);
+        attrib1Buffer = new int[bx * bz * 4];
+    }
+    for (unsigned int z = 0; z < bz - 1; z++) {
+        idx = 0;
+        unsigned int zOffset = z * bx;
+        unsigned int zOffsetNext = (z + 1) * bx;
+        for (unsigned int x = 0; x < bx; x++) {
+            indexBuffer[idx++] = zOffset + x;
+            indexBuffer[idx++] = zOffsetNext + x;
+        }
+        if (attrib1) {
+            for (unsigned int x = 0; x < bx; x++) {
+                unsigned int attribIdx = (zOffset + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = int(by) - 2;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 2;
+                attribIdx = (zOffsetNext + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = int(by) - 2;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 2;
+            }
+            glBufferData(GL_ARRAY_BUFFER, bx * bz * 4 * sizeof(int), attrib1Buffer, GL_STREAM_READ);
+            glVertexAttribIPointer(1, 4, GL_INT, 0, (void *)0);
+        }
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numOfVertices * sizeof(unsigned int), indexBuffer, GL_STREAM_READ);
+        glDrawElements(GL_TRIANGLE_STRIP, numOfVertices, GL_UNSIGNED_INT, (void *)0);
+    }
+    if (attrib1) delete[] attrib1Buffer;
+
+    //
+    // Render bottom face:
+    //
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+    glBufferData(GL_ARRAY_BUFFER, bx * bz * 3 * sizeof(float), _userCoordinates.bottomFace, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+    if (attrib1) {
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexAttribId);
+        attrib1Buffer = new int[bx * bz * 4];
+    }
+    for (unsigned int z = 0; z < bz - 1; z++) {
+        idx = 0;
+        unsigned int zOffset = z * bx;
+        unsigned int zOffsetNext = (z + 1) * bx;
+        for (unsigned int x = 0; x < bx; x++) {
+            indexBuffer[idx++] = zOffsetNext + x;
+            indexBuffer[idx++] = zOffset + x;
+        }
+        if (attrib1) {
+            for (unsigned int x = 0; x < bx; x++) {
+                unsigned int attribIdx = (zOffsetNext + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = 0;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 3;
+                attribIdx = (zOffset + x) * 4;
+                attrib1Buffer[attribIdx] = int(x) - 1;
+                attrib1Buffer[attribIdx + 1] = 0;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 3;
+            }
+            glBufferData(GL_ARRAY_BUFFER, bx * bz * 4 * sizeof(int), attrib1Buffer, GL_STREAM_READ);
+            glVertexAttribIPointer(1, 4, GL_INT, 0, (void *)0);
+        }
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numOfVertices * sizeof(unsigned int), indexBuffer, GL_STREAM_READ);
+        glDrawElements(GL_TRIANGLE_STRIP, numOfVertices, GL_UNSIGNED_INT, (void *)0);
+    }
+    if (attrib1) delete[] attrib1Buffer;
+
+    // Each strip will have the same numOfVertices for the rest 2 faces.
+    numOfVertices = by * 2;
+    delete[] indexBuffer;
+    indexBuffer = new unsigned int[numOfVertices];
+
+    //
+    // Render right face:
+    //
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+    glBufferData(GL_ARRAY_BUFFER, by * bz * 3 * sizeof(float), _userCoordinates.rightFace, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+    if (attrib1) {
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexAttribId);
+        attrib1Buffer = new int[by * bz * 4];
+    }
+    for (unsigned int z = 0; z < bz - 1; z++) {
+        idx = 0;
+        unsigned int zOffset = z * by;
+        unsigned int zOffsetNext = (z + 1) * by;
+        for (unsigned int y = 0; y < by; y++) {
+            indexBuffer[idx++] = zOffsetNext + y;
+            indexBuffer[idx++] = zOffset + y;
+        }
+        if (attrib1) {
+            for (unsigned int y = 0; y < by; y++) {
+                unsigned int attribIdx = (zOffsetNext + y) * 4;
+                attrib1Buffer[attribIdx] = int(bx) - 2;
+                attrib1Buffer[attribIdx + 1] = int(y) - 1;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 4;
+                attribIdx = (zOffset + y) * 4;
+                attrib1Buffer[attribIdx] = int(bx) - 2;
+                attrib1Buffer[attribIdx + 1] = int(y) - 1;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 4;
+            }
+            glBufferData(GL_ARRAY_BUFFER, by * bz * 4 * sizeof(int), attrib1Buffer, GL_STREAM_READ);
+            glVertexAttribIPointer(1, 4, GL_INT, 0, (void *)0);
+        }
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numOfVertices * sizeof(unsigned int), indexBuffer, GL_STREAM_READ);
+        glDrawElements(GL_TRIANGLE_STRIP, numOfVertices, GL_UNSIGNED_INT, (void *)0);
+    }
+    if (attrib1) delete[] attrib1Buffer;
+
+    //
+    // Render left face
+    //
+    glEnableVertexAttribArray(0);
+    glBindBuffer(GL_ARRAY_BUFFER, _vertexBufferId);
+    glBufferData(GL_ARRAY_BUFFER, by * bz * 3 * sizeof(float), _userCoordinates.leftFace, GL_STATIC_DRAW);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void *)0);
+    if (attrib1) {
+        glEnableVertexAttribArray(1);
+        glBindBuffer(GL_ARRAY_BUFFER, _vertexAttribId);
+        attrib1Buffer = new int[by * bz * 4];
+    }
+    for (unsigned int z = 0; z < bz - 1; z++) {
+        idx = 0;
+        unsigned int zOffset = z * by;
+        unsigned int zOffsetNext = (z + 1) * by;
+        for (unsigned int y = 0; y < by; y++) {
+            indexBuffer[idx++] = zOffset + y;
+            indexBuffer[idx++] = zOffsetNext + y;
+        }
+        if (attrib1) {
+            for (unsigned int y = 0; y < by; y++) {
+                unsigned int attribIdx = (zOffset + y) * 4;
+                attrib1Buffer[attribIdx] = 0;
+                attrib1Buffer[attribIdx + 1] = int(y) - 1;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 5;
+                attribIdx = (zOffsetNext + y) * 4;
+                attrib1Buffer[attribIdx] = 0;
+                attrib1Buffer[attribIdx + 1] = int(y) - 1;
+                attrib1Buffer[attribIdx + 2] = int(z);
+                attrib1Buffer[attribIdx + 3] = 5;
+            }
+            glBufferData(GL_ARRAY_BUFFER, by * bz * 4 * sizeof(int), attrib1Buffer, GL_STREAM_READ);
+            glVertexAttribIPointer(1, 4, GL_INT, 0, (void *)0);
+        }
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numOfVertices * sizeof(unsigned int), indexBuffer, GL_STREAM_READ);
+        glDrawElements(GL_TRIANGLE_STRIP, numOfVertices, GL_UNSIGNED_INT, (void *)0);
+    }
+    if (attrib1) delete[] attrib1Buffer;
+
+    delete[] indexBuffer;
+    glDisableVertexAttribArray(0);
+    glDisableVertexAttribArray(1);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}

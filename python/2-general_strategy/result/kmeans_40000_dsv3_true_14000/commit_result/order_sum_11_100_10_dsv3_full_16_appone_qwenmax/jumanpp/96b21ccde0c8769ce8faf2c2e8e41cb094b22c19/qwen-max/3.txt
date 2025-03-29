@@ -1,0 +1,22 @@
+void HashedFeaturePerceptron::add(util::ArraySlice<float> source,
+                                  util::MutableArraySlice<float> result,
+                                  util::ConstSliceable<u32> ngrams) const {
+  JPP_DCHECK(util::memory::IsPowerOf2(weights_.size()));
+  JPP_DCHECK_EQ(source.size(), result.size());
+  u32 mask = static_cast<u32>(weights_.size() - 1);
+  int prefetch_distance = 4; // Number of iterations to prefetch ahead
+
+  for (int i = 0; i < ngrams.numRows(); ++i) {
+    // Prefetch data for future iterations
+    if (i + prefetch_distance < ngrams.numRows()) {
+      __builtin_prefetch(&source.at(i + prefetch_distance), 0, 1); // Prefetch source
+      __builtin_prefetch(&weights_[ngrams.row(i + prefetch_distance)[0]], 0, 1); // Prefetch weights
+      __builtin_prefetch(&result.at(i + prefetch_distance), 1, 1); // Prefetch result
+    }
+
+    // Perform computation for the current iteration
+    auto src = source.at(i);
+    auto add = impl::computeUnrolled4Perceptron(weights_, ngrams.row(i), mask);
+    result.at(i) = src + add;
+  }
+}

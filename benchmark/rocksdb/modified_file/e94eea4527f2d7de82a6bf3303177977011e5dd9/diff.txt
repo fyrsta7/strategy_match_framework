@@ -1,0 +1,12 @@
+diff --git a/db/write_batch.cc b/db/write_batch.cc
+index c04930bbf..fa01e82db 100644
+--- a/db/write_batch.cc
++++ b/db/write_batch.cc
+@@ -58,7 +58,6 @@ bool WriteBatch::Handler::Continue() {
+ 
+ void WriteBatch::Clear() {
+   rep_.clear();
+-  rep_.resize(kHeader);
+ }
+ 
+ int WriteBatch::Count() const {

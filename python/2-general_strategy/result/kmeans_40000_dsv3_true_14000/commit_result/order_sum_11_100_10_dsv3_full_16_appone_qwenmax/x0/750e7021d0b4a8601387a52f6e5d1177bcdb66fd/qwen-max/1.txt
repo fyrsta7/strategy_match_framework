@@ -1,0 +1,5 @@
+void set_mapping(Flow::Value& result, const x0::Params& args)
+	{
+		for (const auto& arg : args)
+			addMapping(arg);
+	}

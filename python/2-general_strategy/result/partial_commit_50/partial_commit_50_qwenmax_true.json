@@ -1,0 +1,562 @@
+[
+    {
+        "hash": "873f1356a1781e8d638973ea320b722d3240fc5a",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "db_ttl_impl.h: pass func parameter by reference\n\nFix for:\n\n[utilities/ttl/db_ttl_impl.h:209]: (performance) Function parameter\n 'merge_op' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/ttl/db_ttl_impl.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/873f1356a1781e8d638973ea320b722d3240fc5a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "TtlMergeOperator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "55652043c83c463ce57b7748e01c6d12bb5bf9fe",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-10-01T10:49:08+02:00",
+        "message": "table/cuckoo_table_reader.cc: pass func parameter by reference\n\nFix for:\n\n[table/cuckoo_table_reader.cc:196]: (performance) Function\n parameter 'target' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/cuckoo_table_reader.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/55652043c83c463ce57b7748e01c6d12bb5bf9fe",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BucketComparator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "53910ddb152fbcba95a3e04b058a997c40f654ae",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:31+02:00",
+        "message": "db_test.cc: pass parameter by reference\n\nFix for:\n\n[db/db_test.cc:6141]: (performance) Function parameter\n 'key' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/db_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/53910ddb152fbcba95a3e04b058a997c40f654ae",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "convertKey"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+        "author": "Changli Gao",
+        "date": "2017-01-11T10:54:37-08:00",
+        "message": "Performance: Iterate vector by reference\n\nSummary: Closes https://github.com/facebook/rocksdb/pull/1763\n\nDifferential Revision: D4398796\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: b82636d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/event_helpers.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "EventHelpers::LogAndNotifyTableFileDeletion"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved iterating over a vector by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved iterating over a vector by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved iterating over a vector by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved iterating over a vector by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved iterating over a vector by reference instead of by value to reduce copy overhead."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved iterating over a vector by reference instead of by value to reduce copy overhead.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "8558457143bfa76d61e0d2f715e40ec2ddb6ffc2",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "ldb_cmd_execute_result.h: perform init in initialization list\n\nFix for:\n\n[util/ldb_cmd_execute_result.h:18]: (performance) Variable 'message_'\n is assigned in constructor body. Consider performing initialization\n in initialization list.\n[util/ldb_cmd_execute_result.h:23]: (performance) Variable 'message_'\n is assigned in constructor body. Consider performing initialization\n in initialization list.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/ldb_cmd_execute_result.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/8558457143bfa76d61e0d2f715e40ec2ddb6ffc2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "LDBCommandExecuteResult"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved moving variable initialization from the constructor body to the initialization list to improve performance by avoiding unnecessary default construction and assignment.",
+            "The optimization strategy involved moving variable initialization from the constructor body to the initialization list to improve performance by reducing unnecessary assignments.",
+            "The optimization strategy involved moving variable initialization from the constructor body to the initialization list to improve performance by reducing unnecessary assignments.",
+            "The optimization strategy involved moving variable initialization from the constructor body to the initialization list to improve performance by reducing unnecessary assignments.",
+            "The optimization strategy involved moving variable initialization from the constructor body to the initialization list to improve performance by avoiding unnecessary default construction and assignment."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved moving variable initialization from the constructor body to the initialization list to improve performance by reducing unnecessary assignments.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "4704833357a8609e7c42df4f337f938a8e870c08",
+        "author": "jsteemann",
+        "date": "2015-09-18T20:20:32+02:00",
+        "message": "pass input string to WriteBatch() by const reference\n\nthis may lead to copying less data (in case compilers don't\noptimize away copying the string by themselves)",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/rocksdb/write_batch.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/4704833357a8609e7c42df4f337f938a8e870c08",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "WriteBatch"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves passing a string to the WriteBatch constructor by const reference instead of by value to reduce unnecessary data copying.",
+            "The optimization strategy involves passing an input string to the WriteBatch constructor by const reference to avoid unnecessary copying of the string data.",
+            "The optimization strategy involves passing an input string to the `WriteBatch()` constructor by const reference to avoid unnecessary data copying.",
+            "The optimization strategy involves passing an input string to the `WriteBatch` constructor by const reference to avoid unnecessary data copying.",
+            "The optimization strategy involves passing an input string to the WriteBatch constructor by const reference to avoid unnecessary copying of the string data."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves passing an input string to the `WriteBatch` constructor by const reference to avoid unnecessary data copying.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "82e8e9e26bb16d1af07a26741bcf63d8342e4336",
+        "author": "JiYou",
+        "date": "2018-09-14T19:43:04-07:00",
+        "message": "VersionBuilder: optmize SaveTo() to linear time. (#4366)\n\nSummary:\nBecause `base_files` and `added_files` both are sorted, using a merge\noperation to these two sorted arrays is more effective. The complexity\nis reduced to linear time.\n\n    - optmize the merge complexity.\n    - move the `NDEBUG` of sorted `added_files` out of merge process.\n\nSigned-off-by: JiYou <jiyou09@gmail.com>\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4366\n\nDifferential Revision: D9833592\n\nPulled By: ajkr\n\nfbshipit-source-id: dd32b67ebdca4c20e5e9546ab8082cecefe99fd0",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_builder.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/82e8e9e26bb16d1af07a26741bcf63d8342e4336",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SaveTo"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy used a merge operation on two sorted arrays to reduce the time complexity of the `SaveTo()` function to linear time.",
+            "The optimization strategy used a merge operation on two sorted arrays to reduce the time complexity of the `SaveTo()` function to linear time.",
+            "The optimization strategy used a merge operation on two sorted arrays to reduce the time complexity of the `SaveTo()` function to linear time.",
+            "The optimization strategy used is replacing a potentially quadratic-time merge operation with a linear-time merge by leveraging the fact that both input arrays are sorted.",
+            "The optimization strategy used a merge operation on two sorted arrays to reduce the time complexity of the `SaveTo()` function to linear time."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy used a merge operation on two sorted arrays to reduce the time complexity of the `SaveTo()` function to linear time.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "93548ce8f451a701ad0967ba705f04fef80aa11a",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "table/cuckoo_table_reader.cc: pass func parameter by ref\n\nFix for:\n\n[table/cuckoo_table_reader.cc:198]: (performance) Function\n parameter 'file_data' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/cuckoo_table_reader.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/93548ce8f451a701ad0967ba705f04fef80aa11a",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "BucketComparator"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying of data.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying of data.",
+            "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying of data."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying of data.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "b8b7117e97e649fc65d0a4dd397caf9a39fb71b1",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:31+02:00",
+        "message": "db/version_set.cc: use !empty() instead of 'size() > 0'\n\nUse empty() since it should be prefered as it has, following\nthe standard, a constant time complexity regardless of the\ncontainter type. The same is not guaranteed for size().\n\nFix for:\n[db/version_set.cc:2250]: (performance) Possible inefficient\n checking for 'column_families_not_found' emptiness.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_set.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/b8b7117e97e649fc65d0a4dd397caf9a39fb71b1",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "VersionSet::Recover"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking container emptiness.",
+            "The optimization replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking container emptiness.",
+            "The optimization replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking container emptiness, as `empty()` is more efficient and adheres to standard guarantees.",
+            "The optimization replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking container emptiness, as mandated by the C++ standard.",
+            "The optimization replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking container emptiness."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking container emptiness.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "92ad4a88f3199b013532b37d6598c442319355a5",
+        "author": "Changyu Bi",
+        "date": "2024-08-27T13:57:40-07:00",
+        "message": "Small CPU optimization in InlineSkipList::Insert() (#12975)\n\nSummary:\nreuse decode key in more places to avoid decoding length prefixed key x->Key().\n\nPull Request resolved: https://github.com/facebook/rocksdb/pull/12975\n\nTest Plan:\nran benchmarks simultaneously for \"before\" and \"after\"\n* fillseq:\n```\n(for I in $(seq 1 50); do ./db_bench --benchmarks=fillseq --disable_auto_compactions=1 --min_write_buffer_number_to_merge=100 --max_write_buffer_number=1000  --write_buffer_size=268435456 --num=5000000 --seed=1723056275 --disable_wal=1 2>&1 | grep \"fillseq\"\ndone;) | awk '{ t += $5; c++; print } END { printf (\"%9.3f\\n\", 1.0 * t / c) }';\n\nbefore: 1483191\nafter: 1490555 (+0.5%)\n```\n\n* fillrandom:\n```\n(for I in $(seq 1 2); do ./db_bench_imain --benchmarks=fillrandom --disable_auto_compactions=1 --min_write_buffer_number_to_merge=100 --max_write_buffer_number=1000  --write_buffer_size=268435456 --num=2500000 --seed=1723056275 --disable_wal=1 2>&1 | grep \"fillrandom\"\n\nbefore: 255463\nafter: 256128 (+0.26%)\n```\n\nReviewed By: anand1976\n\nDifferential Revision: D61835340\n\nPulled By: cbi42\n\nfbshipit-source-id: 70345510720e348bacd51269acb5d2dd5a62bf0a",
+        "modified_files_count": 1,
+        "modified_files": [
+            "memtable/inlineskiplist.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/92ad4a88f3199b013532b37d6598c442319355a5",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "compare_"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization avoids redundant decoding of length-prefixed keys by reusing the decoded key in multiple places within the InlineSkipList::Insert() function.",
+            "The optimization strategy involved reusing a decoded key to avoid repeatedly decoding the same length-prefixed key in InlineSkipList::Insert().",
+            "The optimization strategy involved reusing a decoded key to avoid repeatedly decoding the same length-prefixed key in InlineSkipList::Insert().",
+            "The optimization strategy involved reusing a decoded key to avoid repeatedly decoding the same length-prefixed key in InlineSkipList::Insert().",
+            "The optimization strategy involved reusing a decoded key to avoid repeatedly decoding the same length-prefixed key in InlineSkipList::Insert()."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved reusing a decoded key to avoid repeatedly decoding the same length-prefixed key in InlineSkipList::Insert().",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "43c789c8f246a2a35864e3fca9585b55c40c2095",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "spatialdb/spatial_db.cc: use !empty() instead of 'size() > 0'\n\nUse empty() since it should be prefered as it has, following\nthe standard, a constant time complexity regardless of the\ncontainter type. The same is not guaranteed for size().\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "utilities/spatialdb/spatial_db.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/43c789c8f246a2a35864e3fca9585b55c40c2095",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SpatialIndexCursor"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking if a container is non-empty, as mandated by the C++ standard.",
+            "The optimization strategy replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking if a container is non-empty, as mandated by the C++ standard.",
+            "The optimization strategy replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking if a container is non-empty, as mandated by the C++ standard.",
+            "The optimization strategy replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking if a container is non-empty, as mandated by the C++ standard.",
+            "The optimization strategy replaced `size() > 0` with `!empty()` to ensure constant-time complexity for checking if a container is non-empty, as mandated by the C++ standard."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy replaces `size() > 0` with `!empty()` to ensure constant-time complexity for checking if a container is non-empty, as mandated by the C++ standard.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "68ca534169a4f9e1930f6511109e973b43cf5998",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:31+02:00",
+        "message": "corruption_test.cc: pass parameter by reference\n\nFix for:\n\n[db/corruption_test.cc:134]: (performance) Function parameter\n 'fname' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/corruption_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/68ca534169a4f9e1930f6511109e973b43cf5998",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CorruptFile"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying of the parameter.",
+            "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "063471bf7613544496a4d4b5a1e1ba4a7aa605cf",
+        "author": "Danny Al-Gaaf",
+        "date": "2014-09-30T23:30:32+02:00",
+        "message": "table/table_test.cc: pass func parameter by reference\n\nFix for:\n\n[table/table_test.cc:1218]: (performance) Function parameter\n 'prefix' should be passed by reference.\n\nSigned-off-by: Danny Al-Gaaf <danny.al-gaaf@bisect.de>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "table/table_test.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/063471bf7613544496a4d4b5a1e1ba4a7aa605cf",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "AddInternalKey"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+            "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "b8cea7cc279fe609de85b7ce4f50d4ff4f90047f",
+        "author": "Changli Gao",
+        "date": "2017-10-17T10:12:37-07:00",
+        "message": "VersionBuilder: Erase with iterators for better performance\n\nSummary: Closes https://github.com/facebook/rocksdb/pull/3007\n\nDifferential Revision: D6077701\n\nPulled By: yiwu-arbug\n\nfbshipit-source-id: a6fd5b8a23f4feb1660b9ce027f651a7e90352b3",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/version_builder.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/b8cea7cc279fe609de85b7ce4f50d4ff4f90047f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "Apply"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involved replacing erase operations with iterator-based erase to reduce overhead and improve performance.",
+            "The optimization strategy involved replacing erase operations with iterator-based erase to reduce overhead and improve performance.",
+            "The optimization strategy involved replacing erase operations with iterator-based erase to improve performance by avoiding unnecessary lookups.",
+            "The optimization strategy involved replacing erase operations with iterator-based erase to improve performance by avoiding unnecessary lookups or copies.",
+            "The optimization strategy involved replacing erase operations with iterator-based erase to improve performance by avoiding unnecessary lookups or shifts."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved replacing erase operations with iterator-based erase to improve performance by avoiding unnecessary lookups or shifts.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "a2de8e52bb6c13baf5f2323eba0ca356f1294f88",
+        "author": "Simon Liu",
+        "date": "2018-11-13T14:39:03-08:00",
+        "message": "optimized the performance of autovector::emplace_back. (#4606)\n\nSummary:\nIt called the autovector::push_back simply in autovector::emplace_back.\nThis was not efficient, and then optimazed this function through the\nperfect forwarding.\n\nThis was the src and result of the benchmark(using the google'benchmark library, the type of elem in\nautovector was std::string, and call emplace_back with the \"char *\" type):\n\nhttps://gist.github.com/monadbobo/93448b89a42737b08cbada81de75c5cd\n\nPS: The benchmark's result of  previous PR was not accurate, and so I update the test case and result.\nPull Request resolved: https://github.com/facebook/rocksdb/pull/4606\n\nDifferential Revision: D13046813\n\nPulled By: sagar0\n\nfbshipit-source-id: 19cde1bcadafe899aa454b703acb35737a1cc02d",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util/autovector.h"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/a2de8e52bb6c13baf5f2323eba0ca356f1294f88",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "emplace_back"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy replaced an inefficient `push_back` call in `emplace_back` with perfect forwarding to reduce unnecessary object copies and improve performance.",
+            "The optimization strategy involved replacing an inefficient `push_back` call in `emplace_back` with perfect forwarding to reduce unnecessary copies and improve performance.",
+            "The optimization strategy replaced an inefficient `push_back` call in `emplace_back` with perfect forwarding to reduce unnecessary copies and improve performance.",
+            "The optimization strategy involved replacing an inefficient `push_back` call with perfect forwarding in the `emplace_back` function to reduce unnecessary overhead.",
+            "The optimization strategy involved replacing an inefficient `push_back` call in `emplace_back` with perfect forwarding to reduce unnecessary copies and improve performance."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involved replacing an inefficient `push_back` call in `emplace_back` with perfect forwarding to reduce unnecessary copies and improve performance.",
+        "is_generic_optimization_final": true
+    },
+    {
+        "hash": "20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "author": "Sagar Vemuri",
+        "date": "2017-08-05T00:15:35-07:00",
+        "message": "Optimize range-delete aggregator call in merge helper.\n\nSummary:\nIn the condition:\n```\nif (range_del_agg != nullptr &&\n    range_del_agg->ShouldDelete(\n        iter->key(),\n        RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&\n    filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {\n...\n}\n```\nit could be possible that all the work done in `range_del_agg->ShouldDelete` is wasted due to not having the right `filter` value later on.\nInstead, check `filter` value before even calling `range_del_agg->ShouldDelete`, which is a much more involved function.\nCloses https://github.com/facebook/rocksdb/pull/2690\n\nDifferential Revision: D5568931\n\nPulled By: sagar0\n\nfbshipit-source-id: 17512d52360425c7ae9de7675383f5d7bc3dad58",
+        "modified_files_count": 1,
+        "modified_files": [
+            "db/merge_helper.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "MergeHelper::MergeUntil"
+        ],
+        "is_opt_ds_simple": "true",
+        "repository_name": "rocksdb",
+        "optimization_summary": [
+            "The optimization strategy involves reordering conditional checks to evaluate a less computationally expensive condition first, avoiding unnecessary calls to a more expensive function.",
+            "The optimization strategy involves reordering condition checks to evaluate a less computationally expensive condition first, avoiding unnecessary calls to a more expensive function.",
+            "The optimization strategy involves reordering conditional checks to evaluate a less computationally expensive condition first, avoiding unnecessary calls to a more complex function.",
+            "The optimization strategy involves reordering conditional checks to evaluate a less computationally expensive condition first, avoiding unnecessary calls to a more expensive function.",
+            "The optimization strategy involves reordering conditional checks to evaluate a less computationally expensive condition first, avoiding unnecessary calls to a more expensive function."
+        ],
+        "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+        ],
+        "optimization_summary_final": "The optimization strategy involves reordering conditional checks to evaluate a less computationally expensive condition first, avoiding unnecessary calls to a more expensive function.",
+        "is_generic_optimization_final": true
+    }
+]

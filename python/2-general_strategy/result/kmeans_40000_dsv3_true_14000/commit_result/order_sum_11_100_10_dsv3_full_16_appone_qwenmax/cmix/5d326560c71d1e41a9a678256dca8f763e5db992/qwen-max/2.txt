@@ -1,0 +1,28 @@
+void ByteMixer::ByteUpdate() {
+  for (size_t index = 0; index < states_[1].size() - 1; ++index) {
+    int input_index = states_[0].size() - states_[1].size() + index;
+    states_[0][input_index] = states_[1][index];
+  }
+  for (size_t layer = 0; layer < weights_.size(); ++layer) {
+    int offset = layer + 1;
+    size_t layer_size = states_[layer].size(); // Precompute layer size
+    for (size_t neuron = 0; neuron < weights_[layer].size(); ++neuron) {
+      float x1 = 0, x2 = 0, x3 = 0, x4 = 0;
+      size_t weight = 0;
+      const float* neuron_weights = weights_[layer][neuron]; // Cache neuron weights
+      for (; weight < layer_size - 3; weight += 4) {
+        x1 += states_[layer][weight] * neuron_weights[weight];
+        x2 += states_[layer][weight+1] * neuron_weights[weight+1];
+        x3 += states_[layer][weight+2] * neuron_weights[weight+2];
+        x4 += states_[layer][weight+3] * neuron_weights[weight+3];
+      }
+      states_[offset][neuron] = x1 + x2 + x3 + x4;
+      for (; weight < layer_size; ++weight) {
+        states_[offset][neuron] += states_[layer][weight] * neuron_weights[weight];
+      }
+      states_[offset][neuron] = logistic_.Squash(states_[offset][neuron]);
+    }
+  }
+  probs_ = states_[states_.size() - 1];
+  ByteModel::ByteUpdate();
+}

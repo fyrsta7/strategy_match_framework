@@ -1,0 +1,92 @@
+//--------------------------------------------------------------
+void ftFluidFlow::update(float _deltaTime) {
+    // Precompute constants to avoid repeated calculations
+    const float timeStep = _deltaTime * speed.get() * simulationWidth;
+    const float dissipationVelValue = 1.0f - dissipationVel.get();
+    const float viscosityValue = viscosity.get();
+    const float vorticityValue = vorticity.get();
+    const float smokeSigmaValue = smokeSigma.get();
+    const float smokeWeightValue = smokeWeight.get();
+    const float dissipationDenValue = 1.0f - dissipationDen.get();
+    const float dissipationPrsValue = 1.0f - dissipationPrs.get();
+    const int numJacobiIterationsValue = numJacobiIterations.get();
+
+    ofPushStyle();
+    ofEnableBlendMode(OF_BLENDMODE_DISABLED);
+
+    ftPingPongFbo& velocityFbo = inputFbo;
+    ftPingPongFbo& densityFbo = outputFbo;
+
+    // ADVECT
+    velocityFbo.swap();
+    advectShader.update(velocityFbo, velocityFbo.getBackTexture(), velocityFbo.getBackTexture(), timeStep, dissipationVelValue);
+    velocityFbo.swap();
+    applyObstacleShader.update(velocityFbo, velocityFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), -1.0);
+
+    // ADD FORCES: DIFFUSE
+    if (viscosityValue > 0.0f) {
+        for (int i = 0; i < numJacobiIterationsValue; ++i) {
+            velocityFbo.swap();
+            diffuseShader.update(velocityFbo, velocityFbo.getBackTexture(), viscosityValue);
+        }
+        velocityFbo.swap();
+        applyObstacleShader.update(velocityFbo, velocityFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), -1.0);
+    }
+
+    // ADD FORCES: VORTEX CONFINEMENT
+    if (vorticityValue > 0.0f) {
+        vorticityVelocityShader.update(vorticityVelocityFbo, velocityFbo.getTexture());
+        vorticityConfinementShader.update(vorticityConfinementFbo, vorticityVelocityFbo.getTexture(), timeStep, vorticityValue);
+        addVelocity(vorticityConfinementFbo.getTexture());
+        velocityFbo.swap();
+        applyObstacleShader.update(velocityFbo, velocityFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), -1.0);
+    }
+
+    // ADD FORCES: SMOKE BUOYANCY
+    if (smokeSigmaValue > 0.0f && smokeWeightValue > 0.0f) {
+        temperatureFbo.swap();
+        advectShader.update(temperatureFbo, temperatureFbo.getBackTexture(), velocityFbo.getTexture(), timeStep, dissipationDenValue);
+        temperatureFbo.swap();
+        clampLengthShader.update(temperatureFbo, temperatureFbo.getBackTexture(), 2.0f, 1.0f);
+        temperatureFbo.swap();
+        applyObstacleShader.update(temperatureFbo, temperatureFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), 1.0f);
+        ftUtil::zero(smokeBuoyancyFbo);
+        smokeBuoyancyShader.update(smokeBuoyancyFbo, temperatureFbo.getTexture(), densityFbo.getTexture(),
+                                   ambientTemperature.get(), timeStep, smokeSigmaValue, smokeWeightValue, gravity.get());
+        addVelocity(smokeBuoyancyFbo.getTexture());
+        velocityFbo.swap();
+        applyObstacleShader.update(velocityFbo, velocityFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), -1.0);
+    } else {
+        ftUtil::zero(temperatureFbo);
+    }
+
+    // PRESSURE: DIVERGENCE
+    ftUtil::zero(divergenceFbo);
+    divergenceShader.update(divergenceFbo, velocityFbo.getTexture());
+
+    // PRESSURE: JACOBI
+    pressureFbo.swap();
+    multiplyForceShader.update(pressureFbo, pressureFbo.getBackTexture(), dissipationPrsValue);
+    for (int i = 0; i < numJacobiIterationsValue; ++i) {
+        pressureFbo.swap();
+        jacobiShader.update(pressureFbo, pressureFbo.getBackTexture(), divergenceFbo.getTexture());
+        pressureFbo.swap();
+        applyObstacleShader.update(pressureFbo, pressureFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), 1.0f);
+    }
+
+    // PRESSURE: SUBSTRACT GRADIENT
+    velocityFbo.swap();
+    substractGradientShader.update(velocityFbo, velocityFbo.getBackTexture(), pressureFbo.getTexture());
+    velocityFbo.swap();
+    applyObstacleShader.update(velocityFbo, velocityFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), -1.0);
+
+    // DENSITY
+    densityFbo.swap();
+    advectShader.update(densityFbo, densityFbo.getBackTexture(), velocityFbo.getTexture(), timeStep, dissipationDenValue);
+    densityFbo.swap();
+    clampLengthShader.update(densityFbo, densityFbo.getBackTexture(), sqrt(3.0f), 1.0f);
+    densityFbo.swap();
+    applyObstacleShader.update(densityFbo, densityFbo.getBackTexture(), obstacleOffsetFbo.getTexture(), 1.0f);
+
+    ofPopStyle();
+}

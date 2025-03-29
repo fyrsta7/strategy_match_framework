@@ -1,0 +1,3 @@
+void WriteBatch::Clear() {
+  rep_.resize(kHeader);
+}

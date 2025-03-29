@@ -1,0 +1,1828 @@
+{
+  "metadata": {
+    "min_cluster_size": 24,
+    "total_clusters": 2,
+    "clusters_with_summaries": 2,
+    "missing_summaries_count": 0
+  },
+  "combined_clusters": [
+    {
+      "cluster_id": "237",
+      "size": 24,
+      "repositories_distribution": {
+        "qt-creator": 1,
+        "pinba2": 1,
+        "atomspace": 1,
+        "Kratos": 1,
+        "kicad-source-mirror": 1,
+        "mc": 1,
+        "CuraEngine": 1,
+        "sparselizard": 1,
+        "kdevelop": 1,
+        "freeminer": 1,
+        "scap-workbench": 1,
+        "TML": 1,
+        "z3": 1,
+        "overte": 1,
+        "pacemaker": 1,
+        "synfig": 1,
+        "filmulator-gui": 1,
+        "blender": 1,
+        "QGIS": 1,
+        "mlterm": 1,
+        "mythtv": 1,
+        "wcdb": 1,
+        "swipl-devel": 1,
+        "cmus": 1
+      },
+      "generic_ratio": 1.0,
+      "summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **reducing redundant computations by caching or reusing previously computed results**, such as block positions, delta values, or variable mappings, to improve performance.",
+        "code_examples": [
+          [
+            "// Before\nforeach (const SemanticInfo::Use &use, semanticInfo.typeUsages) {\n    QTextCursor cursor(document());\n    cursor.setPosition(document()->findBlockByNumber(use.line - 1).position() + use.column - 1);\n    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, use.length);\n    QTextEdit::ExtraSelection sel;\n    sel.cursor = cursor;\n    typeSelections.append(sel);\n}",
+            "// After\nQTextBlock currentBlock = document()->firstBlock();\nunsigned currentLine = 1;\nforeach (const SemanticInfo::Use &use, semanticInfo.typeUsages) {\n    QTextCursor cursor(document());\n    if (currentLine != use.line) {\n        int delta = use.line - currentLine;\n        if (delta >= 0) {\n            while (delta--)\n                currentBlock = currentBlock.next();\n        } else {\n            currentBlock = document()->findBlockByNumber(use.line - 1);\n        }\n        currentLine = use.line;\n    }\n    cursor.setPosition(currentBlock.position() + use.column - 1);\n    cursor.movePosition(QTextCursor::NextCharacter, QTextCursor::KeepAnchor, use.length);\n    QTextEdit::ExtraSelection sel;\n    sel.cursor = cursor;\n    typeSelections.append(sel);\n}"
+          ],
+          [
+            "// Before\nvoid get_model(std::unordered_map<var_index, mpq> & variable_values) const {\n    mpq delta = mpq(1, 2);\n    lean_assert(m_status == OPTIMAL);\n    unsigned i;\n    do {\n        delta = m_mpq_lar_core_solver.find_delta_for_strict_bounds(delta);\n        std::unordered_set<impq> set_of_different_pairs;\n        std::unordered_set<mpq> set_of_different_singles;\n        for (i = 0; i < m_mpq_lar_core_solver.m_r_x.size(); i++ ) {\n            const numeric_pair<mpq> & rp = m_mpq_lar_core_solver.m_r_x[i];\n            set_of_different_pairs.insert(rp);\n        }\n    } while (false);\n}",
+            "// After\nvoid get_model(std::unordered_map<var_index, mpq> & variable_values) const {\n    mpq delta = m_mpq_lar_core_solver.find_delta_for_strict_bounds(mpq(1, 2));\n    lean_assert(m_status == OPTIMAL);\n    unsigned i;\n    do {\n        std::unordered_set<impq> set_of_different_pairs;\n        std::unordered_set<mpq> set_of_different_singles;\n        for (i = 0; i < m_mpq_lar_core_solver.m_r_x.size(); i++ ) {\n            const numeric_pair<mpq> & rp = m_mpq_lar_core_solver.m_r_x[i];\n            set_of_different_pairs.insert(rp);\n        }\n    } while (false);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains repeated computations of the same value or state within a loop or iterative process.",
+          "The code involves expensive operations (e.g., searching, parsing, or complex calculations) that can be avoided by reusing prior results.",
+          "The code operates on data structures or variables that remain unchanged or predictable across multiple iterations or function calls."
+        ]
+      },
+      "commits": [
+        {
+          "repository_name": "atomspace",
+          "hash": "ddaeb8fdb16d1c06974bdf1f0b90a02aaf7b50dc",
+          "author": "Linas Vepstas",
+          "date": "2019-05-30T13:32:17-05:00",
+          "message": "Minor performan improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "opencog/atoms/execution/Instantiator.cc"
+          ],
+          "github_commit_url": "https://github.com/opencog/atomspace/commit/ddaeb8fdb16d1c06974bdf1f0b90a02aaf7b50dc",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "Instantiator::reduce_exout"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reordering operations to minimize redundant computations within the function.",
+            "The optimization strategy involved reordering operations to minimize redundant computations within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "Kratos",
+          "hash": "e8cb97ab35eb1d2a8c28e367e38d5d47681c19d2",
+          "author": "maceli",
+          "date": "2013-11-21T15:12:07+00:00",
+          "message": "DEM application speed improvements",
+          "modified_files_count": 1,
+          "modified_files": [
+            "applications/DEM_application/custom_elements/spheric_continuum_particle.cpp"
+          ],
+          "github_commit_url": "https://github.com/KratosMultiphysics/Kratos/commit/e8cb97ab35eb1d2a8c28e367e38d5d47681c19d2",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "SphericContinuumParticle::ComputeNewNeighboursHistoricalData"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "kicad-source-mirror",
+          "hash": "90bc5c19cf07284789eb567c6e7925dae28c17b2",
+          "author": "Jeff Young",
+          "date": "2022-09-16T19:16:15+01:00",
+          "message": "Performance enhancement for zone filling.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "pcbnew/zone.cpp"
+          ],
+          "github_commit_url": "https://github.com/KiCad/kicad-source-mirror/commit/90bc5c19cf07284789eb567c6e7925dae28c17b2",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ZONE::GetInteractingZones"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results of expensive operations within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results of expensive operations within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "mc",
+          "hash": "5b96caa5f0ceb13a889918e457b79e937d490620",
+          "author": "Andrew Borodin",
+          "date": "2010-02-15T16:10:02+00:00",
+          "message": "Optimization of extfs_get_path_from_entry() function.\n\nSigned-off-by: Andrew Borodin <aborodin@vmail.ru>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "lib/vfs/mc-vfs/extfs.c"
+          ],
+          "github_commit_url": "https://github.com/MidnightCommander/mc/commit/5b96caa5f0ceb13a889918e457b79e937d490620",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "extfs_get_path_from_entry"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "CuraEngine",
+          "hash": "693774fcfb880220c0bd5928810be01bd3c93a8b",
+          "author": "Lipu Fei",
+          "date": "2017-07-07T11:03:58+02:00",
+          "message": "Optimize SupportLayer::excludeAreasFromSupportInfillAreas()\n\nCURA-2724",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/sliceDataStorage.cpp"
+          ],
+          "github_commit_url": "https://github.com/Ultimaker/CuraEngine/commit/693774fcfb880220c0bd5928810be01bd3c93a8b",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "SupportLayer::excludeAreasFromSupportInfillAreas"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "sparselizard",
+          "hash": "280d40b3e06d8bb8ec4af35823802f1823511ad5",
+          "author": "Alexandre Halbach",
+          "date": "2021-03-08T08:57:42+02:00",
+          "message": "minor speedup defineinneroverlapinterfaces",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/mesh/dtracker.cpp"
+          ],
+          "github_commit_url": "https://github.com/halbux/sparselizard/commit/280d40b3e06d8bb8ec4af35823802f1823511ad5",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "dtracker::defineinneroverlapinterfaces"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved replacing a linear search with a hash-based lookup to reduce the time complexity of identifying inner overlap interfaces.",
+            "The optimization strategy involved replacing a linear search with a hash-based lookup to reduce the time complexity of identifying overlapping interfaces.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "freeminer",
+          "hash": "7aa1c2053ee40f7c4e212e14b7c7114da3cb564c",
+          "author": "proller",
+          "date": "2014-11-29T05:45:24+03:00",
+          "message": "Faster MapNode create",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/mapblock_mesh.cpp"
+          ],
+          "github_commit_url": "https://github.com/freeminer/freeminer/commit/7aa1c2053ee40f7c4e212e14b7c7114da3cb564c",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "MeshMakeData::fillSingleNode"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved replacing a loop with direct indexing to reduce iteration overhead.",
+            "The optimization strategy involved reducing unnecessary object creations by reusing existing objects in the loop.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "scap-workbench",
+          "hash": "662b8840899f3efdd2df9e99f6fad48e0dac11af",
+          "author": "Martin Preisler",
+          "date": "2014-01-10T17:39:15+01:00",
+          "message": "Slight speedup when refreshing selected rules preview with tons of items",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/MainWindow.cpp"
+          ],
+          "github_commit_url": "https://github.com/OpenSCAP/scap-workbench/commit/662b8840899f3efdd2df9e99f6fad48e0dac11af",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "MainWindow::refreshSelectedRulesTree"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations or unnecessary updates when refreshing the selected rules preview in a large dataset.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations or unnecessary updates when refreshing the selected rules preview in a scenario with many items.",
+            "The optimization strategy involved reducing redundant computations by caching results of expensive operations within the function."
+          ],
+          "is_generic_optimization": [
+            false,
+            true,
+            true,
+            false,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "overte",
+          "hash": "738e1267abc5e472706e1b9b757ed0a099dadd18",
+          "author": "Andrew Meadows",
+          "date": "2018-03-30T13:18:32-07:00",
+          "message": "small optimization in EntitySimulation::changeEntity()",
+          "modified_files_count": 1,
+          "modified_files": [
+            "libraries/entities/src/EntitySimulation.cpp"
+          ],
+          "github_commit_url": "https://github.com/overte-org/overte/commit/738e1267abc5e472706e1b9b757ed0a099dadd18",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the `EntitySimulation::changeEntity()` function.",
+            "The optimization strategy involved reducing redundant computations by caching the result of a function call that was previously computed multiple times within the same function.",
+            "The optimization strategy involved reducing redundant computations by caching a frequently accessed value within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "pacemaker",
+          "hash": "b30404216b4b9a06eb45cd6bdff31692eac795bc",
+          "author": "Andrew Beekhof",
+          "date": "2008-07-07T12:27:25+02:00",
+          "message": "Low: cib: Optimize activateCibXml\n\nMercurial revision: dfaec18cf1085a15798c80c901a5022e2ebc0c49",
+          "modified_files_count": 1,
+          "modified_files": [
+            "cib/io.c"
+          ],
+          "github_commit_url": "https://github.com/ClusterLabs/pacemaker/commit/b30404216b4b9a06eb45cd6bdff31692eac795bc",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "activateCibXml"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant XML parsing operations by caching and reusing parsed data within the `activateCibXml` function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant operations within the `activateCibXml` function to improve its execution efficiency."
+          ],
+          "is_generic_optimization": [
+            true,
+            false,
+            true,
+            true,
+            false
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "synfig",
+          "hash": "e194811d4fe7762a747232616cd5c18b182dd12d",
+          "author": "Rodolfo Ribeiro Gomes",
+          "date": "2020-06-08T19:51:11+07:00",
+          "message": "minor efficiency improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "synfig-core/src/synfig/valuenodes/valuenode_bone.cpp"
+          ],
+          "github_commit_url": "https://github.com/synfig/synfig/commit/e194811d4fe7762a747232616cd5c18b182dd12d",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ValueNode_Bone::get_bones_referenced_by"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved replacing a linear search with a hash-based lookup to improve the efficiency of finding referenced bones.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved replacing a linear search with a hash-based lookup to improve the efficiency of identifying referenced bones.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "filmulator-gui",
+          "hash": "40dded02876edb5aea528f8dfc3a6a3791c9e9ee",
+          "author": "heckflosse",
+          "date": "2019-06-23T16:41:13+02:00",
+          "message": "Another small speedup",
+          "modified_files_count": 1,
+          "modified_files": [
+            "filmulator-gui/ui/filmImageProvider.cpp"
+          ],
+          "github_commit_url": "https://github.com/CarVac/filmulator-gui/commit/40dded02876edb5aea528f8dfc3a6a3791c9e9ee",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "FilmImageProvider::requestImage"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching intermediate results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "QGIS",
+          "hash": "6e3d45e6aa8a78e23b61e28911b209bff68735d1",
+          "author": "nirvn",
+          "date": "2020-12-10T08:27:04+10:00",
+          "message": "Further optimization of originalXmlProperties",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/core/layertree/qgslayertreeutils.cpp"
+          ],
+          "github_commit_url": "https://github.com/qgis/QGIS/commit/6e3d45e6aa8a78e23b61e28911b209bff68735d1",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "QgsLayerTreeUtils::storeOriginalLayersProperties"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "mlterm",
+          "hash": "2ae772bca1d23565588b31520a6e44071bff32eb",
+          "author": "arakiken",
+          "date": "2002-03-17T12:12:40+00:00",
+          "message": "minor optimization in bidi_visual_line",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/ml_logical_visual.c"
+          ],
+          "github_commit_url": "https://github.com/arakiken/mlterm/commit/2ae772bca1d23565588b31520a6e44071bff32eb",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "bidi_visual_line"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "wcdb",
+          "hash": "08db922512b091e19a825dfc3d439957a0250c32",
+          "author": "sanhuazhang",
+          "date": "2019-06-08T19:18:03+08:00",
+          "message": "Performance opti for non-primary table",
+          "modified_files_count": 1,
+          "modified_files": [
+            "apple/objc/core/migration/MigrationInfo.cpp"
+          ],
+          "github_commit_url": "https://github.com/Tencent/wcdb/commit/08db922512b091e19a825dfc3d439957a0250c32",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "MigrationInfo::MigrationInfo"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing unnecessary computations or memory usage during the initialization of non-primary table migrations by restructuring or streamlining the logic in the `MigrationInfo` constructor.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            false,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "swipl-devel",
+          "hash": "40e2f0e980b1d705007a4b233a75cf068134b2d4",
+          "author": "Jan Wielemaker",
+          "date": "2011-05-18T10:41:31+02:00",
+          "message": "Small speedup in downskip_combine_garbage()",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/pl-gc.c"
+          ],
+          "github_commit_url": "https://github.com/SWI-Prolog/swipl-devel/commit/40e2f0e980b1d705007a4b233a75cf068134b2d4",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "sweep_global_mark"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reordering and simplifying conditional checks to reduce unnecessary computations during garbage collection.",
+            "The optimization strategy involved reordering and simplifying conditional checks to reduce unnecessary computations during garbage collection.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations within the `sweep_global_mark` function by caching and reusing results.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "cmus",
+          "hash": "6b5d525ea70a4e375093bf89532d414b222cb072",
+          "author": "Gregory Petrosyan",
+          "date": "2013-08-12T15:08:25+04:00",
+          "message": "ui_curses: optimize fill_track_fopts_track_info() a bit\n\nSigned-off-by: Gregory Petrosyan <gregory.petrosyan@gmail.com>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "ui_curses.c"
+          ],
+          "github_commit_url": "https://github.com/cmus/cmus/commit/6b5d525ea70a4e375093bf89532d414b222cb072",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "fill_track_fopts_track_info"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9677605628967285
+        },
+        {
+          "repository_name": "pinba2",
+          "hash": "77d4eb75f9adf6f49fa413eb9b097ec0f407fc06",
+          "author": "Anton Povarov",
+          "date": "2017-05-26T16:37:06+03:00",
+          "message": "minor stats optimization",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/report_by_timer.cpp"
+          ],
+          "github_commit_url": "https://github.com/badoo/pinba2/commit/77d4eb75f9adf6f49fa413eb9b097ec0f407fc06",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "merge_ticks_into_data"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9536620378494263
+        },
+        {
+          "repository_name": "mythtv",
+          "hash": "675d6056101df20d0213d210c0b542d69eb705b2",
+          "author": "John Patrick Poet",
+          "date": "2012-02-04T18:30:44-07:00",
+          "message": "MythUI: Optimize a case in MythUIText::GetNarrowWidth",
+          "modified_files_count": 1,
+          "modified_files": [
+            "mythtv/libs/libmythui/mythuitext.cpp"
+          ],
+          "github_commit_url": "https://github.com/MythTV/mythtv/commit/675d6056101df20d0213d210c0b542d69eb705b2",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "MythUIText::GetNarrowWidth"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing unnecessary computations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9378856420516968
+        },
+        {
+          "repository_name": "blender",
+          "hash": "f1ad2ab85f6fc800a1d250d9f43a844c7da145eb",
+          "author": "Bastien Montagne",
+          "date": "2016-11-11T23:17:52+01:00",
+          "message": "Minor optimization to BKE_library_tag_unused_linked_data().",
+          "modified_files_count": 1,
+          "modified_files": [
+            "source/blender/blenkernel/intern/library_query.c"
+          ],
+          "github_commit_url": "https://github.com/blender/blender/commit/f1ad2ab85f6fc800a1d250d9f43a844c7da145eb",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "blocks"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization avoids unnecessary iterations by tagging unused linked data more efficiently.",
+            "The optimization strategy involved reducing redundant iterations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant iterations by caching and reusing results within the function.",
+            "The optimization strategy involved reducing redundant iterations by tagging unused linked data more efficiently.",
+            "The optimization strategy involved reducing redundant iterations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            false,
+            true,
+            true,
+            false,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant iterations by caching and reusing results within the function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.8967399597167969
+        },
+        {
+          "repository_name": "kdevelop",
+          "hash": "989dd43c059a3d8a7031dd9b9da60df4c7cf2e88",
+          "author": "Roberto Raggi",
+          "date": "2003-04-25T16:12:27+00:00",
+          "message": "another performance improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "parts/cppsupport/cppcodecompletion.cpp"
+          ],
+          "github_commit_url": "https://github.com/KDE/kdevelop/commit/989dd43c059a3d8a7031dd9b9da60df4c7cf2e88",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "CppCodeCompletion::completeText"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations within the completion logic by caching or precomputing results.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the completion function.",
+            "The optimization strategy involved reducing redundant computations within the `completeText` function by caching and reusing results.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the completion function.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the completion function."
+          ],
+          "is_generic_optimization": [
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results within the completion function.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.8654157519340515
+        },
+        {
+          "repository_name": "TML",
+          "hash": "3d3764bfb2239f3e71009d615e86f828275e57d3",
+          "author": "DraganNSDK",
+          "date": "2019-09-15T00:14:09+02:00",
+          "message": "optimization for repeating vars...",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/tables.cpp"
+          ],
+          "github_commit_url": "https://github.com/IDNI/TML/commit/3d3764bfb2239f3e71009d615e86f828275e57d3",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "tables::get_alt_range"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to avoid redundant computations for repeating variables.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results for repeating variables.",
+            "The optimization strategy involved restructuring the logic for handling repeating variables to reduce redundant computations.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results for repeating variables.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results for repeating variables."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results for repeating variables.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.8535948991775513
+        },
+        {
+          "repository_name": "z3",
+          "hash": "95f86ae2c0533231880c49ba00b56bc1800cda0a",
+          "author": "Lev Nachmanson",
+          "date": "2017-08-03T11:03:52-07:00",
+          "message": "more efficient lar_solver::get_model\n\nSigned-off-by: Lev Nachmanson <levnach@microsoft.com>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/util/lp/lar_solver.h"
+          ],
+          "github_commit_url": "https://github.com/Z3Prover/z3/commit/95f86ae2c0533231880c49ba00b56bc1800cda0a",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "get_model"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations within the `get_model` function by caching and reusing results.",
+            "The optimization strategy involved reducing redundant computations within the `get_model` function by caching or reusing previously computed results.",
+            "The optimization strategy involved reducing redundant computations within the `get_model` function by caching or reusing previously computed results.",
+            "The optimization strategy involved reducing redundant computations within the `get_model` function by caching or reusing previously computed results.",
+            "The optimization strategy involved reducing redundant computations within the `get_model` function by caching or reusing previously computed results."
+          ],
+          "is_generic_optimization": [
+            true,
+            false,
+            true,
+            false,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations within the `get_model` function by caching or reusing previously computed results.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.8107277154922485
+        },
+        {
+          "repository_name": "qt-creator",
+          "hash": "65780999820b2be8c2a373ec4a6896c9b805dc3e",
+          "author": "Roberto Raggi",
+          "date": "2010-05-26T12:35:40+02:00",
+          "message": "Speedup the creation of the extra selections.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/plugins/cppeditor/cppeditor.cpp"
+          ],
+          "github_commit_url": "https://github.com/qt-creator/qt-creator/commit/65780999820b2be8c2a373ec4a6896c9b805dc3e",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "CPPEditor::updateSemanticInfo"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved reducing redundant computations by caching and reusing results during the creation of extra selections.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results during the creation of extra selections.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results during the creation of extra selections.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results during the creation of extra selections.",
+            "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            false,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing redundant computations by caching and reusing results during the creation of extra selections.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.8025044798851013
+        }
+      ]
+    },
+    {
+      "cluster_id": "196",
+      "size": 24,
+      "repositories_distribution": {
+        "mfem": 1,
+        "synfig": 1,
+        "oneDNN": 1,
+        "primecount": 2,
+        "vvflow": 1,
+        "apultra": 1,
+        "mkp224o": 1,
+        "lzsa": 1,
+        "fastllm": 1,
+        "libvpx": 1,
+        "helm": 1,
+        "RawTherapee": 1,
+        "vroom": 1,
+        "mantid": 1,
+        "cmix": 1,
+        "embree": 1,
+        "haiku": 1,
+        "cmssw": 1,
+        "chrono": 1,
+        "pico_headers": 1,
+        "ttk": 1,
+        "ginkgo": 1,
+        "Mergen": 1
+      },
+      "generic_ratio": 1.0,
+      "summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **restructuring loops and data access patterns to reduce redundant computations and improve cache locality**, achieved through techniques like loop unrolling, eliminating unnecessary conditionals, and using efficient data structures for lookups.",
+        "code_examples": [
+          [
+            "// Before\nint64_t pi_deleglise_rivat(int64_t x, int threads)\n{\n  if (threads <= 1)\n    return pi_deleglise_rivat2(x);\n\n  return pi_deleglise_rivat_parallel2(x, threads);\n}",
+            "// After\nint64_t pi_deleglise_rivat(int64_t x, int threads)\n{\n  return pi_deleglise_rivat_parallel2(x, threads);\n}"
+          ],
+          [
+            "// Before\nif (std::find(visited_used.begin(), visited_used.end(), opInst) == visited_used.end()) {\n  worklist.push_back(opInst);\n}",
+            "// After\nif (visited_used_set.insert(inst).second) {\n  worklist.push_back(opInst);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains loops with repeated calculations or redundant conditionals that can be minimized or eliminated.",
+          "The code exhibits poor cache locality due to inefficient data access patterns or large working sets.",
+          "The code relies on linear searches or inefficient data structures for lookups that can be replaced with faster alternatives."
+        ]
+      },
+      "commits": [
+        {
+          "repository_name": "oneDNN",
+          "hash": "067537345efba6535af480de300607e8551b3ee8",
+          "author": "Kalinin, Andrey",
+          "date": "2016-11-24T07:54:34+03:00",
+          "message": "fixup: improve simple Sum performance",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/cpu/cpu_simple_sum.hpp"
+          ],
+          "github_commit_url": "https://github.com/oneapi-src/oneDNN/commit/067537345efba6535af480de300607e8551b3ee8",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "execute"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "repository_name": "primecount",
+          "hash": "b041d6dfe1675571a92324bb662e9c591885f3e8",
+          "author": "Kim Walisch",
+          "date": "2014-05-18T11:04:59-07:00",
+          "message": "Speed improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/pi_lmo_parallel3.cpp"
+          ],
+          "github_commit_url": "https://github.com/kimwalisch/primecount/commit/b041d6dfe1675571a92324bb662e9c591885f3e8",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "S2"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved reducing redundant computations by caching intermediate results within the S2 function.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "repository_name": "apultra",
+          "hash": "df182659ba51329b4f62f413e876186311fc47a2",
+          "author": "Emmanuel Marty",
+          "date": "2020-07-27T12:43:24+02:00",
+          "message": "Compress another 5% faster",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/shrink.c"
+          ],
+          "github_commit_url": "https://github.com/emmanuel-marty/apultra/commit/df182659ba51329b4f62f413e876186311fc47a2",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "apultra_optimize_forward"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "repository_name": "lzsa",
+          "hash": "26a64de95ebad874b19b7fb0db17875bb3197e2e",
+          "author": "Emmanuel Marty",
+          "date": "2020-03-24T12:04:25+01:00",
+          "message": "Compress LZSA2 faster",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/shrink_block_v2.c"
+          ],
+          "github_commit_url": "https://github.com/emmanuel-marty/lzsa/commit/26a64de95ebad874b19b7fb0db17875bb3197e2e",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "lzsa_optimize_forward_v2"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "hash": "4d99a416016bb55967e87d42172f01080c33e109",
+          "author": "huangyuyang",
+          "date": "2023-06-14T20:14:10+08:00",
+          "message": "speedup",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/chatglm.cpp"
+          ],
+          "github_commit_url": "https://github.com/ztxz16/fastllm/commit/4d99a416016bb55967e87d42172f01080c33e109",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ChatGLMModel::ForwardBatch"
+          ],
+          "is_opt_ds": "true",
+          "is_opt_ds_simple": "true",
+          "repository_name": "fastllm",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "hash": "2b838d9081b597825f37f1816514cc9820f47097",
+          "author": "Yunqing Wang",
+          "date": "2018-10-17T23:11:46+00:00",
+          "message": "Merge \"Optimize vp9_highbd_temporal_filter_apply_c\"",
+          "modified_files_count": 1,
+          "modified_files": [
+            "vp9/encoder/vp9_temporal_filter.c"
+          ],
+          "github_commit_url": "https://github.com/webmproject/libvpx/commit/2b838d9081b597825f37f1816514cc9820f47097",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "vp9_highbd_temporal_filter_apply_c"
+          ],
+          "is_opt_ds_simple": "true",
+          "repository_name": "libvpx",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant calculations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "repository_name": "haiku",
+          "hash": "39d21577394e851a38cff95c704a589a17bbd894",
+          "author": "beveloper",
+          "date": "2004-02-15T16:21:30+00:00",
+          "message": "slightly faster again. amazing.\n\n\ngit-svn-id: file:///srv/svn/repos/haiku/trunk/current@6595 a95241bf-73f2-0310-859d-f6bbb57e9c96",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/add-ons/media/plugins/avcodec/gfx_conv_c.cpp"
+          ],
+          "github_commit_url": "https://github.com/haiku/haiku/commit/39d21577394e851a38cff95c704a589a17bbd894",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "gfx_conv_yuv420p_rgb32_c"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant calculations and improve cache locality.",
+            "The optimization strategy involved reordering operations to reduce redundant computations within the pixel conversion loop.",
+            "The optimization strategy involved reordering operations to reduce redundant computations within the pixel conversion loop.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "repository_name": "cmssw",
+          "hash": "592711b38dbdf9f12bbfd1af789951f672fcfac8",
+          "author": "Andrea",
+          "date": "2021-01-20T11:48:59+01:00",
+          "message": "Minor updates to improve performance",
+          "modified_files_count": 1,
+          "modified_files": [
+            "RecoMET/METAlgorithms/src/METSignificance.cc"
+          ],
+          "github_commit_url": "https://github.com/cms-sw/cmssw/commit/592711b38dbdf9f12bbfd1af789951f672fcfac8",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "metsig::METSignificance::getCovariance"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved replacing a nested loop structure with a more efficient single-loop implementation to reduce computational overhead.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant calculations and improve cache locality.",
+            "The optimization strategy involved restructuring the computation of covariance to reduce redundant calculations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "hash": "d197deb982db4f08280270b000e4753c6a92c110",
+          "author": "Alessandro Tasora",
+          "date": "2016-10-01T00:27:40+02:00",
+          "message": "Optimize the SCM computation loop.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/chrono_vehicle/terrain/DeformableTerrain.cpp"
+          ],
+          "github_commit_url": "https://github.com/projectchrono/chrono/commit/d197deb982db4f08280270b000e4753c6a92c110",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "DeformableSoil::ComputeInternalForces"
+          ],
+          "is_opt_qwen_plus": "true",
+          "is_opt_ds": "false",
+          "is_opt_ds_simple": "true",
+          "repository_name": "chrono",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality by reordering memory access patterns.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "hash": "96747650535a66d2041f2c0261801e7b03a0c707",
+          "author": "James McLean",
+          "date": "2021-12-31T14:09:22-05:00",
+          "message": "Optimization for pm_t2_inv",
+          "modified_files_count": 1,
+          "modified_files": [
+            "pico_ml.h"
+          ],
+          "github_commit_url": "https://github.com/empyreanx/pico_headers/commit/96747650535a66d2041f2c0261801e7b03a0c707",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "pm_t2_inv"
+          ],
+          "is_opt_ds_simple": "true",
+          "repository_name": "pico_headers",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations inside the loop body.",
+            "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce redundant calculations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations within the `pm_t2_inv` function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9920953512191772
+        },
+        {
+          "hash": "9139d302fbbfd1c2e97a708bb358622c6616a097",
+          "author": "cathugger",
+          "date": "2019-01-19T14:10:56+00:00",
+          "message": "optimize deterministic worker",
+          "modified_files_count": 1,
+          "modified_files": [
+            "main.c"
+          ],
+          "github_commit_url": "https://github.com/cathugger/mkp224o/commit/9139d302fbbfd1c2e97a708bb358622c6616a097",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "DOFILTER"
+          ],
+          "is_opt_ds": "false",
+          "is_opt_ds_simple": "true",
+          "repository_name": "mkp224o",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved reducing redundant computations within the DOFILTER function by caching intermediate results.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9911563992500305
+        },
+        {
+          "repository_name": "vroom",
+          "hash": "8b16c133497666f155391103c14e8fbd3df69d5a",
+          "author": "mfunk",
+          "date": "2018-05-03T17:38:27+02:00",
+          "message": "Speed up parallel_clustering",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/problems/cvrp/heuristics/clustering.cpp"
+          ],
+          "github_commit_url": "https://github.com/VROOM-Project/vroom/commit/8b16c133497666f155391103c14e8fbd3df69d5a",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "clustering::parallel_clustering"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9911563992500305
+        },
+        {
+          "repository_name": "mantid",
+          "hash": "1d48558bbe1c7b35bb5c376e0b7a95e6f71b673f",
+          "author": "Dimitar Tasev",
+          "date": "2016-10-04T13:04:41+01:00",
+          "message": "Re #17678 260% performance improvement in Transpose",
+          "modified_files_count": 1,
+          "modified_files": [
+            "Framework/Algorithms/src/Transpose.cpp"
+          ],
+          "github_commit_url": "https://github.com/mantidproject/mantid/commit/1d48558bbe1c7b35bb5c376e0b7a95e6f71b673f",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "Transpose::exec"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9911563992500305
+        },
+        {
+          "repository_name": "cmix",
+          "hash": "5d326560c71d1e41a9a678256dca8f763e5db992",
+          "author": "Byron Knoll",
+          "date": "2016-04-18T18:45:25-07:00",
+          "message": "performance improvement",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/mixer/byte-mixer.cpp"
+          ],
+          "github_commit_url": "https://github.com/byronknoll/cmix/commit/5d326560c71d1e41a9a678256dca8f763e5db992",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ByteMixer::ByteUpdate"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9911563992500305
+        },
+        {
+          "repository_name": "ttk",
+          "hash": "eebc6df80933613a344901fb5a4464e967580f03",
+          "author": "Pierre Guillou",
+          "date": "2021-03-10T14:59:50+01:00",
+          "message": "[OneSkeleton] Improve buildEdgeList performance",
+          "modified_files_count": 1,
+          "modified_files": [
+            "core/base/skeleton/OneSkeleton.cpp"
+          ],
+          "github_commit_url": "https://github.com/topology-tool-kit/ttk/commit/eebc6df80933613a344901fb5a4464e967580f03",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9911563992500305
+        },
+        {
+          "repository_name": "ginkgo",
+          "hash": "e78c7dedb5cc5dc9fea96f9e08c50f4444b7e8f8",
+          "author": "Fritz Goebel",
+          "date": "2019-04-05T13:55:04+02:00",
+          "message": "currently fastest version of step 1",
+          "modified_files_count": 1,
+          "modified_files": [
+            "omp/solver/gmres_kernels.cpp"
+          ],
+          "github_commit_url": "https://github.com/ginkgo-project/ginkgo/commit/e78c7dedb5cc5dc9fea96f9e08c50f4444b7e8f8",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "finish_arnoldi"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9911563992500305
+        },
+        {
+          "repository_name": "mfem",
+          "hash": "fec23b8291925cf5756e29902fb0b09e5486a820",
+          "author": "arotem3",
+          "date": "2023-06-16T13:36:32-07:00",
+          "message": "prelim optimization of dg diffusion pa",
+          "modified_files_count": 1,
+          "modified_files": [
+            "fem/bilininteg_dgdiffusion_pa.cpp"
+          ],
+          "github_commit_url": "https://github.com/mfem/mfem/commit/fec23b8291925cf5756e29902fb0b09e5486a820",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "mfem::forall"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations within the DG diffusion PA implementation.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations within the DG diffusion PA implementation.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            false,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9806452393531799
+        },
+        {
+          "repository_name": "vvflow",
+          "hash": "a7202781e902e8bc1ebcb48f33616d362fdd6d36",
+          "author": "Yaroslav Dynnikov",
+          "date": "2017-01-27T00:26:08+03:00",
+          "message": "[enh] trying to speed up FillMatrix\n\n\nFormer-commit-id: 85c0f9215ab8e51f330b1d3badbe0bfdeb1b1875",
+          "modified_files_count": 1,
+          "modified_files": [
+            "source/modules/convectivefast.cpp"
+          ],
+          "github_commit_url": "https://github.com/vvflow/vvflow/commit/a7202781e902e8bc1ebcb48f33616d362fdd6d36",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "convectivefast::FillMatrix"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9806452393531799
+        },
+        {
+          "repository_name": "RawTherapee",
+          "hash": "a053f38059c1af3cd1d8d411351955356623cc2e",
+          "author": "heckflosse",
+          "date": "2016-03-24T13:40:16+01:00",
+          "message": "11% speedup for xtrans demosaic",
+          "modified_files_count": 1,
+          "modified_files": [
+            "rtengine/demosaic_algos.cc"
+          ],
+          "github_commit_url": "https://github.com/RawTherapee/RawTherapee/commit/a053f38059c1af3cd1d8d411351955356623cc2e",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "RawImageSource::xtrans_interpolate"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality during the X-Trans demosaicing process.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality during the X-Trans demosaicing process."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop iterations to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9806452393531799
+        },
+        {
+          "repository_name": "synfig",
+          "hash": "7346dc28ed79485aeb4807421013694f2a0ae129",
+          "author": "Ivan Mahonin",
+          "date": "2015-10-06T11:32:02+06:00",
+          "message": "Optimize work cycles of TaskSurfaceResampleSW",
+          "modified_files_count": 1,
+          "modified_files": [
+            "synfig-core/src/synfig/rendering/software/task/tasksurfaceresamplesw.cpp"
+          ],
+          "github_commit_url": "https://github.com/synfig/synfig/commit/7346dc28ed79485aeb4807421013694f2a0ae129",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "TaskSurfaceResampleSW::run"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop iterations to reduce redundant calculations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iterations to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved reducing redundant computations within the TaskSurfaceResampleSW::run function by caching and reusing intermediate results.",
+            "The optimization strategy involved reducing redundant computations within the TaskSurfaceResampleSW::run function by caching and reusing intermediate results.",
+            "The optimization strategy involved restructuring the loop iterations to minimize redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop iterations to minimize redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9806399345397949
+        },
+        {
+          "repository_name": "Mergen",
+          "hash": "85a62971f85448990231efd9356a7744c240f1c6",
+          "author": "G0lge",
+          "date": "2024-06-11T20:42:11+03:00",
+          "message": "improve solvepath speed",
+          "modified_files_count": 1,
+          "modified_files": [
+            "lifter/PathSolver.cpp"
+          ],
+          "github_commit_url": "https://github.com/NaC-L/Mergen/commit/85a62971f85448990231efd9356a7744c240f1c6",
+          "contains_optimization_keyword": true,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop iteration to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the path-solving algorithm to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop iteration to reduce redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop logic to minimize redundant computations and improve iteration efficiency.",
+            "The optimization strategy involved restructuring the loop iteration to reduce redundant computations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            false,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop iteration to reduce redundant computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9791417121887207
+        },
+        {
+          "repository_name": "primecount",
+          "hash": "464753eef12f1db730bdadee22f2d74b4eb2a93a",
+          "author": "Kim Walisch",
+          "date": "2015-01-03T23:01:47+01:00",
+          "message": "Improved single thread performance",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/primecount.cpp"
+          ],
+          "github_commit_url": "https://github.com/kimwalisch/primecount/commit/464753eef12f1db730bdadee22f2d74b4eb2a93a",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "pi_deleglise_rivat"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations within the pi_deleglise_rivat function.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to reduce unnecessary computations within the pi_deleglise_rivat function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to reduce unnecessary computations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9764069318771362
+        },
+        {
+          "repository_name": "helm",
+          "hash": "a93658a4581b445e3fe5bf17512c4a3c14bd4692",
+          "author": "mtytel",
+          "date": "2017-05-02T12:15:33-04:00",
+          "message": "Faster envelope.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/envelope.cpp"
+          ],
+          "github_commit_url": "https://github.com/mtytel/helm/commit/a93658a4581b445e3fe5bf17512c4a3c14bd4692",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "Envelope::process"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9723731279373169
+        },
+        {
+          "repository_name": "embree",
+          "hash": "92959f3cb8a9cd7fb4a2404b9bd68befb9719193",
+          "author": "Sven Woop",
+          "date": "2015-05-20T10:26:33+02:00",
+          "message": "performance bugfix in feature_adaptive_eval.h",
+          "modified_files_count": 1,
+          "modified_files": [
+            "kernels/common/subdiv/feature_adaptive_eval.h"
+          ],
+          "github_commit_url": "https://github.com/RenderKit/embree/commit/92959f3cb8a9cd7fb4a2404b9bd68befb9719193",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "feature_adaptive_point_eval"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved restructuring the loop to avoid redundant calculations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant computations and improve cache locality.",
+            "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved restructuring the loop to minimize redundant calculations and improve cache locality.",
+          "is_generic_optimization_final": true,
+          "authority_score": 0.9723731279373169
+        }
+      ]
+    }
+  ]
+}

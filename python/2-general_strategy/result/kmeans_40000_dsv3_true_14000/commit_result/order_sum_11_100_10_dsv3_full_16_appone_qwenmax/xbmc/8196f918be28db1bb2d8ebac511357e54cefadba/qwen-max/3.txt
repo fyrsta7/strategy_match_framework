@@ -1,0 +1,22 @@
+void CSubtitlesSettings::SettingOptionsSubtitleFontsFiller(const SettingConstPtr& setting,
+                                                           std::vector<StringSettingOption>& list,
+                                                           std::string& current,
+                                                           void* data)
+{
+  // From application system fonts folder we add the default font only
+  std::string defaultFontPath =
+      URIUtils::AddFileToFolder("special://xbmc/media/Fonts/", UTILS::FONT::FONT_DEFAULT_FILENAME);
+  if (XFILE::CFile::Exists(defaultFontPath))
+  {
+    std::string familyName = UTILS::FONT::GetFontFamily(defaultFontPath);
+    if (!familyName.empty())
+    {
+      list.emplace_back(g_localizeStrings.Get(571) + " " + familyName, FONT_DEFAULT_FAMILYNAME);
+    }
+  }
+  // Add additionals fonts from the user fonts folder
+  for (const std::string& familyName : g_fontManager.GetUserFontsFamilyNames())
+  {
+    list.emplace_back(familyName, familyName);
+  }
+}

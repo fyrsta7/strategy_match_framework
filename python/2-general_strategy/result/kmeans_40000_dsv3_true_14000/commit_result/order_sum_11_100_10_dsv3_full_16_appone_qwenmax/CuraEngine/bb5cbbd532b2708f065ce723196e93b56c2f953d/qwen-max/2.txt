@@ -1,0 +1,28 @@
+void FffGcodeWriter::addMeshLayerToGCode_meshSurfaceMode(const SliceDataStorage& storage, const SliceMeshStorage& mesh, const PathConfigStorage::MeshPathConfigs& mesh_config, LayerPlan& gcode_layer) const
+{
+    if (gcode_layer.getLayerNr() > mesh.layer_nr_max_filled_layer)
+    {
+        return;
+    }
+
+    if (mesh.getSettingBoolean("anti_overhang_mesh") || mesh.getSettingBoolean("support_mesh"))
+    {
+        return;
+    }
+
+    setExtruder_addPrime(storage, gcode_layer, mesh.getSettingAsExtruderNr("wall_0_extruder_nr"));
+
+    const SliceLayer* layer = &mesh.layers[gcode_layer.getLayerNr()];
+
+
+    Polygons polygons;
+    for (const SliceLayerPart& part : layer->parts) // Changed from 'SliceLayerPart part' to 'const SliceLayerPart& part' to avoid unnecessary copies
+    {
+        polygons.add(part.outline);
+    }
+
+    ZSeamConfig z_seam_config(mesh.getSettingAsZSeamType("z_seam_type"), mesh.getZSeamHint(), mesh.getSettingAsZSeamCornerPrefType("z_seam_corner"));
+    gcode_layer.addPolygonsByOptimizer(polygons, mesh_config.inset0_config, nullptr, z_seam_config, mesh.getSettingInMicrons("wall_0_wipe_dist"), getSettingBoolean("magic_spiralize"));
+
+    addMeshOpenPolyLinesToGCode(mesh, mesh_config, gcode_layer);
+}

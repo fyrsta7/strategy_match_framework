@@ -1,0 +1,8 @@
+void WriteBatch::Clear() {
+  if (rep_.size() > kHeader) {
+    rep_.resize(kHeader);
+  } else {
+    rep_.clear();
+    rep_.resize(kHeader);
+  }
+}

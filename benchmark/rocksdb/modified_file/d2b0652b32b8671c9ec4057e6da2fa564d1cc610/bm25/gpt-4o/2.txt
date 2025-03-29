@@ -1,0 +1,76 @@
+Status DBImpl::DeleteFilesInRanges(ColumnFamilyHandle* column_family,
+                                   const RangePtr* ranges, size_t n,
+                                   bool include_end) {
+  const ReadOptions read_options;
+  Status status = Status::OK();
+  auto cfh = static_cast_with_check<ColumnFamilyHandleImpl>(column_family);
+  ColumnFamilyData* cfd = cfh->cfd();
+  VersionEdit edit;
+  std::set<FileMetaData*> deleted_files;
+  JobContext job_context(next_job_id_.fetch_add(1), true);
+
+  InstrumentedMutexLock l(&mutex_);
+  Version* input_version = cfd->current();
+  auto* vstorage = input_version->storage_info();
+  auto* user_comparator = cfd->user_comparator();
+  auto* mutable_cf_options = cfd->GetLatestMutableCFOptions();
+
+  for (size_t r = 0; r < n; r++) {
+    auto begin = ranges[r].start, end = ranges[r].limit;
+    for (int i = 1; i < cfd->NumberLevels(); i++) {
+      if (vstorage->LevelFiles(i).empty() ||
+          !vstorage->OverlapInLevel(i, begin, end)) {
+        continue;
+      }
+      std::vector<FileMetaData*> level_files;
+      InternalKey begin_storage, end_storage, *begin_key = nullptr, *end_key = nullptr;
+      if (begin) {
+        begin_storage.SetMinPossibleForUserKey(*begin);
+        begin_key = &begin_storage;
+      }
+      if (end) {
+        end_storage.SetMaxPossibleForUserKey(*end);
+        end_key = &end_storage;
+      }
+
+      vstorage->GetCleanInputsWithinInterval(
+          i, begin_key, end_key, &level_files, -1, nullptr);
+
+      for (auto* level_file : level_files) {
+        if (level_file->being_compacted || 
+            deleted_files.count(level_file) > 0 ||
+            (!include_end && end && user_comparator->Compare(level_file->largest.user_key(), *end) == 0)) {
+          continue;
+        }
+        edit.SetColumnFamily(cfd->GetID());
+        edit.DeleteFile(i, level_file->fd.GetNumber());
+        deleted_files.insert(level_file);
+        level_file->being_compacted = true;
+      }
+      vstorage->ComputeCompactionScore(*cfd->ioptions(), *mutable_cf_options);
+    }
+  }
+
+  if (edit.GetDeletedFiles().empty()) {
+    job_context.Clean();
+    return status;
+  }
+
+  input_version->Ref();
+  status = versions_->LogAndApply(cfd, *mutable_cf_options, read_options, &edit, &mutex_, directories_.GetDbDir());
+  if (status.ok()) {
+    InstallSuperVersionAndScheduleWork(cfd, &job_context.superversion_contexts[0], *mutable_cf_options);
+  }
+  for (auto* deleted_file : deleted_files) {
+    deleted_file->being_compacted = false;
+  }
+  input_version->Unref();
+  FindObsoleteFiles(&job_context, false);
+
+  LogFlush(immutable_db_options_.info_log);
+  if (job_context.HaveSomethingToDelete()) {
+    PurgeObsoleteFiles(job_context);
+  }
+  job_context.Clean();
+  return status;
+}

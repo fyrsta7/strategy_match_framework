@@ -1,0 +1,15 @@
+bool searchForChildSymbol(const T& root, const QString& searchString, bool exact = true)
+{
+    if (exact && root.symbol.symbol == searchString) {
+        return true;
+    } else if (!exact && root.symbol.symbol.contains(searchString)) {
+        return true;
+    } else {
+        for (const auto& entry : root.children) {
+            if (searchForChildSymbol(entry, searchString, exact)) {
+                return true;
+            }
+        }
+    }
+    return false;
+}

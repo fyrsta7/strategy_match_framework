@@ -1,0 +1,88 @@
+static void dt_heal_laplace_loop(float *pixels, const int width, const int height,
+                                 const float *const mask)
+{
+  int nmask = 0;
+  int nmask2 = 0;
+
+  float *Adiag = dt_alloc_align_float((size_t)width * height);
+  int *Aidx = dt_alloc_align(64, sizeof(int) * 5 * width * height);
+
+  if((Adiag == NULL) || (Aidx == NULL))
+  {
+    fprintf(stderr, "dt_heal_laplace_loop: error allocating memory for healing\n");
+    goto cleanup;
+  }
+
+  /* All off-diagonal elements of A are either -1 or 0. We could store it as a
+   * general-purpose sparse matrix, but that adds some unnecessary overhead to
+   * the inner loop. Instead, assume exactly 4 off-diagonal elements in each
+   * row, all of which have value -1. Any row that in fact wants less than 4
+   * coefs can put them in a dummy column to be multiplied by an empty pixel.
+   */
+  const int zero = 4 * width * height;
+  memset(pixels + zero, 0, sizeof(float) * 4);
+
+  /* Construct the system of equations.
+   * Arrange Aidx in checkerboard order, so that a single linear pass over that
+   * array results updating all of the red cells and then all of the black cells.
+   */
+  for(int parity = 0; parity < 2; parity++)
+  {
+    if(parity == 1) nmask2 = nmask;
+
+    for(int i = 0; i < height; i++)
+    {
+      // Precompute boundary conditions for the current row
+      const int is_top = (i == 0);
+      const int is_bottom = (i == height - 1);
+
+      for(int j = (i & 1) ^ parity; j < width; j += 2)
+      {
+        if(mask[j + i * width])
+        {
+          // Precompute boundary conditions for the current column
+          const int is_left = (j == 0);
+          const int is_right = (j == width - 1);
+
+          // Precompute Adiag value
+          Adiag[nmask] = 4 - is_top - is_left - is_bottom - is_right;
+
+          // Precompute neighbor indices
+          Aidx[0 + nmask * 5] = ((i + 0) * width + (j + 0)) * 4;
+          Aidx[1 + nmask * 5] = is_right ? zero : ((i + 0) * width + (j + 1)) * 4;
+          Aidx[2 + nmask * 5] = is_bottom ? zero : ((i + 1) * width + (j + 0)) * 4;
+          Aidx[3 + nmask * 5] = is_left ? zero : ((i + 0) * width + (j - 1)) * 4;
+          Aidx[4 + nmask * 5] = is_top ? zero : ((i - 1) * width + (j + 0)) * 4;
+
+          nmask++;
+        }
+      }
+    }
+  }
+
+  /* Empirically optimal over-relaxation factor. (Benchmarked on
+   * round brushes, at least. I don't know whether aspect ratio
+   * affects it.)
+   */
+  float w = ((2.0f - 1.0f / (0.1575f * sqrtf(nmask) + 0.8f)) * .25f);
+
+  const int max_iter = 1000;
+  const float epsilon = (0.1 / 255);
+  const float err_exit = epsilon * epsilon * w * w;
+
+  /* Gauss-Seidel with successive over-relaxation */
+  double start = dt_get_wtime();
+  for(int iter = 0; iter < max_iter; iter++)
+  {
+    // process red/black cells separate
+    float err = dt_heal_laplace_iteration(pixels, Adiag, Aidx, w, 0, nmask2);
+    err += dt_heal_laplace_iteration(pixels, Adiag, Aidx, w, nmask2, nmask);
+
+    if(err < err_exit) break;
+  }
+  fprintf(stderr,"lapl_iters: %g ms\n",1000.0*(dt_get_wtime()-start));
+
+cleanup:
+  if(Adiag) dt_free_align(Adiag);
+  if(Aidx) dt_free_align(Aidx);
+}

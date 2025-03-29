@@ -1,0 +1,112 @@
+void S32A_Opaque_BlitRow32_neon(SkPMColor* SK_RESTRICT dst,
+                                const SkPMColor* SK_RESTRICT src,
+                                int count, U8CPU alpha) {
+
+    SkASSERT(255 == alpha);
+    if (count > 0) {
+
+    uint8x8_t alpha_mask;
+
+    static const uint8_t alpha_mask_setup[] = {3,3,3,3,7,7,7,7};
+    alpha_mask = vld1_u8(alpha_mask_setup);
+
+    /* do the NEON unrolled code */
+#define    UNROLL    4
+    while (count >= UNROLL) {
+        uint8x8_t src_raw, dst_raw, dst_final;
+        uint8x8_t src_raw_2, dst_raw_2, dst_final_2;
+
+        /* Prefetch next chunk of data */
+        __builtin_prefetch(src + UNROLL, 0, 1); // Prefetch src
+        __builtin_prefetch(dst + UNROLL, 1, 1); // Prefetch dst
+
+        /* get the source */
+        src_raw = vreinterpret_u8_u32(vld1_u32(src));
+#if    UNROLL > 2
+        src_raw_2 = vreinterpret_u8_u32(vld1_u32(src+2));
+#endif
+
+        /* get and hold the dst too */
+        dst_raw = vreinterpret_u8_u32(vld1_u32(dst));
+#if    UNROLL > 2
+        dst_raw_2 = vreinterpret_u8_u32(vld1_u32(dst+2));
+#endif
+
+    /* 1st and 2nd bits of the unrolling */
+    {
+        uint8x8_t dst_cooked;
+        uint16x8_t dst_wide;
+        uint8x8_t alpha_narrow;
+        uint16x8_t alpha_wide;
+
+        /* get the alphas spread out properly */
+        alpha_narrow = vtbl1_u8(src_raw, alpha_mask);
+#if 1
+        /* reflect SkAlpha255To256() semantics a+1 vs a+a>>7 */
+        /* we collapsed (255-a)+1 ... */
+        alpha_wide = vsubw_u8(vdupq_n_u16(256), alpha_narrow);
+#else
+        alpha_wide = vsubw_u8(vdupq_n_u16(255), alpha_narrow);
+        alpha_wide = vaddq_u16(alpha_wide, vshrq_n_u16(alpha_wide,7));
+#endif
+
+        /* spread the dest */
+        dst_wide = vmovl_u8(dst_raw);
+
+        /* alpha mul the dest */
+        dst_wide = vmulq_u16 (dst_wide, alpha_wide);
+        dst_cooked = vshrn_n_u16(dst_wide, 8);
+
+        /* sum -- ignoring any byte lane overflows */
+        dst_final = vadd_u8(src_raw, dst_cooked);
+    }
+
+#if    UNROLL > 2
+    /* the 3rd and 4th bits of our unrolling */
+    {
+        uint8x8_t dst_cooked;
+        uint16x8_t dst_wide;
+        uint8x8_t alpha_narrow;
+        uint16x8_t alpha_wide;
+
+        alpha_narrow = vtbl1_u8(src_raw_2, alpha_mask);
+#if 1
+        /* reflect SkAlpha255To256() semantics a+1 vs a+a>>7 */
+        /* we collapsed (255-a)+1 ... */
+        alpha_wide = vsubw_u8(vdupq_n_u16(256), alpha_narrow);
+#else
+        alpha_wide = vsubw_u8(vdupq_n_u16(255), alpha_narrow);
+        alpha_wide = vaddq_u16(alpha_wide, vshrq_n_u16(alpha_wide,7));
+#endif
+
+        /* spread the dest */
+        dst_wide = vmovl_u8(dst_raw_2);
+
+        /* alpha mul the dest */
+        dst_wide = vmulq_u16 (dst_wide, alpha_wide);
+        dst_cooked = vshrn_n_u16(dst_wide, 8);
+
+        /* sum -- ignoring any byte lane overflows */
+        dst_final_2 = vadd_u8(src_raw_2, dst_cooked);
+    }
+#endif
+
+        vst1_u32(dst, vreinterpret_u32_u8(dst_final));
+#if    UNROLL > 2
+        vst1_u32(dst+2, vreinterpret_u32_u8(dst_final_2));
+#endif
+
+        src += UNROLL;
+        dst += UNROLL;
+        count -= UNROLL;
+    }
+#undef    UNROLL
+
+    /* do any residual iterations */
+        while (--count >= 0) {
+            *dst = SkPMSrcOver(*src, *dst);
+            src += 1;
+            dst += 1;
+        }
+    }
+}

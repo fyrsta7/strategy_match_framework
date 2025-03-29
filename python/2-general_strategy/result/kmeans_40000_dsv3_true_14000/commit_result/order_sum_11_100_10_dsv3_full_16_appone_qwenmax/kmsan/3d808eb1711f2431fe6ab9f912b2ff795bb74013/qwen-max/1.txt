@@ -1,0 +1,30 @@
+static bool stop_ring(struct intel_engine_cs *engine)
+{
+	struct drm_i915_private *dev_priv = engine->i915;
+
+	if (!IS_GEN2(dev_priv)) {
+		I915_WRITE_MODE(engine, _MASKED_BIT_ENABLE(STOP_RING));
+		if (intel_wait_for_register(dev_priv,
+					    I915_READ_MODE_REG(engine), MODE_IDLE, MODE_IDLE, 1000)) {
+			DRM_ERROR("%s : timed out trying to stop ring\n",
+				  engine->name);
+			/* Sometimes we observe that the idle flag is not
+			 * set even though the ring is empty. So double
+			 * check before giving up.
+			 */
+			if (I915_READ_HEAD(engine) != I915_READ_TAIL(engine))
+				return false;
+		}
+	}
+
+	I915_WRITE_CTL(engine, 0);
+	I915_WRITE_HEAD(engine, 0);
+	engine->write_tail(engine, 0);
+
+	if (!IS_GEN2(dev_priv)) {
+		(void)I915_READ_CTL(engine);
+		I915_WRITE_MODE(engine, _MASKED_BIT_DISABLE(STOP_RING));
+	}
+
+	return (I915_READ_HEAD(engine) & HEAD_ADDR) == 0;
+}

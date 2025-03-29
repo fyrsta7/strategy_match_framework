@@ -1,0 +1,998 @@
+{
+  "cluster_count_by_threshold": {
+    "49": 1,
+    "27": 2,
+    "20": 3,
+    "18": 5,
+    "16": 8,
+    "15": 10,
+    "14": 12,
+    "13": 13,
+    "12": 16,
+    "11": 18,
+    "10": 33,
+    "9": 43,
+    "8": 62,
+    "7": 86,
+    "6": 126,
+    "5": 205,
+    "4": 362,
+    "3": 762,
+    "2": 2176,
+    "1": 14000
+  },
+  "cluster_summaries": [
+    {
+      "cluster_id": "86",
+      "size": 49,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 1,
+      "consistency_best_similarity": 0.9480963945388794,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance.",
+        "code_examples": [
+          [
+            "// Before\nfor (auto setting : prefs) {\n  gfxPrefs::Pref* pref = gfxPrefs::all()[setting.index()];\n  pref->SetCachedValue(setting.value());\n}",
+            "// After\nconst nsTArray<gfxPrefs::Pref*>& globalPrefs = gfxPrefs::all();\nfor (auto& setting : prefs) {\n  gfxPrefs::Pref* pref = globalPrefs[setting.index()];\n  pref->SetCachedValue(setting.value());\n}"
+          ],
+          [
+            "// Before\nfor (auto sig_pair : partial_sigs) {\n  SerializeToVector(s, CompactSizeWriter(PSBT_IN_PARTIAL_SIG), Span{sig_pair.second.first});\n  s << sig_pair.second.second;\n}",
+            "// After\nfor (const auto& sig_pair : partial_sigs) {\n  SerializeToVector(s, CompactSizeWriter(PSBT_IN_PARTIAL_SIG), Span{sig_pair.second.first});\n  s << sig_pair.second.second;\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code must contain a range-based for loop iterating over a container of non-primitive types.",
+          "The loop variable must be declared as a value type (e.g., `auto` or `T`) rather than a reference type (e.g., `auto&` or `const T&`).",
+          "The loop body must not modify the loop variable in a way that requires a copy."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration in range-based for loops.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance.",
+        "The common optimization strategy across these commits is **reducing copy overhead by replacing value-based loop iteration with reference-based iteration** to improve performance.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, leveraging `auto&` or `const auto&` to avoid unnecessary object duplication in range-based for loops.",
+        "The common optimization strategy across these commits is to reduce copy overhead by replacing value-based loop iteration with reference-based iteration, thereby avoiding unnecessary object duplication and improving performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved replacing a value-based loop iteration with a reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involves reducing copy overhead by changing value-based loop iteration to reference-based iteration.",
+        "The optimization strategy used is changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved changing the loop iteration from value-based to reference-based to reduce copy overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead in range-based for loops.",
+        "The optimization strategy involved reducing copy overhead by changing value-based loop iteration to reference-based iteration in the `operator` function.",
+        "The optimization strategy involved changing iterator-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy involved avoiding copying the loop variable by using a reference-based iteration instead of value-based iteration to reduce overhead.",
+        "The optimization strategy involved changing value-based loop iteration to reference-based iteration to reduce copy overhead in the Serialize function.",
+        "The optimization strategy involved reducing unnecessary value copies by using reference-based iteration when pushing values.",
+        "The optimization strategy involved using reference-based iteration to avoid copying and moving a function call outside the loop to reduce redundant calls."
+      ]
+    },
+    {
+      "cluster_id": "82",
+      "size": 27,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 1,
+      "consistency_best_similarity": 0.9801294803619385,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves replacing inlined `wait_for(I915_READ(reg))` loops with the centralized `intel_wait_for_register()` function to reduce code bloat and improve efficiency by leveraging a hybrid wait mechanism.",
+        "code_examples": [
+          [
+            "// Before\nif (wait_for((I915_READ(BXT_DE_PLL_ENABLE) & BXT_DE_PLL_LOCK) != 0, 1))\n    DRM_ERROR(\"timeout waiting for DE PLL lock\\n\");",
+            "// After\nif (intel_wait_for_register(dev_priv, BXT_DE_PLL_ENABLE, BXT_DE_PLL_LOCK, BXT_DE_PLL_LOCK, 1))\n    DRM_ERROR(\"timeout waiting for DE PLL lock\\n\");"
+          ],
+          [
+            "// Before\nif (wait_for(((I915_READ(DPLL(pipe)) & DPLL_LOCK_VLV) == DPLL_LOCK_VLV), 1))\n    DRM_ERROR(\"DPLL %d failed to lock\\n\", pipe);",
+            "// After\nif (intel_wait_for_register(dev_priv, DPLL(pipe), DPLL_LOCK_VLV, DPLL_LOCK_VLV, 1))\n    DRM_ERROR(\"DPLL %d failed to lock\\n\", pipe);"
+          ]
+        ],
+        "application_conditions": [
+          "The code must contain a `wait_for` function call with `I915_READ(reg)` as its first argument.",
+          "The `wait_for` function call must include a condition that compares the result of `I915_READ(reg)` with a constant or mask.",
+          "The `wait_for` function call must specify a timeout value as its second argument."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves replacing inlined wait loops with the centralized `intel_wait_for_register()` function to reduce code bloat and improve efficiency by leveraging a hybrid wait mechanism.",
+        "The common optimization strategy across these commits involves replacing inlined `wait_for(I915_READ(reg))` loops with the centralized `intel_wait_for_register()` function to reduce code bloat and improve efficiency by leveraging a hybrid wait mechanism.",
+        "The common optimization strategy across these commits involves replacing inlined `wait_for(I915_READ(reg))` loops with a centralized out-of-line function, `intel_wait_for_register()`, to reduce code bloat and improve efficiency by leveraging a hybrid wait mechanism.",
+        "The common optimization strategy across these commits involves replacing inlined `wait_for(I915_READ(reg))` loops with the centralized `intel_wait_for_register()` function to reduce code bloat and improve efficiency by leveraging a hybrid wait mechanism.",
+        "The common optimization strategy across these commits involves replacing inlined `wait_for(I915_READ(reg))` loops with the centralized `intel_wait_for_register()` function to reduce code bloat and improve efficiency by leveraging a hybrid wait mechanism."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with a centralized out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with an out-of-line function to reduce code bloat and improve efficiency.",
+        "The optimization strategy involved replacing inlined wait loops with an out-of-line function to reduce code bloat and improve efficiency."
+      ]
+    },
+    {
+      "cluster_id": "6",
+      "size": 20,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9728316068649292,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing redundant computations by precomputing values outside of loops and reusing them within iterations, thereby minimizing unnecessary calculations and improving performance.",
+        "code_examples": [
+          [
+            "// Before\nfor (i = 0; i < n; i++) {\n  p->buf[i] = FL(0.0);\n}\np->bufStartPos = -((int_least64_t) p->bufSize);",
+            "// After\nif (p->read_pos < (int_least64_t) 0)\n  p->bufStartPos = (int_least64_t) p->bufSize;\nelse\n  p->bufStartPos = -((int_least64_t) p->bufSize);"
+          ],
+          [
+            "// Before\nfor (i = 0; i < 14 * 256; i++) {\n  int distance;\n  int r1 = (int)ptr[*palette++];\n  int g1 = (int)ptr[*palette++];\n  int b1 = (int)ptr[*palette++];\n  bestcolor = GetClosestColor(colors, 4, r1, g1, b1);\n}",
+            "// After\nfor (i = 0; i < 14 * 256; i++, palette += 3) {\n  unsigned int r1 = (int)ptr[*(palette)];\n  unsigned int g1 = (int)ptr[*(palette+1)];\n  unsigned int b1 = (int)ptr[*(palette+2)];\n  bestcolor = GetClosestColor(colors, 4, r1, g1, b1);\n}"
+          ],
+          [
+            "// Before\nfor (int n=0; n<dim; n++) {\n  for (int m=0; m<dim; m++) {\n    for (int k=0; k<dim; k++) {\n      for (int l=0; l<dim; l++) {\n        if (m == j_dim && k == i_dim) {\n          (*elmats(0,0))(i_u + i_dim*dof_u, j_u + j_dim*dof_u) += dJ * (mu * F(k,l) - pres * FinvT(k,l)) * FinvT(m,n) * DS_u(i_u,l) * DS_u(j_u,n) * ip.weight * Tr.Weight();\n        }\n      }\n    }\n  }\n}",
+            "// After\nfor (int n=0; n<dim; n++) {\n  for (int l=0; l<dim; l++) {\n    (*elmats(0,0))(i_u + i_dim*dof_u, j_u + j_dim*dof_u) += dJ * (mu * F(i_dim,l) - pres * FinvT(i_dim,l)) * FinvT(j_dim,n) * DS_u(i_u,l) * DS_u(j_u,n) * ip.weight * Tr.Weight();\n  }\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop where a value is recalculated in every iteration without being modified within the loop.",
+          "The code includes a function call within a loop where the function's output depends only on inputs that remain constant across iterations.",
+          "The code performs repeated calculations within a loop that could be replaced by a single precomputed value outside the loop."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves reducing redundant computations by precomputing values outside of loops and reusing them within iterations, thereby minimizing unnecessary calculations and improving performance.",
+        "The common optimization strategy across these commits involves reducing redundant computations by precomputing and caching values outside of loops, thereby minimizing unnecessary calculations and improving performance.",
+        "The common optimization strategy across these commits involves **reducing redundant computations by precomputing and caching values outside of loops**, thereby minimizing unnecessary calculations and improving performance.",
+        "The common optimization strategy across these commits involves reducing redundant calculations by precomputing values outside of loops and reusing them within iterations, thereby minimizing unnecessary computations and improving performance.",
+        "The common optimization strategy across these commits involves reducing redundant computations by precomputing values outside of loops and reusing them within iterations, thereby minimizing unnecessary calculations and improving performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing the number of redundant calculations by precomputing values outside of loops and reusing them within the loops.",
+        "The optimization strategy involved reducing the number of redundant calculations by precomputing values outside of loops and reusing them within the loops.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops and reusing them within the loops.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops and reusing them within the loops.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops and reusing them within the loop iterations.",
+        "The optimization strategy involved reducing the number of redundant calculations by precomputing a value outside of a loop.",
+        "The optimization strategy involves reducing the number of redundant calculations by precomputing values outside of loops.",
+        "The optimization strategy involved reducing redundant calculations by precomputing a value outside the loop and reusing it within the loop.",
+        "The optimization strategy involved reducing redundant calculations by precomputing a value outside the loop and reusing it within the loop.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops and minimizing function calls within the loop.",
+        "The optimization strategy involved reducing the number of calculations by precomputing and reusing values within the loop to avoid redundant computations.",
+        "The optimization strategy involved reducing unnecessary computations by precomputing values outside of loops and reusing them within the loop iterations.",
+        "The optimization strategy involved reducing the number of calculations within a loop by precomputing values outside the loop.",
+        "The optimization strategy involved reducing redundant computations within a loop by precomputing values outside the loop and simplifying the loop body.",
+        "The optimization strategy involved reducing the number of redundant calculations within a hot loop by precomputing values outside the loop.",
+        "The optimization strategy involved reducing the number of unnecessary computations by precomputing values outside of loops and minimizing redundant function calls.",
+        "The optimization strategy involved reducing redundant calculations by precomputing and reusing the result of a frequently called function within a loop.",
+        "The optimization strategy involved reducing the number of redundant computations by precomputing and caching values used within a loop.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop in the I_ProcessPalette function.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop in the `sndinset()` function."
+      ]
+    },
+    {
+      "cluster_id": "2103",
+      "size": 18,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9955571293830872,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is replacing `size()`, `length()`, or `size() > 0` checks with `empty()` to leverage its guaranteed constant time complexity for checking container emptiness, regardless of the container type.",
+        "code_examples": [
+          [
+            "// Before\nwhile (in_progress.size() < max_allowed &&\n           queue.size()) {",
+            "// After\nwhile (in_progress.size() < max_allowed &&\n           !queue.empty()) {"
+          ],
+          [
+            "// Before\nif (buffer.length())\n        buffer << \"/\";",
+            "// After\nif (!buffer.empty())\n        buffer << \"/\";"
+          ],
+          [
+            "// Before\nif (mail->get_metadata()->size() == 0) {",
+            "// After\nif (mail->get_metadata()->empty()) {"
+          ]
+        ],
+        "application_conditions": [
+          "The code must contain a conditional check using `size()`, `length()`, or `size() > 0` to determine if a container is empty.",
+          "The container being checked must be a standard library container (e.g., `std::vector`, `std::list`, `std::string`, etc.).",
+          "The conditional check must be used in a boolean context (e.g., `if`, `while`, or logical expressions)."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is replacing `size()`, `length()`, or `size() > 0` checks with `empty()` to leverage its guaranteed constant time complexity for checking container emptiness, regardless of the container type.",
+        "The common optimization strategy across these commits is replacing `size()`, `length()`, or `size() > 0` checks with `empty()` to leverage its guaranteed constant time complexity for checking container emptiness, regardless of the container type.",
+        "The common optimization strategy across these commits is replacing `size()`, `length()`, or `size() > 0` checks with `empty()` to leverage its guaranteed constant time complexity for checking container emptiness, regardless of the container type.",
+        "The common optimization strategy across these commits is replacing `size()`, `length()`, or `size() > 0` checks with `empty()` to ensure constant time complexity for verifying container emptiness, regardless of the container type.",
+        "The common optimization strategy across these commits is replacing `size()`, `length()`, or `size() > 0` checks with `empty()` to ensure constant time complexity for checking container emptiness, regardless of the container type."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involves replacing `size() > 0` with `empty()` to check for container emptiness, leveraging the constant time complexity of `empty()`.",
+        "The optimization strategy involves replacing `size() > 0` with `empty()` to check for container emptiness, leveraging the constant time complexity of `empty()` across different container types.",
+        "The optimization strategy involves replacing `size()` with `empty()` to check for container emptiness, leveraging the constant time complexity of `empty()` across different container types.",
+        "The optimization strategy involves replacing `size()` with `empty()` to check for container emptiness, leveraging the constant time complexity of `empty()` across different container types.",
+        "The optimization strategy involves replacing `size()` with `empty()` to check for container emptiness, leveraging `empty()`'s constant time complexity.",
+        "The optimization strategy involves replacing `size()` with `empty()` to check for container emptiness, leveraging the constant time complexity of `empty()`.",
+        "The optimization strategy involves replacing `size()` with `empty()` to ensure constant time complexity for checking container emptiness.",
+        "The optimization strategy involves replacing `size()` with `empty()` for checking container emptiness to ensure constant time complexity.",
+        "The optimization strategy involves replacing `size()` with `empty()` for checking container emptiness to ensure constant time complexity regardless of the container type.",
+        "The optimization strategy involves replacing `!size()` with `empty()` to check for container emptiness, leveraging the constant time complexity guarantee of `empty()` across different container types.",
+        "The optimization strategy involves replacing `size() > 0` with `!empty()` to leverage the constant time complexity guarantee of `empty()` across different container types.",
+        "The optimization strategy involves replacing `!size()` with `empty()` to ensure constant time complexity for checking container emptiness.",
+        "The optimization strategy involves replacing `size() > 0` with `!empty()` to leverage the constant time complexity of `empty()` across different container types.",
+        "The optimization strategy involves replacing `length()` with `empty()` for checking container emptiness to ensure constant time complexity.",
+        "The optimization strategy involves replacing `up.size()` with `up.empty()` to check for container emptiness, leveraging the constant time complexity of `empty()`.",
+        "The optimization strategy involves using the 'empty' method for checking container emptiness, which is guaranteed to have constant time complexity, instead of potentially less efficient methods.",
+        "The optimization strategy involves replacing the use of the `length()` method with the `empty()` method for checking if a container is empty, as `empty()` is generally faster.",
+        "The optimization strategy involves replacing `queue.size()` with `queue.empty()` to check for emptiness, as `empty()` guarantees constant time complexity regardless of the container type."
+      ]
+    },
+    {
+      "cluster_id": "80",
+      "size": 18,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 3,
+      "consistency_best_similarity": 0.9779287576675415,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing function call overhead by inlining small, frequently called functions to improve performance.",
+        "code_examples": [
+          [
+            "// Before\nvoid FilterTransform::transform(Chunk & chunk)\n{\n    size_t first_non_constant_column = num_columns;\n    for (size_t i = 0; i < num_columns; ++i)\n    {\n        if (!isColumnConst(*columns[i]))\n        {\n            first_non_constant_column = i;\n            break;\n        }\n    }\n}",
+            "// After\nvoid FilterTransform::transform(Chunk & chunk)\n{\n    size_t first_non_constant_column = num_columns;\n    for (size_t i = 0; i < num_columns; ++i)\n    {\n        if (i != filter_column_position && !isColumnConst(*columns[i]))\n        {\n            first_non_constant_column = i;\n            break;\n        }\n    }\n}"
+          ],
+          [
+            "// Before\nvoid GraphBuilder::visitFreeInst(FreeInst &FI) {\n  DSNodeHandle Dest = getValueDest(*FI.getOperand(0));\n  if (Dest.getNode() == 0) return;\n  Dest.getNode()->NodeType |= DSNode::Modified;\n}",
+            "// After\nvoid GraphBuilder::visitFreeInst(FreeInst &FI) {\n  getValueDest(*FI.getOperand(0)).getNode()->NodeType |= DSNode::Modified;\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The function being inlined must have fewer than 10 lines of code.",
+          "The function must be called more than 5 times within the same file or module.",
+          "The function must not contain any recursive calls or loops."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves reducing function call overhead by inlining frequently used or small functions to minimize performance penalties associated with function invocation.",
+        "The common optimization strategy across these commits is **reducing function call overhead by inlining small, frequently called functions** to improve performance.",
+        "The common optimization strategy across these commits is **reducing function call overhead by inlining small, frequently called functions** to improve performance.",
+        "The common optimization strategy across these commits involves reducing function call overhead by inlining small, frequently called functions to improve performance.",
+        "The common optimization strategy across these commits involves reducing function call overhead by inlining frequently used or small functions to improve performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing the number of function calls by inlining a frequently used small function to eliminate overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a frequently used small function to eliminate overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a small, frequently called function to eliminate overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a small, frequently called function to eliminate overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a small function to eliminate overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a small function to eliminate overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a frequently called small function to eliminate overhead.",
+        "The optimization strategy involved reducing the overhead of function calls by inlining a small, frequently used function.",
+        "The optimization strategy involved reducing the number of function calls by inlining a frequently used function to eliminate overhead.",
+        "The optimization strategy involved reducing the overhead of function calls by inlining a small, frequently called function.",
+        "The optimization strategy involved reducing unnecessary function calls by inlining a small, frequently used function to eliminate overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a frequently used small function.",
+        "The optimization strategy involved reducing the overhead of function calls by inlining a frequently called function.",
+        "The optimization strategy involved reducing the overhead of function calls by inlining a frequently used function.",
+        "The optimization strategy involved reducing the overhead of function calls by inlining a frequently called function within the ReceiveAFPLoop function.",
+        "The optimization strategy involved reducing the number of function calls by inlining a small function within the `jitter` function to minimize overhead.",
+        "The optimization strategy involved reducing the number of function calls by inlining a small function within the `segments_in_transaction` function to eliminate overhead.",
+        "The optimization strategy involved reducing the overhead of function calls by inlining a frequently called function within the FilterTransform process."
+      ]
+    },
+    {
+      "cluster_id": "5496",
+      "size": 16,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9839028120040894,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is **function inlining**, which reduces function call overhead by directly embedding the callee's code into the caller, improving performance by eliminating the cost of function invocation and enabling further optimizations.",
+        "code_examples": [
+          [
+            "// Before\nbool SILPerformanceInliner::isProfitableToInline(SILFunction *Caller, SILFunction *Callee, const ApplyInst *AI, unsigned CalleeCount) {\n  // To handle recursion and prevent massive code size expansion, we prevent\n  // inlining the same callee many times into the caller. The recursion\n  // detection logic in CallGraphAnalysis can't handle class_method in the",
+            "// After\nbool SILPerformanceInliner::isProfitableToInline(SILFunction *Caller, SILFunction *Callee, const ApplyInst *AI, unsigned CalleeCount) {\n  /// Always inline transparent calls. This should have been done during\n  /// MandatoryInlining, but generics are not currenly handled.\n  if (AI->isTransparent())\n    return true;\n  // To handle recursion and prevent massive code size expansion, we prevent\n  // inlining the same callee many times into the caller. The recursion\n  // detection logic in CallGraphAnalysis can't handle class_method in the"
+          ],
+          [
+            "// Before\nvoid llvmutil_optimizemodule(Module * M, TargetMachine * TM) {\n  PassManagerBuilder PMB;\n  PMB.OptLevel = 3;\n  PMB.SizeLevel = 0;\n#if LLVM_VERSION >= 35\n  PMB.LoopVectorize = true;\n  PMB.SLPVectorize = true;",
+            "// After\nvoid llvmutil_optimizemodule(Module * M, TargetMachine * TM) {\n  PassManagerBuilder PMB;\n  PMB.OptLevel = 3;\n  PMB.SizeLevel = 0;\n  PMB.Inliner = createFunctionInliningPass(PMB.OptLevel, 0);\n#if LLVM_VERSION >= 35\n  PMB.LoopVectorize = true;\n  PMB.SLPVectorize = true;"
+          ]
+        ],
+        "application_conditions": [
+          "The function being inlined must have a small number of instructions, typically fewer than a predefined threshold (e.g., 20 instructions).",
+          "The function must not contain recursive calls or calls to other functions that would prevent inlining.",
+          "The function must be called frequently within the codebase, as determined by static call site analysis."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is **function inlining**, which reduces function call overhead by directly embedding the callee's code into the caller, improving performance by eliminating the cost of function invocation and enabling further optimizations.",
+        "The common optimization strategy across these commits is **function inlining**, which reduces function call overhead by directly embedding the callee's code into the caller, thereby improving performance.",
+        "The common optimization strategy across these commits is **function inlining**, which reduces function call overhead by directly embedding the callee's code into the caller, improving performance through reduced context switching and instruction count.",
+        "The common optimization strategy across these commits is **function inlining**, which reduces function call overhead by directly inserting the callee's code into the caller, improving performance through reduced context switching and instruction cache efficiency.",
+        "The common optimization strategy across these commits is **function inlining**, which reduces function call overhead by directly inserting the callee's code into the caller, improving performance by eliminating the cost of function invocation and enabling further optimizations."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involves enabling inlining of function calls in more cases to reduce function call overhead and improve performance.",
+        "The optimization strategy involves adding inlining to reduce function call overhead and improve performance.",
+        "The optimization strategy involves implementing method inlining to reduce function call overhead.",
+        "The optimization strategy involves implementing method inlining to reduce function call overhead.",
+        "The optimization strategy used is forcing inlining of functions to reduce function call overhead.",
+        "The optimization strategy used was forcing inlining of functions to reduce function call overhead.",
+        "The optimization strategy involves increasing the maximum inlining depth to potentially improve performance by reducing function call overhead.",
+        "The optimization strategy involved removing unnecessary function overhead by inlining or directly using the required logic instead of calling a separate function.",
+        "The optimization strategy involves reducing the number of function calls by inlining a frequently called function to improve performance on low-performing devices.",
+        "The optimization strategy involves allowing inlining into large functions to potentially reduce overall function size.",
+        "The optimization strategy involved enabling procedure inlining in the benchmark to reduce function call overhead and improve performance.",
+        "The optimization strategy involves micro-optimizing function calls to improve performance, likely by reducing overhead or streamlining the call resolution process.",
+        "The optimization strategy involved reducing the overhead of method invocation by streamlining the function call process.",
+        "The optimization strategy involves replacing a function call with a direct system call to improve performance by reducing overhead.",
+        "The optimization strategy involves ensuring that offline functions are inlined to improve performance by reducing function call overhead.",
+        "The optimization strategy involves always inlining transparent calls to ensure performance improvements."
+      ]
+    },
+    {
+      "cluster_id": "463",
+      "size": 16,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 3,
+      "consistency_best_similarity": 0.9874491691589355,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing redundant calculations by precomputing values outside of loops to minimize repeated computations and improve performance.",
+        "code_examples": [
+          [
+            "// Before\nconst float timeSegments = float(int(pre.numTimeSteps()-1));\nconst float timeScaled = ray.time * timeSegments;\nconst size_t itime = int(clamp(floor(timeScaled), 0.0f, timeSegments-1.0f));\nlazy_node = grid->root(itime);",
+            "// After\nlazy_node = grid->root(pre.itime());"
+          ],
+          [
+            "// Before\nfor (unsigned int i = 0; i < 3; i++){\n    c[i] = a[i] - b[i];\n}\nif (mDomainPeriods[0] > 0.0){\n    for (unsigned int i = 0; i < 3; i++){\n        if (fabs(c[i]) > 0.5 * mDomainPeriods[i]) c[i] -= GetSign(c[i]) * mDomainPeriods[i];\n    }\n}",
+            "// After\nif (mDomainPeriods[0] > 0.0){\n    for (unsigned int i = 0; i < 3; i++){\n        c[i] = a[i] - b[i];\n        if (fabs(c[i]) > 0.5 * mDomainPeriods[i]) c[i] -= GetSign(c[i]) * mDomainPeriods[i];\n    }\n}"
+          ],
+          [
+            "// Before\nfor (size_t neuron = 0; neuron < weights_[layer].size(); ++neuron) {\n    float x1 = 0, x2 = 0, x3 = 0, x4 = 0;\n    size_t weight = 0;\n    for (; weight < states_[layer].size() - 3; weight += 4) {\n        x1 += states_[layer][weight] * weights_[layer][neuron][weight];\n        x2 += states_[layer][weight+1] * weights_[layer][neuron][weight+1];\n        x3 += states_[layer][weight+2] * weights_[layer][neuron][weight+2];\n        x4 += states_[layer][weight+3] * weights_[layer][neuron][weight+3];\n    }\n    states_[offset][neuron] = x1 + x2 + x3 + x4;\n    for (; weight < states_[layer].size(); ++weight) {\n        states_[offset][neuron] += states_[layer][weight] * weights_[layer][neuron][weight];\n    }\n    states_[offset][neuron] = logistic_.Squash(states_[offset][neuron]);\n}",
+            "// After\nfor (size_t neuron = 0; neuron < weights_[layer].size(); ++neuron) {\n    states_[offset][neuron] = logistic_.Squash(std::inner_product(\n        &states_[layer][0], &states_[layer][states_[layer].size()],\n        &weights_[layer][neuron][0], 0.0));\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop where the same calculation is performed repeatedly on the same input values.",
+          "The calculation inside the loop does not depend on the loop iteration variable or any value modified within the loop.",
+          "The result of the calculation is used multiple times within the loop or in subsequent iterations."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves reducing redundant calculations by precomputing values outside of loops, minimizing repeated computations, and optimizing memory access patterns to improve performance.",
+        "The common optimization strategy across these commits involves **reducing redundant calculations by precomputing values outside of loops** to minimize repeated computations and improve performance.",
+        "The common optimization strategy across these commits involves **reducing redundant calculations by precomputing values outside of loops** to minimize repeated computations and improve performance.",
+        "The common optimization strategy across these commits involves reducing redundant calculations by precomputing values outside of loops to minimize repeated computations and improve performance.",
+        "The common optimization strategy across these commits involves reducing redundant calculations by precomputing values outside of loops to minimize repeated computations and improve performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops to improve performance.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops.",
+        "The optimization strategy involved reducing redundant calculations by precomputing a value outside of a loop to improve performance.",
+        "The optimization strategy involved reducing the number of redundant calculations by precomputing values outside of loops.",
+        "The optimization strategy involved reducing redundant calculations by precomputing a value outside of a loop.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to minimize repeated computations.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of loops and minimizing memory access overhead.",
+        "The optimization strategy involved reducing redundant calculations by precomputing values outside of a loop to improve performance in the `processLazyNode` function."
+      ]
+    },
+    {
+      "cluster_id": "6661",
+      "size": 16,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9876712560653687,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **leveraging prefetching techniques to reduce memory access latency and improve cache utilization** by strategically placing prefetch instructions, adjusting prefetch modes, or optimizing prefetch logic.",
+        "code_examples": [
+          [
+            "// Before\nwhile (nframes >= 4) {\n    work = _mm_load_ps(buf);\n    current_min = _mm_min_ps(current_min, work);\n    current_max = _mm_max_ps(current_max, work);\n    buf += 4;\n    nframes -= 4;\n}",
+            "// After\nwhile (nframes >= 16) {\n    __builtin_prefetch(buf+64,0,0);\n    work = _mm_load_ps(buf);\n    current_min = _mm_min_ps(current_min, work);\n    current_max = _mm_max_ps(current_max, work);\n    buf += 4;\n    work = _mm_load_ps(buf);\n    current_min = _mm_min_ps(current_min, work);\n    current_max = _mm_max_ps(current_max, work);\n    buf += 4;\n    work = _mm_load_ps(buf);\n    current_min = _mm_min_ps(current_min, work);\n    current_max = _mm_max_ps(current_max, work);\n    buf += 4;\n    work = _mm_load_ps(buf);\n    current_min = _mm_min_ps(current_min, work);\n    current_max = _mm_max_ps(current_max, work);\n    buf += 4;\n    nframes -= 16;\n}"
+          ],
+          [
+            "// Before\nif (ip1 >= nextStep) {\n    PREFETCH_L1(ip1 + 64);\n    step++;\n    nextStep += kStepIncr;\n}",
+            "// After\nif (ip1 >= nextStep) {\n    PREFETCH_L1(ip1 + 64);\n    PREFETCH_L1(ip1 + 128);\n    step++;\n    nextStep += kStepIncr;\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code must contain memory access patterns where data is accessed sequentially or predictably in loops or iterations.",
+          "The code must include prefetch instructions (e.g., `__builtin_prefetch`, `PREFETCH_L1`, or similar) or demonstrate potential for their insertion.",
+          "The code must operate on data structures or buffers large enough to benefit from reduced memory latency through prefetching."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **leveraging prefetching techniques to reduce memory access latency and improve cache utilization** by strategically placing prefetch instructions, adjusting prefetch modes, or optimizing prefetch logic.",
+        "The common optimization strategy across these commits involves leveraging prefetching techniques—such as rearranging, adding, or modifying prefetch instructions—to improve cache utilization, reduce memory access latency, and enhance overall performance in various computational contexts.",
+        "The common optimization strategy across these commits involves **leveraging prefetching techniques to reduce memory access latency and improve cache utilization** by strategically placing prefetch instructions, adjusting prefetch modes, or optimizing prefetch logic.",
+        "The common optimization strategy across these commits involves **leveraging prefetching techniques to reduce memory access latency and improve cache utilization** by strategically placing prefetch instructions, adjusting prefetch modes, or optimizing prefetch logic for specific hardware and data access patterns.",
+        "The common optimization strategy across these commits involves **leveraging prefetching techniques to reduce memory access latency and improve cache utilization** by strategically placing prefetch instructions, adjusting prefetch modes, or optimizing prefetch logic."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involves adding prefetch instructions to improve memory access performance by reducing latency.",
+        "The optimization strategy involved adding prefetching to improve performance in certain cases by reducing memory latency.",
+        "The optimization strategy involves adding prefetch instructions within the check loop to improve memory access performance.",
+        "The optimization strategy involved moving a prefetch operation before an insertion to reduce latency and improve cache utilization.",
+        "The optimization strategy involves prefetching units in the `perform` function to reduce memory access latency and improve performance.",
+        "The optimization strategy involves deducting the memory used by prefetch buffers from the total available memory to ensure efficient memory allocation and usage.",
+        "The optimization strategy involved changing the prefetch instruction from 'prefetchw' to 'prefetch' for the input buffer to improve performance.",
+        "The optimization strategy involved leveraging the hardware prefetcher to improve loop performance by reducing memory access latency.",
+        "The optimization strategy involves enabling the `IPREFETCH` mode by default to improve instruction prefetching performance.",
+        "The optimization strategy involves allowing all-default-cache-hint LSC prefetch to improve memory access performance.",
+        "The optimization strategy involved reducing the number of locks in the prefetch function to improve performance.",
+        "The optimization strategy involves prefetching the next row of perceptron data to reduce memory access latency.",
+        "The optimization strategy involves adding prefetching for `ip1 + 128` to improve memory access patterns and reduce latency.",
+        "The optimization strategy involves adding prefetch instructions to improve cache utilization and reduce memory latency in the SSE-based peak finding function.",
+        "The optimization strategy involved rearranging prefetch instructions to improve performance in the CPU miner.",
+        "The optimization strategy involves prefetching the next Tx mbuf header and data to improve performance by reducing memory access latency."
+      ]
+    },
+    {
+      "cluster_id": "12577",
+      "size": 15,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 3,
+      "consistency_best_similarity": 0.9689134359359741,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is **reducing loop overhead by minimizing variable modifications, eliminating unnecessary iterations, and improving loop bounds to decrease instruction count and improve performance**.",
+        "code_examples": [
+          [
+            "// Before\nfor (i = offset; i < size - 1;) {\n  if (data[i] != 0xff)\n    i++;\n  else {\n    const guint8 v = data[i + 1];\n    if (v >= 0xc0 && v <= 0xfe)\n      return i;\n    i += 2;\n  }\n}",
+            "// After\ni = offset + 1;\nwhile (i < size) {\n  const guint8 v = data[i];\n  if (v < 0xc0)\n    i += 2;\n  else if (v < 0xff && data[i - 1] == 0xff)\n    return i - 1;\n  else\n    i++;\n}"
+          ],
+          [
+            "// Before\nfor (int row = 1; row < _row; row++) {\n  if (row > KS_rowMax) {\n    kDebug(36001) << \"Sheet:rowPos: invalid row (row: \" << row << ')' << endl;\n    return y;\n  }\n  y += rowFormat(row)->height();\n}",
+            "// After\nconst int max = qMin(_row, KS_rowMax);\nfor (int row = 1; row < max; ++row)\n  y += rowFormat(row)->height();"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop that modifies more than two variables within its body.",
+          "The loop includes a condition that can be simplified or eliminated without changing the loop's functionality.",
+          "The loop iterates over a range that can be reduced by precomputing bounds or avoiding unnecessary iterations."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **reducing loop overhead by minimizing the number of variables, conditions, or iterations within loops, thereby improving performance through fewer instructions and reduced computational complexity**.",
+        "The common optimization strategy across these commits is **reducing loop overhead by minimizing the number of variables, instructions, or conditions within loops** to improve performance.",
+        "The common optimization strategy across these commits involves **reducing loop overhead by minimizing the number of variables, instructions, or conditions within loops, thereby improving performance through streamlined iteration**.",
+        "The common optimization strategy across these commits is **reducing loop overhead by minimizing variable modifications, eliminating unnecessary iterations, and improving loop bounds to decrease instruction count and improve performance**.",
+        "The common optimization strategy across these commits is **reducing loop overhead by minimizing variable modifications, eliminating unnecessary iterations, and improving loop bounds to decrease instruction count and improve performance**."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved improving loop performance by reducing unnecessary operations within the loop.",
+        "The optimization strategy involved improving loop efficiency by reducing unnecessary operations within the loop.",
+        "The optimization strategy involved reducing unnecessary iterations in a loop to improve performance.",
+        "The optimization strategy involved modifying loop structures to improve performance by reducing unnecessary operations within loops.",
+        "The optimization strategy involved improving loop bounds to reduce unnecessary operations within the loop.",
+        "The optimization strategy involved restructuring loops to improve performance by reducing unnecessary iterations or overhead.",
+        "The optimization strategy involved reducing an extra arithmetic operation within a loop to improve performance during a large number of iterations.",
+        "The optimization strategy involved avoiding an extra condition within a loop to reduce overhead.",
+        "The optimization strategy involved rewriting the inner loop to improve performance.",
+        "The optimization strategy involved reducing the number of instructions in a loop to improve efficiency by approximately 10%.",
+        "The optimization strategy involved reducing dereference operations in the inner loop to improve performance.",
+        "The optimization strategy involved improving the performance of times-loops by reducing unnecessary computations or iterations.",
+        "The optimization strategy involves reducing the frequency of memory allocation and deallocation calls within a loop to improve performance.",
+        "The optimization strategy involved micro-optimizing loop code to improve performance.",
+        "The optimization strategy reduces the number of variables modified within a loop to decrease the instruction count and improve performance."
+      ]
+    },
+    {
+      "cluster_id": "3095",
+      "size": 15,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 4,
+      "consistency_best_similarity": 0.9774258136749268,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is to **eliminate redundant `strlen` calls by precomputing and reusing string lengths**, either by storing them in variables or leveraging functions that return both the string and its length, thereby improving performance by reducing unnecessary computations.",
+        "code_examples": [
+          [
+            "// Before\nchar *stritem = PyString_AsString(item);\nif (stritem == NULL) {\n    free(iov);\n    return NULL;\n}\niov[i].iov_base = stritem;\niov[i].iov_len = strlen(stritem);",
+            "// After\nchar *stritem;\nPy_ssize_t length;\nif (PyString_AsStringAndSize(item, &stritem, &length)) {\n    free(iov);\n    return NULL;\n}\niov[i].iov_base = stritem;\niov[i].iov_len = length;"
+          ],
+          [
+            "// Before\nlen = strlen(filename) + 1;\nwcfname = calloc(len, sizeof(wchar_t));\nwclen = mbstowcs(wcfname, fname, len);",
+            "// After\nlen = strlen(filename);\nwcfname = calloc(len + 1, sizeof(wchar_t));\nwclen = mbstowcs(wcfname, fname, len + 1);"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains multiple calls to `strlen` on the same string within the same function or loop.",
+          "The string passed to `strlen` does not change in length or content between consecutive calls.",
+          "The string length is used in subsequent operations, such as memory allocation, copying, or concatenation."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **avoiding redundant `strlen` calls by precomputing and storing string lengths**, thereby eliminating unnecessary string length calculations and improving performance.",
+        "The common optimization strategy across these commits is to **avoid redundant `strlen` calls by precomputing and reusing string lengths**, either by leveraging existing length information or storing the result in a variable, thereby eliminating unnecessary string traversal and improving performance.",
+        "The common optimization strategy across these commits is to **eliminate redundant `strlen` calls by precomputing and reusing string lengths**, thereby reducing unnecessary computation and improving performance.",
+        "The common optimization strategy across these commits is to **eliminate redundant `strlen` calls by precomputing and reusing string lengths**, either by leveraging existing length information or replacing manual loops with efficient library functions.",
+        "The common optimization strategy across these commits is to **eliminate redundant `strlen` calls by precomputing and reusing string lengths**, either by storing them in variables or leveraging functions that return both the string and its length, thereby improving performance by reducing unnecessary computations."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy avoids repeated calls to `strlen` by storing the string length in a variable to reduce computational overhead.",
+        "The optimization strategy avoids using `strlen` by directly utilizing the length of the string to reduce unnecessary computations.",
+        "The optimization strategy reduces the number of calls to `strlen` to minimize redundant string length calculations.",
+        "The optimization strategy involves storing the string length in a variable to avoid repeatedly calling strlen() within a loop.",
+        "The optimization strategy reduces the number of `strlen` calls by reusing the previously calculated length of a string in a loop.",
+        "The optimization strategy avoids redundant `strlen` calls on the same string by storing its length in a variable.",
+        "The optimization strategy involved removing an unnecessary `strlen` call since the string length had already been computed, reducing redundant computation.",
+        "The optimization strategy avoids redundant calls to `strlen` by storing its result in a variable for reuse in string concatenation operations.",
+        "The optimization strategy replaced a manual loop to find the length of a string with the standard library function `strlen()`, which is at least as fast.",
+        "The optimization strategy involves precomputing the length of a string using `strlen` and reusing it to replace heavier string operations with more efficient memory operations using `mem*()` functions.",
+        "The optimization strategy involved improving the performance of the OE_Strlen() function by reducing unnecessary operations and streamlining the string length calculation.",
+        "The optimization strategy involved precomputing and storing the length of strings to avoid repeated strlen() calculations in frequently called functions.",
+        "The optimization strategy involved moving the `strlen` function call outside the loop and avoiding unnecessary string copying when the string remains unchanged.",
+        "The optimization strategy involves avoiding the use of `strlen()` by directly using the stored string length from the `AString` object when pushing strings to Lua, which improves performance by eliminating redundant length calculations.",
+        "The optimization strategy replaces `strlen` with `PyString_AsStringAndSize` to avoid redundant string length calculations and improve performance."
+      ]
+    },
+    {
+      "cluster_id": "9018",
+      "size": 14,
+      "used_commits_count": 8,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9986624717712402,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **reducing memory allocation overhead by reusing existing buffers** to minimize unnecessary allocations and deallocations, thereby improving performance.",
+        "code_examples": [
+          [
+            "// Before\nvoid buffer::resize(size_t newSize)\n{\n\tif (capacity < newSize)\n\t{\n\t\tunsigned char *tmp = static_cast<unsigned char *>(realloc(ptr, capacity));\n\t\tif (tmp == nullptr)\n\t\t\tthrow std::bad_alloc();\n\t\tcapacity = newSize;\n\t\tptr = tmp;\n\t}\n}",
+            "// After\nvoid buffer::resize(size_t newSize)\n{\n\tif (capacity < newSize)\n\t{\n\t\tunsigned char *tmp = static_cast<unsigned char *>(realloc(ptr, newSize));\n\t\tif (tmp == nullptr)\n\t\t\tthrow std::bad_alloc();\n\t\tcapacity = newSize;\n\t\tptr = tmp;\n\t}\n}"
+          ],
+          [
+            "// Before\nunsigned int i486DX::Pop(Memory &mem,unsigned int operandSize)\n{\n\tunsigned int value;\n\tauto ESP=GetESP();\n\tif(16==operandSize)\n\t{\n\t\tvalue=FetchWord(addressSize,state.SS(),ESP,mem);\n\t\tESP+=2;\n\t}\n\telse\n\t{\n\t\tvalue=FetchDword(addressSize,state.SS(),ESP,mem);\n\t\tESP+=4;\n\t}\n\tSetESP(ESP);\n\treturn value;\n}",
+            "// After\nunsigned int i486DX::Pop(Memory &mem,unsigned int operandSize)\n{\n\tunsigned int value;\n\tauto &ESP=state.ESP();\n\tif(16==operandSize)\n\t{\n\t\tvalue=FetchWord(addressSize,state.SS(),ESP,mem);\n\t\tESP+=2;\n\t}\n\telse\n\t{\n\t\tvalue=FetchDword(addressSize,state.SS(),ESP,mem);\n\t\tESP+=4;\n\t}\n\treturn value;\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains repeated calls to memory allocation functions (e.g., `malloc`, `realloc`, `new`) within a loop or frequently executed path.",
+          "The code uses temporary buffers or variables that are allocated and deallocated multiple times without reuse.",
+          "The code includes memory allocation operations where the allocated size remains constant or predictable across iterations."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **reducing memory allocation overhead by reusing existing buffers** to minimize unnecessary allocations and deallocations, thereby improving performance.",
+        "The common optimization strategy across these commits involves **reducing memory allocation overhead by reusing existing buffers**, thereby minimizing unnecessary allocations and deallocations to improve performance.",
+        "The common optimization strategy across these commits involves **reducing memory allocation overhead by reusing existing buffers** to minimize unnecessary allocations and deallocations, thereby improving performance.",
+        "The common optimization strategy across these commits involves **reducing memory allocation overhead by reusing existing buffers** to minimize unnecessary allocations and deallocations, thereby improving performance.",
+        "The common optimization strategy across these commits involves **reducing memory allocation overhead by reusing existing buffers**, thereby minimizing unnecessary allocations and deallocations to improve performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing buffers.",
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing buffers.",
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing buffers.",
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing buffers, thereby decreasing overhead and improving performance.",
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing buffers instead of creating new ones.",
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing memory buffers instead of allocating new ones.",
+        "The optimization strategy involved reducing memory allocation overhead by reusing existing memory buffers instead of creating new ones.",
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing buffers and minimizing unnecessary data copying.",
+        "The optimization strategy involved improving memory collection efficiency by reducing unnecessary allocations and reusing existing memory buffers.",
+        "The optimization strategy involved reducing the number of memory allocations by reusing existing buffer capacity when resizing.",
+        "The optimization strategy involved reducing redundant memory allocations and improving cache locality by reusing existing buffers and minimizing unnecessary data copies.",
+        "The optimization strategy involved reducing the number of memory allocations and deallocations by reusing existing buffers, which helps improve performance when handling high-speed network data.",
+        "The optimization strategy involved reducing the number of memory allocations and deallocations by reusing existing buffers in the server response handling.",
+        "The optimization strategy involved reducing the number of memory allocations and deallocations by reusing existing buffers in the envelope processing function."
+      ]
+    },
+    {
+      "cluster_id": "2183",
+      "size": 14,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9870972633361816,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **reducing redundant calculations by caching frequently accessed values or reusing previously computed results** to improve performance.",
+        "code_examples": [
+          [
+            "// Before\nif (pm->ps->eFlags & EF_MOUNTEDTANK)\n{\n    VectorClear(pm->ps->velocity);\n}\nelse if (pml.walking && !(pm->ps->eFlags & EF_MOUNTEDTANK))\n{\n    PM_WalkMove();\n}\nelse if (!(pm->ps->eFlags & EF_MOUNTEDTANK))\n{\n    PM_AirMove();\n}",
+            "// After\nif (!(pm->ps->eFlags & EF_MOUNTEDTANK))\n{\n    if (pml.walking)\n    {\n        PM_WalkMove();\n    }\n    else\n    {\n        PM_AirMove();\n    }\n}\nelse\n{\n    VectorClear(pm->ps->velocity);\n}"
+          ],
+          [
+            "// Before\nif (!convertSingleValue(log, singleValue) && !convertTimeSeriesToDouble(log, singleValue, statistic))\n{\n    throw std::invalid_argument(\n        \"Run::getPropertyAsSingleValue - Property \\\"\" + name +\n        \"\\\" is not a single numeric value or numeric time series.\");\n}",
+            "// After\nif (!convertSingleValue(log, singleValue) && !convertTimeSeriesToDouble(log, singleValue, statistic))\n{\n    if (const auto stringLog = dynamic_cast<const PropertyWithValue<std::string> *>(log))\n    {\n        try\n        {\n            singleValue = std::stod(stringLog->value());\n        }\n        catch (const std::invalid_argument &)\n        {\n            throw std::invalid_argument(\n                \"Run::getPropertyAsSingleValue - Property \\\"\" + name +\n                \"\\\" cannot be converted to a numeric value.\");\n        }\n    }\n    else\n    {\n        throw std::invalid_argument(\n            \"Run::getPropertyAsSingleValue - Property \\\"\" + name +\n            \"\\\" is not a single numeric value or numeric time series.\");\n    }\n}\n// Put it in the cache\nm_singleValueCache.setCache(key, singleValue);"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a value or expression that is accessed or computed multiple times within the same function or block.",
+          "The value or expression does not change between its repeated accesses or computations.",
+          "The value or expression is used in a context where caching it would reduce computational overhead (e.g., within loops, frequently called functions, or performance-critical sections)."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **reducing redundant calculations by caching frequently accessed values or reusing previously computed results** to improve performance.",
+        "The common optimization strategy across these commits involves **reducing redundant calculations by caching frequently accessed values or reusing previously computed results** to improve performance.",
+        "The common optimization strategy across these commits is **reducing redundant calculations by caching frequently accessed values** to improve performance.",
+        "The common optimization strategy across these commits involves **reducing redundant calculations by caching frequently accessed values or reusing previously computed results** to improve performance.",
+        "The common optimization strategy across these commits is **reducing redundant calculations by caching frequently accessed values** to improve performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing the number of redundant calculations by caching frequently accessed values.",
+        "The optimization strategy involved reducing the number of redundant calculations by caching frequently accessed values within a loop.",
+        "The optimization strategy involved reducing redundant calculations by caching the result of a frequently accessed value within the loop.",
+        "The optimization strategy implemented caching of previously computed values to avoid redundant calculations.",
+        "The optimization strategy involved reducing the number of redundant operations by caching frequently accessed data and minimizing repeated calculations.",
+        "The optimization strategy involved reducing redundant calculations by caching frequently accessed values within the `rates` function.",
+        "The optimization strategy involved reducing redundant calculations by caching frequently accessed values within the `super_` function.",
+        "The optimization strategy involved reducing redundant computations by caching or reusing previously calculated values for repeating variables.",
+        "The optimization strategy involved reducing redundant calculations by caching frequently used values within the Instance::CalculateMatrix function.",
+        "The optimization strategy involved reducing redundant calculations by caching a frequently accessed value within the `addNewMutation` method.",
+        "The optimization strategy involved reducing the number of redundant calculations by caching frequently accessed values within the phi function.",
+        "The optimization strategy involved reducing redundant calculations by caching frequently accessed values within the tree generation function.",
+        "The optimization strategy involved reducing redundant calculations by caching the result of a frequently accessed value in the `get_global_soft_statistics()` function.",
+        "The optimization strategy involved reducing redundant calculations by caching the result of a frequently accessed value in PmoveSingle."
+      ]
+    },
+    {
+      "cluster_id": "3152",
+      "size": 13,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.997356653213501,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is replacing value-based loop iteration with reference-based iteration to eliminate unnecessary object copying and improve performance.",
+        "code_examples": [
+          [
+            "// Before\nfor (const std::vector<std::string> expression : tokens) {\n    std::vector<std::string> to_add;\n    to_add.insert(to_add.end(), expression.begin(), expression.end());\n    to_return.push_back(to_add);\n}",
+            "// After\nfor (const auto &expression: tokens) {\n    std::vector<std::string> to_add;\n    to_add.insert(to_add.end(), expression.begin(), expression.end());\n    to_return.push_back(to_add);\n}"
+          ],
+          [
+            "// Before\nfor (const auto addressAccount : addressToAccountTmp) {\n    AccountStore::GetInstance().AddAccountDuringDeserialization(\n        addressAccount.first, addressAccount.second);\n}",
+            "// After\nfor (const auto& addressAccount : addressToAccountTmp) {\n    AccountStore::GetInstance().AddAccountDuringDeserialization(\n        addressAccount.first, addressAccount.second);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop that iterates over a container using a value-based range-for loop (e.g., `for (auto x : container)`).",
+          "The loop operates on elements of a non-trivial type (e.g., objects, structs, or large data types) rather than primitive types (e.g., `int`, `char`).",
+          "The loop does not modify the elements of the container during iteration."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is replacing value-based loop iteration with reference-based iteration to eliminate unnecessary object copying and improve performance.",
+        "The common optimization strategy across these commits is replacing value-based loop iteration with reference-based iteration to eliminate unnecessary object copying and reduce overhead.",
+        "The common optimization strategy across these commits is replacing value-based loop iteration with reference-based iteration to eliminate unnecessary object copying and reduce overhead.",
+        "The common optimization strategy across these commits is replacing value-based loop iteration with reference-based iteration to eliminate unnecessary object copying and improve performance.",
+        "The common optimization strategy across these commits is replacing value-based loop iteration with reference-based iteration to eliminate unnecessary object copying and improve performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was replacing value-based loop iteration with reference-based iteration to reduce copy overhead.",
+        "The optimization strategy used was changing value-based iteration to reference-based iteration to avoid unnecessary copying of objects.",
+        "The optimization strategy used was to avoid copying a container during loop iteration by using a reference-based approach instead of a value-based one.",
+        "The optimization strategy used was changing value-based loop iteration to reference-based iteration in array_init() to reduce copy overhead."
+      ]
+    },
+    {
+      "cluster_id": "52",
+      "size": 12,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 2,
+      "consistency_best_similarity": 0.9904851317405701,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is the elimination of unnecessary object copies by leveraging move semantics (`Common::move`) to improve performance.",
+        "code_examples": [
+          [
+            "// Before\nCommon::SharedPtr<Object> inventoryAt(Math::Vector2d pos) {\n\tCommon::SharedPtr<Object> result;\n\tobjsAt(pos, InInventory(result));\n\treturn result;\n}",
+            "// After\nCommon::SharedPtr<Object> inventoryAt(Math::Vector2d pos) {\n\tCommon::SharedPtr<Object> result;\n\tobjsAt(Common::move(pos), InInventory(result));\n\treturn result;\n}"
+          ],
+          [
+            "// Before\nCommon::SharedPtr<Trigger> trigger(new SoundTrigger(sounds, obj->getId()));",
+            "// After\nCommon::SharedPtr<Trigger> trigger(new SoundTrigger(Common::move(sounds), obj->getId()));"
+          ],
+          [
+            "// Before\nentry.open(*g_twp->_pack, g_twp->_pack->assetExists(filename.c_str()) ? filename : orgFilename);",
+            "// After\nentry.open(*g_twp->_pack, g_twp->_pack->assetExists(filename.c_str()) ? Common::move(filename) : orgFilename);"
+          ]
+        ],
+        "application_conditions": [
+          "The code must involve an assignment or initialization where the right-hand side is a temporary object or a local variable that is not used afterward.",
+          "The type of the object being assigned or initialized must support move semantics (e.g., has a move constructor or move assignment operator).",
+          "The object being assigned or initialized must not be used in any other context after the assignment or initialization."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves eliminating unnecessary object copies by leveraging move semantics (`Common::move`) to improve performance.",
+        "The common optimization strategy across these commits is the elimination of unnecessary object copies by leveraging move semantics (`Common::move`) to improve performance by reducing redundant memory allocations and data duplication.",
+        "The common optimization strategy across these commits is the elimination of unnecessary object copies by leveraging move semantics (`Common::move`) to improve performance.",
+        "The common optimization strategy across these commits is the elimination of unnecessary object copies by leveraging move semantics (`Common::move`) to improve performance.",
+        "The common optimization strategy across these commits is the elimination of unnecessary object copies by leveraging move semantics (`Common::move`) to improve performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies to improve performance.",
+        "The optimization strategy involved removing unnecessary object copies to improve performance.",
+        "The optimization strategy involved fixing unnecessary object copies in the `inventoryAt` function to improve performance."
+      ]
+    },
+    {
+      "cluster_id": "89",
+      "size": 12,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 1,
+      "consistency_best_similarity": 0.9946502447128296,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is replacing calls to `size()` with `empty()` to check for container emptiness, as `empty()` is typically more efficient by avoiding the calculation of the container's size.",
+        "code_examples": [
+          [
+            "// Before\nif (m_lsWatchers.size() == 0) {\n  PutModule(\"You have no entries.\");\n  return;\n}",
+            "// After\nif (m_lsWatchers.empty()) {\n  PutModule(\"You have no entries.\");\n  return;\n}"
+          ],
+          [
+            "// Before\nwhile (keys.size() > 0) {\n  ASSERT_TRUE(iter->valid());\n  string expected_key = keys.front();\n  keys.pop_front();\n}",
+            "// After\nwhile (!keys.empty()) {\n  ASSERT_TRUE(iter->valid());\n  string expected_key = keys.front();\n  keys.pop_front();\n}"
+          ],
+          [
+            "// Before\nif (info.access_keys.size()) {\n  map<string, RGWAccessKey>::iterator iter = info.access_keys.begin();\n  for (; iter != info.access_keys.end(); ++iter) {\n    RGWAccessKey& k = iter->second;\n  }\n}",
+            "// After\nif (!info.access_keys.empty()) {\n  map<string, RGWAccessKey>::iterator iter = info.access_keys.begin();\n  for (; iter != info.access_keys.end(); ++iter) {\n    RGWAccessKey& k = iter->second;\n  }\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code must contain a conditional check using `size()` to determine if a container is empty, such as `size() == 0`, `size() > 0`, or `!size()`.",
+          "The container being checked must be a standard library container (e.g., `std::vector`, `std::map`, `std::deque`) or a class that provides an `empty()` method.",
+          "The `size()` method must be used in a context where it is only being used to check for emptiness, not for other purposes like iteration or size comparison."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is replacing calls to `size()` or comparisons like `size() > 0` with the `empty()` method to check for container emptiness, which is more efficient as it avoids calculating the container's size.",
+        "The common optimization strategy across these commits is replacing calls to `size()` with `empty()` to check for container emptiness, as `empty()` is typically more efficient by avoiding the calculation of the container's size.",
+        "The common optimization strategy across these commits is replacing calls to `size()` with `empty()` to check for container emptiness, as `empty()` is typically more efficient by avoiding the calculation of the container's size.",
+        "The common optimization strategy across these commits is replacing calls to `size()` with `empty()` to check for container emptiness, as `empty()` is typically more efficient by avoiding the calculation of the container's size.",
+        "The common optimization strategy across these commits is replacing calls to `size()` with `empty()` to check for container emptiness, as `empty()` is typically more efficient by avoiding the calculation of the container's size."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involves replacing `size()` with `!empty()` to check for container emptiness, which is more efficient.",
+        "The optimization strategy involves replacing `size()` with `empty()` to check for container emptiness, which is more efficient.",
+        "The optimization strategy involves replacing `size()` with `empty()` to check for container emptiness, which is more efficient.",
+        "The optimization strategy involves replacing `size()` with `empty()` to check for container emptiness, which is more efficient.",
+        "The optimization strategy replaces the use of `size()` with `empty()` to check for container emptiness, which is more efficient.",
+        "The optimization strategy replaces `size() > 0` with `!empty()` to check for container emptiness more efficiently.",
+        "The optimization strategy involves using the `empty()` method instead of `!size()` to check for container emptiness, which can be more efficient.",
+        "The optimization strategy used is replacing 'size() == 0' with 'empty()' to check for container emptiness, which is more efficient.",
+        "The optimization strategy involved replacing the use of `!size()` with `empty()` to check if a container is empty, which is typically more efficient.",
+        "The optimization strategy involves replacing 'size() > 0' with '!empty()' to check for emptiness, which is more efficient.",
+        "The optimization strategy involves replacing `m.size() > 0` with `!m.empty()` to potentially improve performance by avoiding the calculation of the container's size.",
+        "The optimization strategy involves replacing calls to `size()` with `empty()` for potentially faster performance and more concise code."
+      ]
+    },
+    {
+      "cluster_id": "878",
+      "size": 12,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9932771921157837,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **removing or limiting unnecessary prefetch operations** to reduce memory access overhead and improve performance by avoiding redundant or excessive prefetching.",
+        "code_examples": [
+          [
+            "// Before\nuint64_t LowLevelHashLenGt16(const void* data, size_t len, uint64_t seed, const uint64_t salt[5]) {\n  // Prefetch the cacheline that data resides in.\n  PrefetchToLocalCache(data);\n  const uint8_t* ptr = static_cast<const uint8_t*>(data);\n  uint64_t starting_length = static_cast<uint64_t>(len);\n  const uint8_t* last_16_ptr = ptr + starting_length - 16;",
+            "// After\nuint64_t LowLevelHashLenGt16(const void* data, size_t len, uint64_t seed, const uint64_t salt[5]) {\n  const uint8_t* ptr = static_cast<const uint8_t*>(data);\n  uint64_t starting_length = static_cast<uint64_t>(len);\n  const uint8_t* last_16_ptr = ptr + starting_length - 16;"
+          ],
+          [
+            "// Before\nunsigned int p = n << 4;\np &= ((int) (p - t->size)) >> 31;\nprefetch(&t->tree[p]);",
+            "// After\nunsigned int p = n << 4;\nif (p < t->size)\n  prefetch(&t->tree[p]);"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a prefetch instruction or function call that is executed unconditionally without a preceding conditional check.",
+          "The prefetch instruction or function call operates on a memory address that is accessed immediately (within a small, predefined number of instructions) after the prefetch.",
+          "The prefetch instruction or function call operates on a memory region that exceeds a predefined size threshold or is not explicitly requested by the surrounding logic."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **removing or limiting unnecessary prefetch operations** to reduce memory access overhead and improve performance by avoiding redundant or excessive prefetching.",
+        "The common optimization strategy across these commits involves **removing or limiting unnecessary prefetch operations** to reduce memory access overhead and improve performance by avoiding redundant or excessive prefetching.",
+        "The common optimization strategy across these commits involves **removing or limiting unnecessary prefetch operations** to reduce memory access overhead and improve performance by avoiding redundant or excessive prefetching.",
+        "The common optimization strategy across these commits involves **removing or limiting unnecessary prefetch operations** to reduce memory access overhead and improve performance by avoiding redundant or premature data fetching.",
+        "The common optimization strategy across these commits involves **removing or limiting unnecessary prefetch operations** to reduce memory access overhead and improve performance by avoiding redundant or excessive prefetching."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involves skipping unused prefetch operations based on a condition to reduce unnecessary memory access.",
+        "The optimization strategy involved removing prefetch logic to avoid accessing impossible per CPU areas, thereby reducing unnecessary memory operations.",
+        "The optimization strategy involves conditionally enabling prefetching only when it is necessary, reducing unnecessary prefetch operations.",
+        "The optimization strategy involves lowering the prefetch intrinsic to a noop to eliminate unnecessary prefetch operations.",
+        "The optimization strategy involves limiting prefetching to only the amount of data that was explicitly requested, avoiding unnecessary prefetch operations.",
+        "The optimization strategy involves ignoring unreasonable prefetches to improve performance by reducing unnecessary operations.",
+        "The optimization strategy involved lowering the prefetch operation to a noop to reduce unnecessary overhead.",
+        "The optimization strategy involves removing an unnecessary prefetch() call when the condition p >= t->size is met, avoiding redundant memory access.",
+        "The optimization strategy involves limiting the number of blocks allocated in the prefetcher to match the number of blocks in the input to avoid unnecessary memory usage.",
+        "The optimization strategy involved removing a prefetch call from the STOP instruction to reduce unnecessary memory access overhead.",
+        "The optimization strategy changes the default behavior of PREFETCH to PARALLEL to improve performance when SEQUENTIAL is not specified.",
+        "The optimization strategy involved removing a prefetch instruction that was too close to the first data access, providing no significant performance improvement as per benchmarks."
+      ]
+    },
+    {
+      "cluster_id": "2466",
+      "size": 11,
+      "used_commits_count": 10,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 1,
+      "consistency_best_similarity": 0.9779644012451172,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is the use of **memory prefetching** to reduce latency by proactively loading data into the cache before it is needed.",
+        "code_examples": [
+          [
+            "// Before\nvoid MakeNullMove(S_Board* pos) {\n    saveBoardState(pos);\n    pos->played_positions.emplace_back(pos->posKey);\n    pos->hisPly++;\n    pos->historyStackHead++;\n    pos->fiftyMove++;\n    pos->plyFromNull = 0;\n    if (GetEpSquare(pos) != no_sq)\n        HashKey(pos, enpassant_keys[GetEpSquare(pos)]);\n    pos->enPas = no_sq;\n    pos->ChangeSide();\n    HashKey(pos, SideKey);\n    UpdatePinsAndCheckers(pos, pos->side);\n}",
+            "// After\nvoid MakeNullMove(S_Board* pos) {\n    saveBoardState(pos);\n    pos->played_positions.emplace_back(pos->posKey);\n    if (GetEpSquare(pos) != no_sq)\n        HashKey(pos, enpassant_keys[GetEpSquare(pos)]);\n    pos->ChangeSide();\n    HashKey(pos, SideKey);\n    TTPrefetch(pos->GetPoskey());\n    pos->hisPly++;\n    pos->historyStackHead++;\n    pos->fiftyMove++;\n    pos->plyFromNull = 0;\n    pos->enPas = no_sq;\n    UpdatePinsAndCheckers(pos, pos->side);\n}"
+          ],
+          [
+            "// Before\nvoid hash_embedding_ff(const T* hash_id, int len, T* top_pos,\n                         const T* weights, int _num_emb, int _rand_len,\n                         int _space_len) const {\n    for (unsigned int j = 0; j != _num_emb; j += _rand_len) {\n        unsigned int pos = XXH32(hash_id, len * sizeof(T), j) % _space_len;\n        if (_rand_len == 16) {\n            memcpy(top_pos + j, const_cast<float*>(weights + pos), 16 * sizeof(T));\n        } else {\n            memcpy(top_pos + j, const_cast<float*>(weights + pos),\n                   _rand_len * sizeof(T));\n        }\n    }\n}",
+            "// After\nvoid hash_embedding_ff(const T* hash_id, int len, T* top_pos,\n                         const T* weights, int _num_emb, int _rand_len,\n                         int _space_len) const {\n    unsigned int pos1 = XXH32(hash_id, len * sizeof(T), 0) % _space_len;\n    unsigned int pos2 = XXH32(hash_id, len * sizeof(T), _rand_len) % _space_len;\n    for (unsigned int j = 0; j != _num_emb; j += _rand_len) {\n        if (j + _rand_len < _num_emb) {\n            __builtin_prefetch(weights + pos2);\n            __builtin_prefetch(top_pos + j + _rand_len);\n        }\n        unsigned int pos3 = XXH32(hash_id, len * sizeof(T), j + 2 * _rand_len) % _space_len;\n        memcpy(top_pos + j, const_cast<float*>(weights + pos1),\n               _rand_len * sizeof(T));\n        pos1 = pos2;\n        pos2 = pos3;\n    }\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code must contain a loop that iterates over a data structure with predictable access patterns.",
+          "The data structure being accessed in the loop must be large enough to benefit from cache optimization.",
+          "The loop must access memory locations that are not already in the cache at the time of access."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits is the use of **memory prefetching** to reduce latency by proactively loading data into the cache before it is needed, thereby improving performance in various contexts such as packet processing, flow entry management, and clause handling.",
+        "The common optimization strategy across these commits is the use of **memory prefetching** to reduce latency by proactively loading data into the cache before it is needed.",
+        "The common optimization strategy across these commits is the use of **memory prefetching** to reduce latency by proactively loading data into the cache before it is needed.",
+        "The common optimization strategy across these commits is the use of **memory prefetching** to reduce latency by proactively loading data into the cache before it is needed, thereby improving performance in various computational paths.",
+        "The common optimization strategy across these commits is the use of **memory prefetching** to reduce latency by proactively loading data into the cache before it is needed, thereby improving cache performance and minimizing memory access stalls."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy used involves prefetching memory to load the next memory block into the cache to reduce latency.",
+        "The optimization strategy involves prefetching clauses into the cache before cleaning them to reduce memory latency.",
+        "The optimization strategy involves prefetching clauses during probing to reduce memory latency and improve cache utilization.",
+        "The optimization strategy involves prefetching data from RAM early to reduce stalls and speed up packet processing.",
+        "The optimization strategy involves prefetching the next group of buffers instead of the current buffers to improve performance.",
+        "The optimization strategy involves using prefetching during solution extension to improve cache performance and reduce memory latency.",
+        "The optimization strategy involves prefetching data before running the next module to reduce latency.",
+        "The optimization strategy involves prefetching data for null move operations to reduce memory latency.",
+        "The optimization strategy involves adding memory prefetching for flow entries to improve cache performance.",
+        "The optimization strategy involves prefetching the first descriptor in the dequeue path to reduce memory access latency.",
+        "The optimization strategy used involves prefetching the memory area of the encapsulation header to reduce latency."
+      ]
+    },
+    {
+      "cluster_id": "544",
+      "size": 11,
+      "used_commits_count": 6,
+      "truncated_diff_count": 0,
+      "consistency_best_idx": 0,
+      "consistency_best_similarity": 0.9990692138671875,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **reordering conditions in if-statements to prioritize cheaper evaluations first**, thereby reducing unnecessary computations and improving performance.",
+        "code_examples": [
+          [
+            "// Before\nif (u->weapons.empty())\n    continue;\n\nif (!u->immobile)\n    return true;\n\n// get mouse hovered map pos\nCUnit* unit = NULL;\nCFeature* feature = NULL;\nconst float viewRange = globalRendering->viewRange * 1.4f;\nconst float dist = TraceRay::GuiTraceRay(camera->pos, mouse->dir, viewRange, true, NULL, unit, feature);\n\nif (dist <= 0.0f)\n    continue;\n\nconst float3 groundPos = camera->pos + mouse->dir * dist;",
+            "// After\nif (!u->immobile)\n    return true;\n\nif (u->weapons.empty())\n    continue;\n\n// get mouse hovered map pos\nCUnit* unit = NULL;\nCFeature* feature = NULL;\nconst float viewRange = globalRendering->viewRange * 1.4f;\nconst float dist = TraceRay::GuiTraceRay(camera->pos, mouse->dir, viewRange, true, NULL, unit, feature);\n\nif (dist <= 0.0f)\n    continue;\n\nconst float3 groundPos = camera->pos + mouse->dir * dist;"
+          ],
+          [
+            "// Before\nif (GetState() == eReload)\n{\n    if (iAmmoElapsed == 0)\n    {\n        if (H_Parent() == Level().CurrentEntity() && !fsimilar(m_zoom_params.m_ReloadEmptyDof.w, -1.0f))\n        {\n            CActor* current_actor = smart_cast<CActor*>(H_Parent());\n            if (current_actor)\n                current_actor->Cameras().AddCamEffector(new CEffectorDOF(m_zoom_params.m_ReloadEmptyDof));\n        }\n    }\n    else\n    {\n        if (H_Parent() == Level().CurrentEntity() && !fsimilar(m_zoom_params.m_ReloadDof.w, -1.0f))\n        {\n            CActor* current_actor = smart_cast<CActor*>(H_Parent());\n            if (current_actor)\n                current_actor->Cameras().AddCamEffector(new CEffectorDOF(m_zoom_params.m_ReloadDof));\n        }\n    }\n}",
+            "// After\nif (S == eReload)\n{\n    CActor* current_actor = smart_cast<CActor*>(H_Parent());\n    if (current_actor && H_Parent() == Level().CurrentEntity())\n        if (iAmmoElapsed == 0)\n            if (!fsimilar(m_zoom_params.m_ReloadEmptyDof.w, -1.0f))\n                current_actor->Cameras().AddCamEffector(new CEffectorDOF(m_zoom_params.m_ReloadEmptyDof));\n        else\n            if (!fsimilar(m_zoom_params.m_ReloadDof.w, -1.0f))\n                current_actor->Cameras().AddCamEffector(new CEffectorDOF(m_zoom_params.m_ReloadDof));\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains an if-statement with multiple conditions connected by logical operators (e.g., `&&`, `||`).",
+          "At least one condition in the if-statement is significantly cheaper to evaluate (e.g., a simple comparison or boolean check) compared to others (e.g., function calls or complex expressions).",
+          "The order of conditions in the if-statement does not affect the logical outcome of the expression."
+        ]
+      },
+      "all_strategy_summaries": [
+        "The common optimization strategy across these commits involves **reordering conditions in if-statements to prioritize cheaper evaluations first**, thereby reducing unnecessary computations and improving performance.",
+        "The common optimization strategy across these commits is **reordering conditions in if-statements to prioritize cheaper evaluations first**, thereby reducing unnecessary computations and improving performance.",
+        "The common optimization strategy across these commits involves **reordering conditions in if-statements to prioritize cheaper evaluations first**, thereby reducing unnecessary computations and improving performance.",
+        "The common optimization strategy across these commits involves **reordering conditions in if-statements to prioritize cheaper evaluations first**, thereby reducing unnecessary computations and improving performance.",
+        "The common optimization strategy across these commits involves **reordering conditions in if-statements to prioritize cheaper evaluations first**, thereby reducing unnecessary computations and improving performance."
+      ],
+      "all_optimization_summaries": [
+        "The optimization strategy involved reordering conditions in if-statements to prioritize cheaper evaluations first, reducing unnecessary computations.",
+        "The optimization strategy involved reordering conditions in if-statements to prioritize cheaper evaluations first, reducing unnecessary computations.",
+        "The optimization strategy involved reordering conditions in if-statements to prioritize cheaper evaluations first, reducing unnecessary computations.",
+        "The optimization strategy involved reordering conditions in if-statements to prioritize cheaper evaluations first, reducing unnecessary computations.",
+        "The optimization strategy involved reordering conditions in if-statements to prioritize cheaper evaluations and reduce unnecessary computations.",
+        "The optimization strategy involved reordering conditions in if-statements to prioritize cheaper evaluations and reduce unnecessary computations.",
+        "The optimization strategy involved reordering conditions in if-statements to prioritize cheaper evaluations first.",
+        "The optimization strategy involved reordering conditions in an if-statement to prioritize faster evaluations and reduce unnecessary computations.",
+        "The optimization strategy involved reordering conditions in if-statements to improve performance by evaluating cheaper conditions first.",
+        "The optimization strategy involves reordering conditions in if-statements to prioritize faster evaluations and reduce unnecessary computations.",
+        "The optimization strategy involved reordering conditions in an if-statement to prioritize cheaper checks and reduce unnecessary evaluations."
+      ]
+    }
+  ],
+  "metadata": {
+    "use_diff_info": true,
+    "use_commit_message": true,
+    "max_diff_length": 2000,
+    "skip_truncated_diff": true,
+    "max_commits_per_cluster": 10,
+    "consistency_repeats": 5,
+    "USE_PROMPT": false,
+    "threshold": 11,
+    "total_clusters_analyzed": 18,
+    "total_used_commits": 174,
+    "total_truncated_diffs": 0
+  }
+}

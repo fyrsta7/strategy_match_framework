@@ -1,0 +1,171 @@
+uint16_t
+mlx5_tx_burst(void *dpdk_txq, struct rte_mbuf **pkts, uint16_t pkts_n)
+{
+	struct txq *txq = (struct txq *)dpdk_txq;
+	unsigned int elts_head = txq->elts_head;
+	const unsigned int elts_n = txq->elts_n;
+	unsigned int elts_comp_cd = txq->elts_comp_cd;
+	unsigned int elts_comp = 0;
+	unsigned int i;
+	unsigned int max;
+	int err;
+
+	assert(elts_comp_cd != 0);
+	txq_complete(txq);
+	max = (elts_n - (elts_head - txq->elts_tail));
+	if (max > elts_n)
+		max -= elts_n;
+	assert(max >= 1);
+	assert(max <= elts_n);
+	/* Always leave one free entry in the ring. */
+	--max;
+	if (max == 0)
+		return 0;
+	if (max > pkts_n)
+		max = pkts_n;
+	for (i = 0; (i != max); ++i) {
+		struct rte_mbuf *buf = pkts[i];
+		unsigned int elts_head_next =
+			(((elts_head + 1) == elts_n) ? 0 : elts_head + 1);
+		struct txq_elt *elt_next = &(*txq->elts)[elts_head_next];
+		struct txq_elt *elt = &(*txq->elts)[elts_head];
+		unsigned int segs = NB_SEGS(buf);
+#ifdef MLX5_PMD_SOFT_COUNTERS
+		unsigned int sent_size = 0;
+#endif
+		uint32_t send_flags = 0;
+
+		/* Prefetch the next txq_elt structure for the next iteration. */
+		if (likely(i + 1 < max)) {
+			rte_prefetch0(&(*txq->elts)[((elts_head_next + 1) == elts_n) ? 0 : elts_head_next + 1]);
+			rte_prefetch0(pkts[i + 1]);
+		}
+
+		/* Clean up old buffer. */
+		if (likely(elt->buf != NULL)) {
+			struct rte_mbuf *tmp = elt->buf;
+
+			/* Faster than rte_pktmbuf_free(). */
+			do {
+				struct rte_mbuf *next = NEXT(tmp);
+
+				rte_pktmbuf_free_seg(tmp);
+				tmp = next;
+			} while (tmp != NULL);
+		}
+		/* Request TX completion. */
+		if (unlikely(--elts_comp_cd == 0)) {
+			elts_comp_cd = txq->elts_comp_cd_init;
+			++elts_comp;
+			send_flags |= IBV_EXP_QP_BURST_SIGNALED;
+		}
+		/* Should we enable HW CKSUM offload */
+		if (buf->ol_flags &
+		    (PKT_TX_IP_CKSUM | PKT_TX_TCP_CKSUM | PKT_TX_UDP_CKSUM)) {
+			send_flags |= IBV_EXP_QP_BURST_IP_CSUM;
+			/* HW does not support checksum offloads at arbitrary
+			 * offsets but automatically recognizes the packet
+			 * type. For inner L3/L4 checksums, only VXLAN (UDP)
+			 * tunnels are currently supported. */
+			if (RTE_ETH_IS_TUNNEL_PKT(buf->packet_type))
+				send_flags |= IBV_EXP_QP_BURST_TUNNEL;
+		}
+		if (likely(segs == 1)) {
+			uintptr_t addr;
+			uint32_t length;
+			uint32_t lkey;
+
+			/* Retrieve buffer information. */
+			addr = rte_pktmbuf_mtod(buf, uintptr_t);
+			length = DATA_LEN(buf);
+			/* Retrieve Memory Region key for this memory pool. */
+			lkey = txq_mp2mr(txq, txq_mb2mp(buf));
+			if (unlikely(lkey == (uint32_t)-1)) {
+				/* MR does not exist. */
+				DEBUG("%p: unable to get MP <-> MR"
+				      " association", (void *)txq);
+				/* Clean up TX element. */
+				elt->buf = NULL;
+				goto stop;
+			}
+			/* Update element. */
+			elt->buf = buf;
+			if (txq->priv->vf)
+				rte_prefetch0((volatile void *)
+					      (uintptr_t)addr);
+			RTE_MBUF_PREFETCH_TO_FREE(elt_next->buf);
+			/* Put packet into send queue. */
+#if MLX5_PMD_MAX_INLINE > 0
+			if (length <= txq->max_inline)
+				err = txq->if_qp->send_pending_inline
+					(txq->qp,
+					 (void *)addr,
+					 length,
+					 send_flags);
+			else
+#endif
+				err = txq->if_qp->send_pending
+					(txq->qp,
+					 addr,
+					 length,
+					 lkey,
+					 send_flags);
+			if (unlikely(err))
+				goto stop;
+#ifdef MLX5_PMD_SOFT_COUNTERS
+			sent_size += length;
+#endif
+		} else {
+#if MLX5_PMD_SGE_WR_N > 1
+			struct ibv_sge sges[MLX5_PMD_SGE_WR_N];
+			struct tx_burst_sg_ret ret;
+
+			ret = tx_burst_sg(txq, segs, elt, buf, elts_head,
+					  &sges);
+			if (ret.length == (unsigned int)-1)
+				goto stop;
+			RTE_MBUF_PREFETCH_TO_FREE(elt_next->buf);
+			/* Put SG list into send queue. */
+			err = txq->if_qp->send_pending_sg_list
+				(txq->qp,
+				 sges,
+				 ret.num,
+				 send_flags);
+			if (unlikely(err))
+				goto stop;
+#ifdef MLX5_PMD_SOFT_COUNTERS
+			sent_size += ret.length;
+#endif
+#else /* MLX5_PMD_SGE_WR_N > 1 */
+			DEBUG("%p: TX scattered buffers support not"
+			      " compiled in", (void *)txq);
+			goto stop;
+#endif /* MLX5_PMD_SGE_WR_N > 1 */
+		}
+		elts_head = elts_head_next;
+#ifdef MLX5_PMD_SOFT_COUNTERS
+		/* Increment sent bytes counter. */
+		txq->stats.obytes += sent_size;
+#endif
+	}
+stop:
+	/* Take a shortcut if nothing must be sent. */
+	if (unlikely(i == 0))
+		return 0;
+#ifdef MLX5_PMD_SOFT_COUNTERS
+	/* Increment sent packets counter. */
+	txq->stats.opackets += i;
+#endif
+	/* Ring QP doorbell. */
+	err = txq->if_qp->send_flush(txq->qp);
+	if (unlikely(err)) {
+		/* A nonzero value is not supposed to be returned.
+		 * Nothing can be done about it. */
+		DEBUG("%p: send_flush() failed with error %d",
+		      (void *)txq, err);
+	}
+	txq->elts_head = elts_head;
+	txq->elts_comp += elts_comp;
+	txq->elts_comp_cd = elts_comp_cd;
+	return i;
+}

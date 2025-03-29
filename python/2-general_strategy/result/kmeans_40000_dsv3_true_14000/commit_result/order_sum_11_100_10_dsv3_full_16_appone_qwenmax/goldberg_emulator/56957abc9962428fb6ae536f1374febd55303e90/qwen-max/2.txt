@@ -1,0 +1,48 @@
+void RunCallbacks()
+{
+    if (call_definition_update || !inventory_requests.empty()) {
+        if (!item_definitions_loaded) {
+            read_items_db();
+            item_definitions_loaded = true;
+
+            //only gets called once
+            //also gets called when getting items
+            SteamInventoryDefinitionUpdate_t data = {};
+            callbacks->addCBResult(data.k_iCallback, &data, sizeof(data));
+        }
+
+        call_definition_update = false;
+    }
+
+    if (!inventory_requests.empty() && !inventory_loaded) {
+        read_inventory_db();
+        inventory_loaded = true;
+    }
+
+    if (inventory_loaded)
+    {
+        std::chrono::system_clock::time_point now = std::chrono::system_clock::now();
+
+        for (auto & r : inventory_requests) {
+            if (!r.done && std::chrono::duration_cast<std::chrono::duration<double>>(now - r.time_created).count() > r.timeout) {
+                if (r.full_query) {
+                    // SteamInventoryFullUpdate_t callbacks are triggered when GetAllItems
+                    // successfully returns a result which is newer / fresher than the last
+                    // known result.
+                    struct SteamInventoryFullUpdate_t data;
+                    data.m_handle = r.inventory_result;
+                    callbacks->addCBResult(data.k_iCallback, &data, sizeof(data));
+                }
+
+                {
+                    struct SteamInventoryResultReady_t data;
+                    data.m_handle = r.inventory_result;
+                    data.m_result = k_EResultOK;
+                    callbacks->addCBResult(data.k_iCallback, &data, sizeof(data));
+                }
+
+                r.done = true;
+            }
+        }
+    }
+}

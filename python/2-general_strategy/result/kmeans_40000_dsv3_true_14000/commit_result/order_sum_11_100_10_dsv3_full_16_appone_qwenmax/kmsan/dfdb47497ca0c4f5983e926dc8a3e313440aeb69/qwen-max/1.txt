@@ -1,0 +1,20 @@
+static void lpt_disable_pch_transcoder(struct drm_i915_private *dev_priv)
+{
+	u32 val;
+
+	val = I915_READ(LPT_TRANSCONF);
+	val &= ~TRANS_ENABLE;
+	I915_WRITE(LPT_TRANSCONF, val);
+	/* wait for PCH transcoder off, transcoder state */
+	if (intel_wait_for_register(dev_priv,
+				    LPT_TRANSCONF,
+				    TRANS_STATE_ENABLE,
+				    0,
+				    50))
+		DRM_ERROR("Failed to disable PCH transcoder\n");
+
+	/* Workaround: clear timing override bit. */
+	val = I915_READ(TRANS_CHICKEN2(PIPE_A));
+	val &= ~TRANS_CHICKEN2_TIMING_OVERRIDE;
+	I915_WRITE(TRANS_CHICKEN2(PIPE_A), val);
+}

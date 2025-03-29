@@ -1,0 +1,30 @@
+void intel_sbi_write(struct drm_i915_private *dev_priv, u16 reg, u32 value,
+		     enum intel_sbi_destination destination)
+{
+	u32 tmp;
+
+	WARN_ON(!mutex_is_locked(&dev_priv->sb_lock));
+
+	if (intel_wait_for_register(dev_priv,
+				    SBI_CTL_STAT, SBI_BUSY, 0,
+				    100)) {
+		DRM_ERROR("timeout waiting for SBI to become ready\n");
+		return;
+	}
+
+	I915_WRITE(SBI_ADDR, (reg << 16));
+	I915_WRITE(SBI_DATA, value);
+
+	if (destination == SBI_ICLK)
+		tmp = SBI_CTL_DEST_ICLK | SBI_CTL_OP_CRWR;
+	else
+		tmp = SBI_CTL_DEST_MPHY | SBI_CTL_OP_IOWR;
+	I915_WRITE(SBI_CTL_STAT, SBI_BUSY | tmp);
+
+	if (intel_wait_for_register(dev_priv,
+				    SBI_CTL_STAT, SBI_BUSY | SBI_RESPONSE_FAIL, 0,
+				    100)) {
+		DRM_ERROR("timeout waiting for SBI to complete write transaction\n");
+		return;
+	}
+}

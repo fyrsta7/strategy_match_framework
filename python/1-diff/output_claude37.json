@@ -1,0 +1,209 @@
+{
+  "summary": {
+    "original_file": "/home/zyw/llm_on_code/rocksdb/db/c_test.c",
+    "modified_file": "/home/zyw/llm_on_code/rocksdb-2/db/c_test.c",
+    "total_modifications": 1,
+    "non_function_modifications": 0,
+    "modified_functions_count": 1
+  },
+  "modifications": [
+    {
+      "id": 1,
+      "type": "insert",
+      "old_start": 316,
+      "old_end": 316,
+      "new_start": 316,
+      "new_end": 321,
+      "function": "main",
+      "old_content": null,
+      "new_content": "    // If we do not compact here, then the lazy deletion of\n    // files (https://reviews.facebook.net/D6123) would leave\n    // around deleted files and the repair process will find\n    // those files and put them back into the database.\n    leveldb_compact_range(db, NULL, 0, NULL, 0);\n"
+    }
+  ],
+  "modified_functions": {
+    "main": {
+      "total_modifications": 1,
+      "insert_count": 1,
+      "delete_count": 0,
+      "replace_count": 0,
+      "modification_ids": [
+        1
+      ]
+    }
+  },
+  "functions": {
+    "original_file": [
+      {
+        "name": "StartPhase",
+        "start_line": 17,
+        "end_line": 20
+      },
+      {
+        "name": "GetTempDir",
+        "start_line": 22,
+        "end_line": 27
+      },
+      {
+        "name": "fprintf",
+        "start_line": 31,
+        "end_line": 39
+      },
+      {
+        "name": "CheckEqual",
+        "start_line": 41,
+        "end_line": 55
+      },
+      {
+        "name": "Free",
+        "start_line": 57,
+        "end_line": 62
+      },
+      {
+        "name": "CheckGet",
+        "start_line": 64,
+        "end_line": 76
+      },
+      {
+        "name": "CheckIter",
+        "start_line": 78,
+        "end_line": 86
+      },
+      {
+        "name": "CheckPut",
+        "start_line": 89,
+        "end_line": 105
+      },
+      {
+        "name": "CheckDel",
+        "start_line": 108,
+        "end_line": 113
+      },
+      {
+        "name": "CmpDestroy",
+        "start_line": 115,
+        "end_line": 115
+      },
+      {
+        "name": "CmpCompare",
+        "start_line": 117,
+        "end_line": 126
+      },
+      {
+        "name": "CmpName",
+        "start_line": 128,
+        "end_line": 130
+      },
+      {
+        "name": "FilterDestroy",
+        "start_line": 134,
+        "end_line": 134
+      },
+      {
+        "name": "FilterName",
+        "start_line": 135,
+        "end_line": 137
+      },
+      {
+        "name": "FilterCreate",
+        "start_line": 138,
+        "end_line": 147
+      },
+      {
+        "name": "FilterKeyMatch",
+        "start_line": 148,
+        "end_line": 155
+      },
+      {
+        "name": "main",
+        "start_line": 157,
+        "end_line": 382
+      }
+    ],
+    "modified_file": [
+      {
+        "name": "StartPhase",
+        "start_line": 17,
+        "end_line": 20
+      },
+      {
+        "name": "GetTempDir",
+        "start_line": 22,
+        "end_line": 27
+      },
+      {
+        "name": "fprintf",
+        "start_line": 31,
+        "end_line": 39
+      },
+      {
+        "name": "CheckEqual",
+        "start_line": 41,
+        "end_line": 55
+      },
+      {
+        "name": "Free",
+        "start_line": 57,
+        "end_line": 62
+      },
+      {
+        "name": "CheckGet",
+        "start_line": 64,
+        "end_line": 76
+      },
+      {
+        "name": "CheckIter",
+        "start_line": 78,
+        "end_line": 86
+      },
+      {
+        "name": "CheckPut",
+        "start_line": 89,
+        "end_line": 105
+      },
+      {
+        "name": "CheckDel",
+        "start_line": 108,
+        "end_line": 113
+      },
+      {
+        "name": "CmpDestroy",
+        "start_line": 115,
+        "end_line": 115
+      },
+      {
+        "name": "CmpCompare",
+        "start_line": 117,
+        "end_line": 126
+      },
+      {
+        "name": "CmpName",
+        "start_line": 128,
+        "end_line": 130
+      },
+      {
+        "name": "FilterDestroy",
+        "start_line": 134,
+        "end_line": 134
+      },
+      {
+        "name": "FilterName",
+        "start_line": 135,
+        "end_line": 137
+      },
+      {
+        "name": "FilterCreate",
+        "start_line": 138,
+        "end_line": 147
+      },
+      {
+        "name": "FilterKeyMatch",
+        "start_line": 148,
+        "end_line": 155
+      },
+      {
+        "name": "main",
+        "start_line": 157,
+        "end_line": 387
+      }
+    ]
+  }
+}

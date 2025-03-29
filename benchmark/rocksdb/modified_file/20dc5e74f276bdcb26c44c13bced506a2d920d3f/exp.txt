@@ -1,0 +1,10 @@
+本次提交的主要修改思路是重新调整判断条件的顺序，以避免不必要的、耗时的 range 删除判断调用，从而提升合并操作时的整体性能和效率。
+
+具体来说，在原先的代码中，对于处理合并操作中遇到的 merge 类型的记录，判断是否需要删除该 merge 操作时，先判断 range_del_agg 是否为空，然后调用 range_del_agg->ShouldDelete 函数来判断是否满足删除条件，最后再根据 compaction filter 的决策（判断 filter 是否等于 kRemoveAndSkipUntil）来决定是否将该记录过滤掉。问题在于，如果 compaction filter 的决策已经是 kRemoveAndSkipUntil，那么实际上后续的判断就会导致立即跳过删除处理，这时之前对 range_del_agg->ShouldDelete 所做的计算就白费了资源，因为该函数本身可能是一个比较复杂且耗时的调用。
+
+经过这次的修改，代码逻辑被重新排列：首先检查 compaction filter 的决策是否不为 kRemoveAndSkipUntil，再判断 range_del_agg 是否为空，最后再调用 ShouldDelete 判断是否符合删除条件。这样，就可以在 filter 为 kRemoveAndSkipUntil 时直接跳过调用 range_del_agg->ShouldDelete，从而避免了不必要的计算。
+
+修改目的和预期效果总结如下：
+1. 优化点：提前检查 compaction filter 的决策，从而避免在不必要的情况下调用耗时的 range_del_agg->ShouldDelete 函数。
+2. 目的：减少不必要的计算开销，提高在处理 merge 操作时的性能，尤其是在 compaction filter 决定跳过（kRemoveAndSkipUntil）的场景中。
+3. 预期优化效果：降低整体的 CPU 资源消耗，加快合并操作的处理速度，提升 RocksDB 在 compaction 或 merge 时的吞吐量和效率，同时对系统负载较高情况下的性能有更好的表现。

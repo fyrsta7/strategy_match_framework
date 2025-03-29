@@ -1,0 +1,4 @@
+bool AuthMonitor::should_propose(double& delay)
+{
+  return !pending_auth.empty();
+}

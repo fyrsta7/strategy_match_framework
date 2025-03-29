@@ -1,0 +1,51 @@
+{
+  "cluster_count_by_threshold": {
+    "8": 1,
+    "3": 2,
+    "2": 7,
+    "1": 10
+  },
+  "cluster_summaries": [
+    {
+      "cluster_id": "1",
+      "size": 8,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is **reducing unnecessary copying and computational overhead by passing function parameters by reference instead of by value and reordering conditions to avoid expensive operations**.",
+        "code_examples": [
+          [
+            "// Before\nvoid ProcessKey(std::string key) {\n    // Process key\n}",
+            "// After\nvoid ProcessKey(const std::string& key) {\n    // Process key\n}"
+          ],
+          [
+            "// Before\nfor (const auto value : vec) {\n    // Process value\n}",
+            "// After\nfor (const auto& value : vec) {\n    // Process value\n}"
+          ],
+          [
+            "// Before\nif (range_del_agg->ShouldDelete(iter->key(), RangeDelAggregator::kForwardTraversal) && filter != CompactionFilter::kRemoveAndSkipUntil) {\n    // Perform action\n}",
+            "// After\nif (filter != CompactionFilter::kRemoveAndSkipUntil && range_del_agg->ShouldDelete(iter->key(), RangeDelAggregator::kForwardTraversal)) {\n    // Perform action\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The function parameter is a non-primitive type (e.g., a class, struct, or container) and is passed by value.",
+          "The function parameter is not modified within the function body, making it safe to pass by reference.",
+          "The function parameter is used multiple times within the function, indicating potential performance benefits from avoiding repeated copying."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involved passing a function parameter by reference instead of by value to avoid unnecessary copying.",
+        "The optimization strategy used was iterating over a vector by reference instead of by value to reduce copy overhead.",
+        "The optimization strategy involved passing a function parameter by reference instead of by value to avoid unnecessary copying.",
+        "The optimization strategy involved passing a function parameter by reference instead of by value to avoid unnecessary copying.",
+        "The optimization strategy involved passing a function parameter by reference instead of by value to reduce copy overhead.",
+        "The optimization strategy involved passing a function parameter by reference instead of by value to avoid unnecessary copying.",
+        "The optimization strategy involves passing the function parameter 'prefix' by reference instead of by value to avoid unnecessary copying.",
+        "The optimization strategy involved reordering conditions in an if-statement to avoid unnecessary expensive function calls by checking a simpler condition first."
+      ]
+    }
+  ],
+  "metadata": {
+    "use_diff_info": false,
+    "threshold": 5,
+    "total_clusters_analyzed": 1
+  }
+}

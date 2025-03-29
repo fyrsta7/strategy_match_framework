@@ -1,0 +1,18 @@
+static int gen6_hw_domain_reset(struct drm_i915_private *dev_priv,
+				u32 hw_domain_mask)
+{
+	int ret;
+
+	/* GEN6_GDRST is not in the gt power well, no need to check
+	 * for fifo space for the write or forcewake the chip for
+	 * the read
+	 */
+	__raw_i915_write32(dev_priv, GEN6_GDRST, hw_domain_mask);
+
+	/* Spin waiting for the device to ack the reset requests */
+	ret = intel_wait_for_register(dev_priv,
+				      GEN6_GDRST, hw_domain_mask, 0,
+				      500);
+
+	return ret;
+}

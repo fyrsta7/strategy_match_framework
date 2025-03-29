@@ -1,0 +1,420 @@
+{
+  "cluster_count_by_threshold": {
+    "10": 2,
+    "9": 3,
+    "8": 6,
+    "7": 7,
+    "6": 8,
+    "5": 9,
+    "4": 13,
+    "3": 31,
+    "2": 57,
+    "1": 150
+  },
+  "cluster_summaries": [
+    {
+      "cluster_id": "25",
+      "size": 10,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing computational overhead and improving performance through techniques such as eliminating redundant memory accesses, replacing loops with more efficient operations, restructuring code to minimize unnecessary computations, and leveraging parallelism or faster alternatives for critical operations.",
+        "code_examples": [
+          [
+            "// Before\nfor (int i = 0; i < n; i++) {\n    data[i] = value;\n}",
+            "// After\nmemset(data, value, n * sizeof(data[0]));"
+          ],
+          [
+            "// Before\nint sum = 0;\nfor (int i = 0; i < array.length; i++) {\n    sum += array[i];\n}",
+            "// After\nint sum = 0;\nfor (int i = 0; i < array.length; i += 4) {\n    sum += array[i] + array[i+1] + array[i+2] + array[i+3];\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop where the loop variable is of type `int` but the target architecture benefits from using `long` for innermost loops.",
+          "The code performs redundant memory accesses within a loop that can be eliminated by reordering operations or caching values.",
+          "The code includes a sequential operation that can be replaced with a parallelized implementation using multi-threading or GPU acceleration."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involves adding metadata to the loop latch terminator to enable vectorization of work-item loops by the compiler.",
+        "The optimization strategy eliminates redundant memory accesses within a loop to improve performance.",
+        "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture.",
+        "The optimization strategy used is to replace a loop with a direct memory write operation to reduce iteration overhead.",
+        "The optimization strategy involved replacing a loop with a more efficient bitwise operation to reduce computational overhead during RLE decompression.",
+        "The optimization strategy involved reducing unnecessary memory operations by reordering and minimizing data movement within the decompression loop.",
+        "The optimization strategy involved restructuring the `writeVarintSlow` function by compressing its logic into a loop to reduce redundancy and improve performance.",
+        "The optimization strategy replaced a memory-allocating environment variable check with a faster, non-allocating alternative to improve performance.",
+        "The optimization strategy involved reducing redundant computations and memory accesses within the `postprocess_current_frame` function by restructuring loops and minimizing unnecessary operations.",
+        "The optimization strategy used was to parallelize the execution of a loop in the `createBuildInputForBLPs` function, likely leveraging multi-threading or GPU parallelism to improve performance."
+      ]
+    },
+    {
+      "cluster_id": "18",
+      "size": 10,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reordering or restructuring conditional checks and operations to prioritize cheaper or more frequently true conditions, thereby avoiding unnecessary computations and improving performance.",
+        "code_examples": [
+          [
+            "// Before\nif (range_del_agg != nullptr &&\n    range_del_agg->ShouldDelete(\n        iter->key(),\n        RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&\n    filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {\n    // Do work\n}",
+            "// After\nif (filter != CompactionFilter::Decision::kRemoveAndSkipUntil &&\n    range_del_agg != nullptr &&\n    range_del_agg->ShouldDelete(\n        iter->key(),\n        RangeDelAggregator::RangePositioningMode::kForwardTraversal)) {\n    // Do work\n}"
+          ],
+          [
+            "// Before\nfor (int i = 0; i < n; i++) {\n    if (condition) {\n        // Do work\n    }\n}",
+            "// After\nif (condition) {\n    for (int i = 0; i < n; i++) {\n        // Do work\n    }\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains an `if` statement where one condition involves a function call that is computationally expensive relative to other conditions.",
+          "The code evaluates a condition that depends on the result of a preceding, potentially redundant computation that could be avoided by reordering.",
+          "The code includes a loop with a conditional check inside it that does not depend on the loop's iteration variable or state."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involves reordering conditional checks to evaluate a less computationally expensive condition first, avoiding unnecessary calls to a more expensive function.",
+        "The optimization strategy involved reducing unnecessary computations by directly returning early when a condition is met, avoiding further processing.",
+        "The optimization strategy reverses the order of checks to prioritize a faster operation (getting length) over a slower one (getting glue).",
+        "The optimization hoists a conditional check to the top of the function to avoid unnecessary computations when the feature is disabled.",
+        "The optimization strategy involved honoring an optimization level variable to potentially enable compiler-level optimizations.",
+        "The optimization strategy involved reversing the iteration order to exit early upon finding the first match, reducing unnecessary iterations.",
+        "The optimization strategy used is replacing a lookup-based check with a direct conditional comparison to improve performance.",
+        "The optimization strategy reorders conditions in an if-statement to evaluate the cheapest condition first, reducing unnecessary computations.",
+        "The optimization strategy reorders conditions in the AppProtoEquals function to evaluate the most common case first, reducing average execution time.",
+        "The optimization strategy involved moving a conditional check outside of a loop to avoid redundant evaluations during each iteration."
+      ]
+    },
+    {
+      "cluster_id": "4",
+      "size": 9,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is to reduce redundant calculations by caching and reusing intermediate results within specific functions.",
+        "code_examples": [
+          [
+            "// Before\nfunction calculateValue(x) {\n  let result = 0;\n  for (let i = 0; i < x; i++) {\n    result += expensiveComputation(i);\n  }\n  return result;\n}\n\nfunction expensiveComputation(i) {\n  // Simulate an expensive operation\n  return i * i + i;\n}",
+            "// After\nconst cache = {};\n\nfunction calculateValue(x) {\n  let result = 0;\n  for (let i = 0; i < x; i++) {\n    if (!cache[i]) {\n      cache[i] = expensiveComputation(i);\n    }\n    result += cache[i];\n  }\n  return result;\n}\n\nfunction expensiveComputation(i) {\n  // Simulate an expensive operation\n  return i * i + i;\n}"
+          ],
+          [
+            "// Before\nfunction processArray(arr) {\n  let total = 0;\n  for (let i = 0; i < arr.length; i++) {\n    total += computeSquare(arr[i]);\n  }\n  return total;\n}\n\nfunction computeSquare(num) {\n  return num * num;\n}",
+            "// After\nconst squareCache = {};\n\nfunction processArray(arr) {\n  let total = 0;\n  for (let i = 0; i < arr.length; i++) {\n    if (!squareCache[arr[i]]) {\n      squareCache[arr[i]] = computeSquare(arr[i]);\n    }\n    total += squareCache[arr[i]];\n  }\n  return total;\n}\n\nfunction computeSquare(num) {\n  return num * num;\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The function contains repeated calls to the same computation with identical inputs within a single execution path.",
+          "The result of the computation is deterministic and does not depend on external state changes during the function's execution.",
+          "The computational cost of storing and retrieving cached results is significantly lower than recomputing the value multiple times."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy used is to reduce redundant calculations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing intermediate results within the function.",
+        "The optimization strategy involved reducing redundant calculations within the `interceptSurface` function by caching and reusing intermediate results.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the `getOverlappedLaneletId` function.",
+        "The optimization strategy involved reducing redundant calculations within the physics function by caching and reusing results.",
+        "The optimization strategy used is to reduce redundant calculations by caching and reusing results within the function.",
+        "The optimization strategy involved reducing redundant calculations by caching and reusing results within the `Measure::moveTicks` function.",
+        "The optimization strategy involved reducing redundant computations and improving memory access patterns within the `taa` function.",
+        "The optimization strategy involved reducing redundant computations by caching and reusing results within the function."
+      ]
+    },
+    {
+      "cluster_id": "1",
+      "size": 8,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is passing function parameters by reference instead of by value to eliminate unnecessary data copying and improve performance.",
+        "code_examples": [
+          [
+            "// Before\nvoid processKey(std::string key) {\n    // Function logic\n}",
+            "// After\nvoid processKey(const std::string& key) {\n    // Function logic\n}"
+          ],
+          [
+            "// Before\nbool mergeOperation(MergeOperator merge_op) {\n    // Merge logic\n}",
+            "// After\nbool mergeOperation(const MergeOperator& merge_op) {\n    // Merge logic\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The function parameter is of a type that is larger than a single machine word (e.g., structs, strings, or containers).",
+          "The function does not modify the parameter, and the parameter is not explicitly required to be passed by value for semantic correctness.",
+          "The function is called frequently in performance-critical code paths where avoiding copy overhead would have a measurable impact."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+        "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+        "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+        "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copy overhead.",
+        "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying and improve performance.",
+        "The optimization strategy involved passing a function parameter by reference to avoid unnecessary copying of data.",
+        "The optimization strategy involved replacing a value parameter with a reference parameter to avoid unnecessary copying of data.",
+        "The optimization strategy used is passing a parameter by reference instead of by value to avoid unnecessary copying."
+      ]
+    },
+    {
+      "cluster_id": "12",
+      "size": 8,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing redundant computations and memory accesses by caching results, reordering operations, and restructuring loops to improve cache locality and efficiency.",
+        "code_examples": [
+          [
+            "// Before\nfor (int i = 0; i < n; i++) {\n    double result = computeExpensiveOperation(i);\n    array[i] = result * factor;\n}",
+            "// After\ndouble cachedResult;\nfor (int i = 0; i < n; i++) {\n    if (i == 0 || needsRecalculation(i)) {\n        cachedResult = computeExpensiveOperation(i);\n    }\n    array[i] = cachedResult * factor;\n}"
+          ],
+          [
+            "// Before\nfor (int i = 0; i < rows; i++) {\n    for (int j = 0; j < cols; j++) {\n        output[i][j] = input1[i][j] + input2[i][j];\n    }\n}",
+            "// After\nfor (int i = 0; i < rows; i++) {\n    double* rowInput1 = input1[i];\n    double* rowInput2 = input2[i];\n    double* rowOutput = output[i];\n    for (int j = 0; j < cols; j++) {\n        rowOutput[j] = rowInput1[j] + rowInput2[j];\n    }\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains loops where the same computation is performed multiple times with identical inputs.",
+          "The code accesses memory in a way that causes cache misses due to poor locality of reference.",
+          "The code uses temporary arrays or variables that can be eliminated by restructuring operations or merging loops."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing redundant computations inside a loop by caching results of expensive operations.",
+        "The optimization strategy involved simplifying the loop logic and reducing unnecessary computations within the `pixel_inc` function to improve performance.",
+        "The optimization strategy involved reducing redundant operations by caching and reusing results within the loop.",
+        "The optimization strategy involved reordering the computation sequence in the element-wise operations to improve cache locality and reduce memory access overhead.",
+        "The optimization strategy involved restructuring the loop to reduce redundant calculations and improve cache locality.",
+        "The optimization strategy involved removing a large temporary array and merging two loops into one to reduce memory usage and improve cache efficiency.",
+        "The optimization strategy involved moving variable declarations inside a SIMD loop to potentially improve cache locality and reduce redundant computations.",
+        "The optimization strategy involved reducing redundant memory accesses by caching frequently used data in local variables."
+      ]
+    },
+    {
+      "cluster_id": "67",
+      "size": 8,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves restructuring or simplifying loops to reduce redundant computations and improve iteration efficiency.",
+        "code_examples": [
+          [
+            "// Before\nfor (int i = 0; i < n; i++) {\n    processItem(i);\n}\nfor (int i = 0; i < n; i++) {\n    updateItem(i);\n}",
+            "// After\nfor (int i = 0; i < n; i++) {\n    processItem(i);\n    updateItem(i);\n}"
+          ],
+          [
+            "// Before\nfor (int i = 0; i < array.length; i++) {\n    sum += array[i] * array[i];\n}\nfor (int i = 0; i < array.length; i++) {\n    product *= array[i];\n}",
+            "// After\nfor (int i = 0; i < array.length; i++) {\n    sum += array[i] * array[i];\n    product *= array[i];\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains a loop where the end condition involves a computationally expensive operation that can be simplified or precomputed.",
+          "The code includes multiple loops iterating over the same data structure that can be merged into a single loop to reduce overhead.",
+          "The code performs redundant calculations within a loop that can be moved outside the loop or eliminated entirely."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involved simplifying or improving the loop end condition to reduce computational overhead.",
+        "The optimization strategy used was merging two separate loops into a single loop to reduce CPU time.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve iteration efficiency.",
+        "The optimization strategy involved restructuring the loop to reduce redundant computations during global summation on the CPU.",
+        "The optimization strategy involved simplifying the logic in the loop to reduce unnecessary computations during partition pruning.",
+        "The optimization strategy involved reducing redundant calculations within the loop to improve drawing performance.",
+        "The optimization strategy involved restructuring the loop to minimize redundant computations and improve iteration efficiency.",
+        "The optimization strategy involved restructuring the loop to reduce unnecessary computations during the compression process."
+      ]
+    },
+    {
+      "cluster_id": "17",
+      "size": 7,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing unnecessary memory operations and overhead by eliminating redundant writes, simplifying data handling, and leveraging efficient canonical forms or compiler-handled conditions.",
+        "code_examples": [
+          [
+            "// Before\nif (debugMode) { console.log('Debug message'); }",
+            "// After\n// Debug message removed in optimized builds"
+          ],
+          [
+            "// Before\nlet data = new Array(100);\ndata[0] = 42;",
+            "// After\nlet data = [42];"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains debug or profiling messages that are only relevant in non-optimized builds and can be conditionally excluded in optimized builds using preprocessor directives.",
+          "The code performs redundant store operations where values written to memory are immediately overwritten without being read in between.",
+          "The code includes load/store operations with index-offset combinations that can be simplified into a canonical form with a direct offset."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involves removing debug/profile messages in optimized builds to reduce unnecessary overhead.",
+        "The optimization strategy reduces memory pressure by reusing existing data structures instead of creating new ones.",
+        "The optimization strategy simplifies load/store operations by reducing index-offset combinations to a more efficient canonical form with a direct offset.",
+        "The optimization strategy removes unnecessary store operations that are immediately overwritten, reducing redundant memory writes.",
+        "The optimization strategy reduces unnecessary writes to the transposition table by refreshing entries only when necessary, minimizing memory operations for speed improvement.",
+        "The optimization removes a redundant condition that is already handled by LLVM, thereby improving performance without affecting functionality.",
+        "The optimization strategy involves using the full register size for MOVLPD stores and only storing the lower bits, reducing unnecessary memory operations."
+      ]
+    },
+    {
+      "cluster_id": "84",
+      "size": 6,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing computational overhead by eliminating redundant function calls, simplifying mathematical operations, and inlining or directly computing values to minimize unnecessary computations.",
+        "code_examples": [
+          [
+            "// Before\nint result = csum_add(csum_add(csum_add(0, a), b), c);",
+            "// After\nint result = a + b + c;"
+          ],
+          [
+            "// Before\nvoid get_indent_width() {\n    int width = get_indent_info().width;\n}",
+            "// After\nint get_indent_width() {\n    return calculate_width_directly();\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains repetitive calls to the same function with identical or constant arguments that could be replaced by a macro or inlined computation.",
+          "The code includes function calls that are marked as `inline` but fail to inline due to compiler constraints, resulting in unnecessary function call overhead.",
+          "The code performs redundant mathematical operations or intermediate calculations that can be simplified or eliminated without altering the program's output."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involved replacing repetitive calls to a function with a macro to reduce computational overhead.",
+        "The optimization strategy forces the inlining of the `csum_add()` function to eliminate function call overhead and redundant computations, improving performance by reducing unnecessary operations and skipping unused or redundant calls.",
+        "The optimization strategy involved simplifying mathematical operations to reduce computational overhead in the constrainXY function.",
+        "The optimization strategy involved simplifying the function by directly calculating the indentation width without relying on an intermediate function call.",
+        "The optimization strategy involved reducing the computational overhead by minimizing redundant calculations within the `groupdelay_from_array` function.",
+        "The optimization strategy involved removing a redundant function call to improve performance by eliminating unnecessary computations."
+      ]
+    },
+    {
+      "cluster_id": "22",
+      "size": 5,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves replacing `push_back` or `insert` with `emplace_back` or similar in-place construction techniques to eliminate unnecessary temporary object creation, reduce copy/move operations, and improve performance.",
+        "code_examples": [
+          [
+            "// Before\nstd::vector<std::string> vec;\nvec.push_back(std::string(\"example\"));",
+            "// After\nstd::vector<std::string> vec;\nvec.emplace_back(\"example\");"
+          ],
+          [
+            "// Before\nstd::list<int> lst;\nlst.insert(lst.end(), 42);",
+            "// After\nstd::list<int> lst;\nlst.emplace_back(42);"
+          ]
+        ],
+        "application_conditions": [
+          "The code must call `push_back` or `insert` with arguments that could be forwarded to construct an object in-place using `emplace_back`.",
+          "The container's element type must support in-place construction via a constructor that matches the arguments passed to `push_back` or `insert`.",
+          "The operation must involve temporary object creation or unnecessary copy/move operations that can be eliminated by using `emplace_back`."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involved replacing an inefficient `push_back` call in `emplace_back` with perfect forwarding to reduce unnecessary object copies and improve performance.",
+        "The optimization strategy used was replacing `insert` with `emplace` to avoid unnecessary copy operations and improve performance.",
+        "The optimization replaced `push_back` with `emplace_back` to construct objects in-place within the `sources` container, reducing unnecessary temporary object creation and improving performance.",
+        "The optimization avoids unnecessary default constructor calls in `emplace_back_default` by directly constructing objects in place when no allocator is used, reducing move and destructor overhead.",
+        "The optimization strategy involved replacing a push_back operation with emplace_back to reduce overhead by constructing elements in-place."
+      ]
+    },
+    {
+      "cluster_id": "28",
+      "size": 4,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing redundant or inefficient string operations by caching results, minimizing memory allocations, or replacing less efficient functions with more performant alternatives.",
+        "code_examples": [
+          [
+            "// Before\nsize_t len = strlen(str);\nfor (int i = 0; i < len; i++) {\n    process(str[i]);\n}\nlen = strlen(str); // Redundant call",
+            "// After\nsize_t len = strlen(str);\nfor (int i = 0; i < len; i++) {\n    process(str[i]);\n}\n// Removed redundant strlen call"
+          ],
+          [
+            "// Before\nstd::string result;\nfor (const auto& part : parts) {\n    result += part; // Repeated concatenation\n}",
+            "// After\nstd::vector<std::string> parts_vec(parts.begin(), parts.end());\nstd::string result = boost::algorithm::join(parts_vec, \"\"); // Single join operation"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains multiple calls to `strlen` on the same string within the same function scope.",
+          "The code performs repeated string concatenation operations in a loop or sequential context.",
+          "The code uses a string formatting function where a dedicated string escaping function could achieve the same result with lower overhead."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy avoids redundant calls to `strlen` on the same string by caching its result.",
+        "The optimization strategy involved replacing repeated string concatenation with a more efficient approach, likely using a single assignment or precomputed value to reduce unnecessary memory allocations.",
+        "The optimization strategy involved improving the efficiency of string replacement operations by reducing unnecessary computations or memory usage in the `str_replace` function.",
+        "The optimization strategy involved replacing a less efficient string formatting function with a more efficient string escaping function to improve performance."
+      ]
+    },
+    {
+      "cluster_id": "95",
+      "size": 4,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves reducing memory usage and improving efficiency by minimizing redundant operations, such as avoiding unnecessary memory copies, reusing buffers, and processing data in chunks or blocks instead of loading entire files into memory.",
+        "code_examples": [
+          [
+            "// Before\nvoid writeToFile(const std::string& data) {\n    for (char c : data) {\n        file.write(&c, 1);\n    }\n}",
+            "// After\nvoid writeToFile(const std::string& data) {\n    file.write(data.data(), data.size());\n}"
+          ],
+          [
+            "// Before\nvoid copyFile(const std::string& sourcePath, const std::string& destPath) {\n    std::ifstream src(sourcePath, std::ios::binary);\n    std::vector<char> buffer((std::istreambuf_iterator<char>(src)), std::istreambuf_iterator<char>());\n    std::ofstream dest(destPath, std::ios::binary);\n    dest.write(buffer.data(), buffer.size());\n}",
+            "// After\nvoid copyFile(const std::string& sourcePath, const std::string& destPath) {\n    std::ifstream src(sourcePath, std::ios::binary);\n    std::ofstream dest(destPath, std::ios::binary);\n    char buffer[4096];\n    while (src.read(buffer, sizeof(buffer))) {\n        dest.write(buffer, src.gcount());\n    }\n    if (src.gcount() > 0) {\n        dest.write(buffer, src.gcount());\n    }\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code performs multiple small write operations to a file or buffer instead of batching them into larger chunks.",
+          "The code allocates new memory buffers repeatedly within a loop or frequently called function without reusing existing buffers.",
+          "The code loads an entire file into memory at once instead of processing it in smaller blocks or streams."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy involved reducing the frequency of file write operations by buffering data and writing in larger chunks.",
+        "The optimization avoids unnecessary memory copying by directly writing compressed data to the buffer.",
+        "The optimization strategy involved reducing redundant memory allocations and copies by reusing buffers in the ReadProfile function.",
+        "The optimization strategy involved changing the file copying mechanism from loading the entire file into memory to copying it in smaller blocks to reduce memory usage."
+      ]
+    },
+    {
+      "cluster_id": "39",
+      "size": 4,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is to avoid unnecessary object copying by replacing value-based operations with reference-based access or pointer usage, thereby reducing performance overhead.",
+        "code_examples": [
+          [
+            "// Before\nstd::vector<int> data = getData();\nfor (auto item : data) {\n    process(item);\n}",
+            "// After\nstd::vector<int> data = getData();\nfor (const auto& item : data) {\n    process(item);\n}"
+          ],
+          [
+            "// Before\nstd::string result = computeResult();\nlog(result);\nreturn result;",
+            "// After\nconst std::string& result = computeResult();\nlog(result);\nreturn result;"
+          ]
+        ],
+        "application_conditions": [
+          "The code passes objects by value where passing by reference or pointer would suffice.",
+          "The code invokes copy constructors during lookups or iterations where references could be used instead.",
+          "The code uses range-based loops that create copies of objects instead of using const references."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy avoids unnecessary copying of objects by utilizing references or pointers instead of passing by value.",
+        "The optimization avoids unnecessary copy constructor calls during lookups by utilizing reference-based access instead of value-based access.",
+        "The optimization avoids unnecessary copying from the value stack by directly accessing or referencing the data.",
+        "The optimization strategy involved replacing range-based loops that copied objects with ones that use references to avoid unnecessary copy overhead."
+      ]
+    },
+    {
+      "cluster_id": "60",
+      "size": 4,
+      "llm_summary": {
+        "strategy_summary": "The common optimization strategy across these commits is replacing linear searches with more efficient lookup methods, such as binary search or hash-based lookups, to reduce time complexity and improve performance.",
+        "code_examples": [
+          [
+            "// Before\nfor (int i = 0; i < n; i++) {\n    if (array[i] == target) {\n        return i;\n    }\n}\nreturn -1;",
+            "// After\nint low = 0, high = n - 1;\nwhile (low <= high) {\n    int mid = low + (high - low) / 2;\n    if (array[mid] == target) {\n        return mid;\n    } else if (array[mid] < target) {\n        low = mid + 1;\n    } else {\n        high = mid - 1;\n    }\n}\nreturn -1;"
+          ],
+          [
+            "// Before\nfor (const auto& item : list) {\n    if (item.key == key) {\n        return item.value;\n    }\n}\nreturn defaultValue;",
+            "// After\nstd::unordered_map<KeyType, ValueType> cache;\nfor (const auto& item : list) {\n    cache[item.key] = item.value;\n}\nauto it = cache.find(key);\nif (it != cache.end()) {\n    return it->second;\n}\nreturn defaultValue;"
+          ]
+        ],
+        "application_conditions": [
+          "The code must contain a loop that iterates over a sorted collection or array to find a specific element or condition.",
+          "The lookup operation within the loop must have a time complexity of O(n) due to sequential scanning.",
+          "The data structure being searched must support random access or hashing to enable efficient binary search or hash-based lookups."
+        ]
+      },
+      "all_optimization_summaries": [
+        "The optimization strategy used is to replace a linear search with a binary search and introduce a single-entry cache to reduce the time complexity of lookups in the `Loop::isLCSSAForm` function.",
+        "The optimization strategy involved replacing a linear search with a binary search to improve lookup efficiency in the `size` function.",
+        "The optimization strategy involved replacing a linear search with a hash-based lookup to reduce the time complexity of finding reference lines.",
+        "The optimization strategy involved replacing a linear search with a binary search to improve lookup efficiency in a sorted list."
+      ]
+    }
+  ],
+  "metadata": {
+    "use_diff_info": false,
+    "threshold": 4,
+    "total_clusters_analyzed": 13
+  }
+}

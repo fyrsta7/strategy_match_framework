@@ -1,0 +1,57 @@
+void AudioSynthWaveformPWM::update(void)
+{
+	audio_block_t *block, *modinput;
+	uint32_t i;
+	int32_t out;
+
+	modinput = receiveReadOnly();
+	if (magnitude == 0) {
+		if (modinput) release(modinput);
+		return;
+	}
+	block = allocate();
+	if (!block) {
+		// unable to allocate memory, so we'll send nothing
+		if (modinput) release(modinput);
+		return;
+	}
+	if (modinput) {
+		int32_t magnitude_times_2 = magnitude * 2; // Precompute magnitude * 2
+		for (i = 0; i < AUDIO_BLOCK_SAMPLES; i++) {
+			elapsed += 65536;
+			int32_t in = modinput->data[i]; // Cache modinput->data[i]
+			if (magnitude < 0) in = -in;
+			uint32_t dur = ((uint64_t)(in + 32768) * duration) >> 15; // Precompute duration scaling
+			if (elapsed < dur) {
+				out = magnitude;
+			} else {
+				int32_t e = elapsed - dur;
+				e = (e < 0) ? 0 : ((e > 65535) ? 65535 : e); // Clamp e to [0, 65535]
+				elapsed = e;
+				// elapsed must be 0 to 65535
+				// magnitude must be -32767 to +32767
+				out = magnitude - ((magnitude_times_2 * elapsed) >> 16);
+				magnitude = -magnitude;
+			}
+			block->data[i] = out;
+		}
+		release(modinput);
+	} else {
+		int32_t magnitude_times_2 = magnitude * 2; // Precompute magnitude * 2
+		for (i = 0; i < AUDIO_BLOCK_SAMPLES; i++) {
+			elapsed += 65536;
+			if (elapsed < duration) {
+				out = magnitude;
+			} else {
+				elapsed -= duration;
+				// elapsed must be 0 to 65535
+				// magnitude must be -32767 to +32767
+				out = magnitude - ((magnitude_times_2 * elapsed) >> 16);
+				magnitude = -magnitude;
+			}
+			block->data[i] = out;
+		}
+	}
+	transmit(block);
+	release(block);
+}

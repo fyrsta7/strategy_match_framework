@@ -1,0 +1,398 @@
+{
+  "metadata": {
+    "min_cluster_size": 10,
+    "total_clusters": 1,
+    "clusters_with_summaries": 1,
+    "missing_summaries_count": 0
+  },
+  "combined_clusters": [
+    {
+      "cluster_id": "23",
+      "size": 10,
+      "repositories_distribution": {
+        "symqemu": 1,
+        "kmsan": 1,
+        "rockbox": 1,
+        "overwitch": 1,
+        "darktable": 1,
+        "mpv": 1,
+        "icu": 1,
+        "theseus-ship": 1,
+        "ffmpeg": 1,
+        "petsc": 1
+      },
+      "generic_ratio": 1.0,
+      "summary": {
+        "strategy_summary": "The common optimization strategy across these commits involves **reducing unnecessary memory operations and loop overhead by merging loops, eliminating redundant iterations, and optimizing data types or access patterns**.",
+        "code_examples": [
+          [
+            "// Before\nfor (int i = 0; i < n; i++) {\n  process(data[i]);\n}\nfor (int i = 0; i < n; i++) {\n  update(data[i]);\n}",
+            "// After\nfor (int i = 0; i < n; i++) {\n  process(data[i]);\n  update(data[i]);\n}"
+          ],
+          [
+            "// Before\nfor (int i = 0; i < n; i++) {\n  if (check(data[i])) {\n    result[i] = expensiveOperation(data[i]);\n  }\n}",
+            "// After\nfor (int i = 0; i < n; i++) {\n  if (!check(data[i])) continue;\n  result[i] = expensiveOperation(data[i]);\n}"
+          ]
+        ],
+        "application_conditions": [
+          "The code contains two or more consecutive loops iterating over the same range or data structure.",
+          "The code includes a loop with a variable or condition that could be optimized by changing its data type or access pattern.",
+          "The code performs redundant memory operations or allocations within a loop that could be eliminated or combined."
+        ]
+      },
+      "commits": [
+        {
+          "hash": "735a8fd38e86d94f62e732de94e1a137619b9e49",
+          "author": "bellard",
+          "date": "2005-01-12T22:36:43+00:00",
+          "message": "fixed performance regression\n\n\ngit-svn-id: svn://svn.savannah.nongnu.org/qemu/trunk@1218 c046a42c-6fe2-441c-8c8c-71466251a162",
+          "modified_files_count": 1,
+          "modified_files": [
+            "target-i386/cpu.h"
+          ],
+          "github_commit_url": "https://github.com/eurecom-s3/symqemu/commit/735a8fd38e86d94f62e732de94e1a137619b9e49",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "cpu_x86_load_seg_cache"
+          ],
+          "is_opt_ds": "true",
+          "is_opt_ds_simple": "true",
+          "repository_name": "symqemu",
+          "optimization_summary": [
+            "The optimization strategy involved modifying the `cpu_x86_load_seg_cache` function to reduce unnecessary memory operations by directly accessing segment cache values instead of recalculating them.",
+            "The optimization strategy involved modifying the `cpu_x86_load_seg_cache` function to improve performance by reducing unnecessary memory operations.",
+            "The optimization strategy involved modifying the `cpu_x86_load_seg_cache` function to improve performance by reducing unnecessary operations or improving cache handling.",
+            "The optimization strategy involved modifying the `cpu_x86_load_seg_cache` function to improve performance by reducing unnecessary operations or improving cache handling.",
+            "The optimization strategy involved reducing redundant memory accesses by caching segment descriptors in the CPU state."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            false,
+            false,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved modifying the `cpu_x86_load_seg_cache` function to improve performance by reducing unnecessary memory operations.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "kmsan",
+          "hash": "30d19d57d513821c58de4556e7445982ed22b923",
+          "author": "Magnus Karlsson",
+          "date": "2022-03-28T19:56:28-07:00",
+          "message": "ice: xsk: Eliminate unnecessary loop iteration\n\nThe NIC Tx ring completion routine cleans entries from the ring in\nbatches. However, it processes one more batch than it is supposed\nto. Note that this does not matter from a functionality point of view\nsince it will not find a set DD bit for the next batch and just exit\nthe loop. But from a performance perspective, it is faster to\nterminate the loop before and not issue an expensive read over PCIe to\nget the DD bit.\n\nFixes: 126cdfe1007a (\"ice: xsk: Improve AF_XDP ZC Tx and use batching API\")\nSigned-off-by: Magnus Karlsson <magnus.karlsson@intel.com>\nSigned-off-by: Alexei Starovoitov <ast@kernel.org>\nLink: https://lore.kernel.org/bpf/20220328142123.170157-3-maciej.fijalkowski@intel.com",
+          "modified_files_count": 1,
+          "modified_files": [
+            "drivers/net/ethernet/intel/ice/ice_xsk.c"
+          ],
+          "github_commit_url": "https://github.com/google/kmsan/commit/30d19d57d513821c58de4556e7445982ed22b923",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ice_clean_xdp_irq_zc"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involves terminating a loop earlier to avoid an unnecessary and expensive PCIe read operation.",
+            "The optimization strategy involves eliminating an unnecessary loop iteration to avoid an expensive PCIe read operation.",
+            "The optimization strategy involves eliminating an unnecessary loop iteration to avoid an expensive PCIe read operation by terminating the loop earlier.",
+            "The optimization strategy involves terminating a loop earlier to avoid an unnecessary and expensive PCIe read operation.",
+            "The optimization strategy involves terminating a loop earlier to avoid an unnecessary expensive read operation over PCIe."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involves terminating a loop earlier to avoid an unnecessary and expensive PCIe read operation.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "hash": "1d7912955b3abc434d9d0e6aa73b2c142df9f0b8",
+          "author": "Nils Wallménius",
+          "date": "2007-10-05T21:03:56+00:00",
+          "message": "Get rid of unnecessary memory acesses in a loop, gives slight speedup\n\ngit-svn-id: svn://svn.rockbox.org/rockbox/trunk@14996 a1c6a512-1295-4272-9138-f99709370657",
+          "modified_files_count": 1,
+          "modified_files": [
+            "apps/plugins/midi/midiplay.c"
+          ],
+          "github_commit_url": "https://github.com/Rockbox/rockbox/commit/1d7912955b3abc434d9d0e6aa73b2c142df9f0b8",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "synthbuf"
+          ],
+          "is_opt_ds_simple": "true",
+          "repository_name": "rockbox",
+          "optimization_summary": [
+            "The optimization strategy involved reducing unnecessary memory accesses within a loop to achieve a slight speedup.",
+            "The optimization strategy involved reducing unnecessary memory accesses within a loop to achieve a slight speedup.",
+            "The optimization strategy involved reducing unnecessary memory accesses within a loop to achieve a slight speedup.",
+            "The optimization strategy involved reducing unnecessary memory accesses within a loop to achieve a slight speedup.",
+            "The optimization strategy involved reducing unnecessary memory accesses within a loop to achieve a slight speedup."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved reducing unnecessary memory accesses within a loop to achieve a slight speedup.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "overwitch",
+          "hash": "ee05b0a83df7464448f52aa2b2b3f3ae90c3eb47",
+          "author": "Jan Lentfer",
+          "date": "2021-11-12T22:43:19+01:00",
+          "message": "Optimize two loops in jclient_process_cb\n\n    With grpof I found that jclient_process_cb\n    was taking most time by far (which maybe expected).\n    Here I am merging two seperate loops into one, which\n    according to gprof reduced cpu time quite a bit.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/jclient.c"
+          ],
+          "github_commit_url": "https://github.com/dagargo/overwitch/commit/ee05b0a83df7464448f52aa2b2b3f3ae90c3eb47",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "jclient_process_cb"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved merging two separate loops into one to reduce CPU time.",
+            "The optimization strategy involved merging two separate loops into one to reduce CPU time.",
+            "The optimization strategy involved merging two separate loops into one to reduce CPU time.",
+            "The optimization strategy involved merging two separate loops into one to reduce CPU time.",
+            "The optimization strategy involved merging two separate loops into one to reduce CPU time."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved merging two separate loops into one to reduce CPU time.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "darktable",
+          "hash": "7089c0b8074867c6ad023e7b0dec56a147b40dc5",
+          "author": "ralfbrown",
+          "date": "2020-12-05T11:36:34-05:00",
+          "message": "merge loops\n\nPerform the pixel inversion/desaturation as part of actually applying\nthe shadows/highlights adjustments instead of as as separate pass.\nReduces memory traffic for ~10% speedup with 32 threads.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/iop/shadhi.c"
+          ],
+          "github_commit_url": "https://github.com/darktable-org/darktable/commit/7089c0b8074867c6ad023e7b0dec56a147b40dc5",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "process"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved merging separate loops for pixel inversion/desaturation and shadows/highlights adjustments into a single loop to reduce memory traffic and improve performance.",
+            "The optimization strategy involved merging loops to combine pixel inversion/desaturation with shadows/highlights adjustments into a single pass, reducing memory traffic and improving performance.",
+            "The optimization strategy involved merging two separate loops into one to reduce memory traffic and improve performance.",
+            "The optimization strategy involved merging two separate loops into one to reduce memory traffic and improve performance.",
+            "The optimization strategy involved merging two separate loops into one to reduce memory traffic and improve performance."
+          ],
+          "is_generic_optimization": [
+            false,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved merging two separate loops into one to reduce memory traffic and improve performance.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "mpv",
+          "hash": "66c47599923f2919756423d47f32f2186d15cef9",
+          "author": "reimar",
+          "date": "2007-11-18T17:44:11+00:00",
+          "message": "Use \"long\" instead of \"int\" for innermost loop variable.\nAbout 12% faster on x86_64\n\n\ngit-svn-id: svn://svn.mplayerhq.hu/mplayer/trunk@25101 b3059339-0415-0410-9bf9-f77b7e298cf2",
+          "modified_files_count": 1,
+          "modified_files": [
+            "libaf/af_scaletempo.c"
+          ],
+          "github_commit_url": "https://github.com/mpv-player/mpv/commit/66c47599923f2919756423d47f32f2186d15cef9",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "best_overlap_offset_s16"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture.",
+            "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture.",
+            "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture.",
+            "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture.",
+            "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved changing the data type of the innermost loop variable from \"int\" to \"long\" to improve performance on x86_64 architecture.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "icu",
+          "hash": "7130aeef991f52166a2102dc70016e67e6047765",
+          "author": "Markus Scherer",
+          "date": "2000-07-19T21:24:04+00:00",
+          "message": "ICU-103 more performance in fromU() by goto _into_ the loop\n\nX-SVN-Rev: 1954",
+          "modified_files_count": 1,
+          "modified_files": [
+            "icu4c/source/common/ucnvmbcs.c"
+          ],
+          "github_commit_url": "https://github.com/unicode-org/icu/commit/7130aeef991f52166a2102dc70016e67e6047765",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "_MBCSFromUnicodeWithOffsets"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved using a `goto` statement to jump directly into a loop, reducing overhead and improving performance in the `_MBCSFromUnicodeWithOffsets` function.",
+            "The optimization strategy involved using a `goto` statement to jump directly into a loop, reducing overhead and improving performance in the `_MBCSFromUnicodeWithOffsets` function.",
+            "The optimization strategy involved using a `goto` statement to enter a loop directly, reducing overhead from loop initialization.",
+            "The optimization strategy used a `goto` statement to jump into a loop, likely reducing overhead or improving control flow efficiency.",
+            "The optimization strategy involved using a `goto` statement to jump into a loop, likely reducing overhead or improving control flow efficiency."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            false
+          ],
+          "optimization_summary_final": "The optimization strategy involved using a `goto` statement to enter a loop directly, reducing overhead from loop initialization.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "theseus-ship",
+          "hash": "f7d7c246b8b76cbd4440b9c1665f0ccaa57e9880",
+          "author": "Martin Gräßlin",
+          "date": "2015-01-16T12:28:44+01:00",
+          "message": "Slightly optimize Workspace::xStackingOrder\n\nCallgrind analysis showed that this method has room for improvement.\nThe bottle neck is mapping the Unmanaged against the list of windows\nretreived from xcb_query_tree. The number of windows in that list is\nrather large (>1000), which turns the loop into an expensive path.\nWorkspace::findUnmanaged seems to be too expensive for that due to the\noverhead of using a functor and multiple method calls. The Inl. cost\nbefore the optimization for checking ~55,000 windows is 2.46.\n\nThe change uses a good old const-iterator based loop over the unmanaged\nlist to check for the window. This reduces the Incl. cost for checking\n~55,000 windows to 0.28.\n\nREVIEW: 122067",
+          "modified_files_count": 1,
+          "modified_files": [
+            "layers.cpp"
+          ],
+          "github_commit_url": "https://github.com/winft/theseus-ship/commit/f7d7c246b8b76cbd4440b9c1665f0ccaa57e9880",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "Workspace::xStackingOrder"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy replaced a functor-based loop with a const-iterator-based loop to reduce overhead and improve performance in iterating over a large list of windows.",
+            "The optimization strategy replaced a functor-based loop with a const-iterator based loop to reduce overhead and improve performance when checking a large list of windows.",
+            "The optimization strategy replaced a functor-based loop with a const-iterator-based loop to reduce overhead when checking a large list of windows.",
+            "The optimization strategy replaced a functor-based loop with a const-iterator-based loop to reduce overhead in checking a large list of windows.",
+            "The optimization strategy replaced a functor-based loop with a const-iterator based loop to reduce overhead in checking a large list of windows."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy replaced a functor-based loop with a const-iterator-based loop to reduce overhead when checking a large list of windows.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "ffmpeg",
+          "hash": "8ba694548782c1821ab119c18fe02360a81c6768",
+          "author": "Michael Niedermayer",
+          "date": "2014-09-29T12:56:45+02:00",
+          "message": "avcodec/utils: Fix off by 1 error causing unneeded allocation in ff_fast_malloc()\n\nReviewed-by: Benoit Fouet <benoit.fouet@free.fr>\nSigned-off-by: Michael Niedermayer <michaelni@gmx.at>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "libavcodec/utils.c"
+          ],
+          "github_commit_url": "https://github.com/allyourcodebase/ffmpeg/commit/8ba694548782c1821ab119c18fe02360a81c6768",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ff_fast_malloc"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved fixing an off-by-one error to prevent unnecessary memory allocation in the `ff_fast_malloc()` function.",
+            "The optimization strategy involved fixing an off-by-one error in memory allocation to avoid unnecessary allocation in the `ff_fast_malloc()` function.",
+            "The optimization strategy involved fixing an off-by-one error to prevent unnecessary memory allocation in the `ff_fast_malloc()` function.",
+            "The optimization strategy involved fixing an off-by-one error to prevent unnecessary memory allocation in the `ff_fast_malloc()` function.",
+            "The optimization strategy involved fixing an off-by-one error to prevent unnecessary memory allocation in the `ff_fast_malloc` function."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved fixing an off-by-one error to prevent unnecessary memory allocation in the `ff_fast_malloc()` function.",
+          "is_generic_optimization_final": true
+        },
+        {
+          "repository_name": "petsc",
+          "hash": "c124e916cc25c60b59020116a74464d5b14ef271",
+          "author": "Hong Zhang",
+          "date": "2004-06-23T09:26:55-06:00",
+          "message": "bk-changeset-1.2299.1.11\nhzhang@harley.mcs.anl.gov|ChangeSet|20040623152655|64232\nChangeSet\n  1.2299.1.11 04/06/23 10:26:55 hzhang@harley.mcs.anl.gov +1 -0\n  optimize MatMatMultNumeric_SeqAIJ_SeqAIJ():\n  remove temp array of size C->n (large and sparse)\n  combine two loops into one.\n\n  src/mat/impls/aij/seq/matmatmult.c\n    1.81 04/06/23 10:26:54 hzhang@harley.mcs.anl.gov +12 -18\n    optimize MatMatMultNumeric_SeqAIJ_SeqAIJ():\n    remove temp array of size C->n (large and sparse)\n    combine two loops into one.\n\n\nHg-commit: 09a03d9f2d04d219982e6d1ec4720b601d1a81c4",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/mat/impls/aij/seq/matmatmult.c"
+          ],
+          "github_commit_url": "https://github.com/petsc/petsc/commit/c124e916cc25c60b59020116a74464d5b14ef271",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "MatMatMultNumeric_SeqAIJ_SeqAIJ"
+          ],
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "The optimization strategy involved removing a temporary array and combining two loops into one to reduce memory usage and improve efficiency.",
+            "The optimization strategy involved removing a large temporary array and combining two loops into one to reduce memory usage and improve efficiency.",
+            "The optimization strategy involved removing a large temporary array and combining two loops into one to reduce memory usage and improve efficiency.",
+            "The optimization strategy involved removing a temporary array and combining two loops into one to reduce memory usage and improve efficiency in the MatMatMultNumeric_SeqAIJ_SeqAIJ function.",
+            "The optimization strategy involved removing a temporary array and combining two loops into one to reduce memory usage and improve efficiency in matrix multiplication."
+          ],
+          "is_generic_optimization": [
+            true,
+            true,
+            true,
+            true,
+            true
+          ],
+          "optimization_summary_final": "The optimization strategy involved removing a temporary array and combining two loops into one to reduce memory usage and improve efficiency.",
+          "is_generic_optimization_final": true
+        }
+      ]
+    }
+  ]
+}

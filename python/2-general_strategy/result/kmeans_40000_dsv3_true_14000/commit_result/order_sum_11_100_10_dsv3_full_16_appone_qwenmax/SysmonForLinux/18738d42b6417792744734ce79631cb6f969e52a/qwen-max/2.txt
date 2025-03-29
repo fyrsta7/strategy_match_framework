@@ -1,0 +1,126 @@
+void processCmdline(int argc, char *argv[], 
+    unordered_set<unsigned int> *eventIds,
+    unordered_map<unsigned int, unordered_set<string>> *eventIdFields,
+    pair<unsigned long, unsigned long> *recordIdRange,
+    pair<unsigned long, unsigned long> *timeRange,
+    unordered_map<string, unordered_set<string>> *filters,
+    bool *extraCR
+    )
+{
+    if (argv == NULL || eventIds == NULL || eventIdFields == NULL ||
+            recordIdRange == NULL || timeRange == NULL || filters == NULL
+            || extraCR == NULL) {
+        fprintf(stderr, "processCmdline invalid params\n");
+        return;
+    }
+
+    int c;
+
+    while ((c = getopt(argc, argv, "h?e:r:t:f:E:XT")) != -1) {
+        switch (c) {
+            case 'e':
+            {
+                unordered_set<unsigned int> newEventId = getEventId(optarg);
+                eventIds->insert(newEventId.begin(), newEventId.end());
+                break;
+            }
+            case 'r':
+            {
+                pair<unsigned long, unsigned long> newRecordIdRange = getRecordIdRange(optarg);
+                if (newRecordIdRange.first != (unsigned long)-1)
+                    recordIdRange->first = newRecordIdRange.first;
+                if (newRecordIdRange.second != (unsigned long)-1)
+                    recordIdRange->second = newRecordIdRange.second;
+                break;
+            }
+            case 't':
+            {
+                pair<unsigned long, unsigned long> newTimeRange = getTimeRange(optarg);
+                if (newTimeRange.first != (unsigned long)-1)
+                    timeRange->first = newTimeRange.first;
+                if (newTimeRange.second != (unsigned long)-1)
+                    timeRange->second = newTimeRange.second;
+                break;
+            }
+            case 'f':
+            {
+                pair<string, unordered_set<string>> newFilter = getFilter(optarg);
+                if (!newFilter.first.empty() && !newFilter.second.empty()) {
+                    auto it = filters->find(newFilter.first);
+                    if (it != filters->end()) {
+                        it->second.insert(newFilter.second.begin(), newFilter.second.end());
+                    } else {
+                        filters->insert(newFilter);
+                    }
+                }
+                break;
+            }
+            case 'E':
+            {
+                pair<unsigned int, unordered_set<string>> newEventIdField = getEventIdField(optarg);
+                auto it = eventIdFields->find(newEventIdField.first);
+                if (it != eventIdFields->end()) {
+                    it->second.insert(newEventIdField.second.begin(), newEventIdField.second.end());
+                } else {
+                    eventIdFields->insert(newEventIdField);
+                }
+                break;
+            }
+            case 'X':
+                *extraCR = true;
+                break;
+            case 'T': // print out the switch settings processed up to this point
+            {
+                printf("Event Ids: ");
+                for (const auto& it : *eventIds) {
+                    printf("%d ", it);
+                }
+                printf("\n");
+                printf("Event Id Fields:\n");
+                for (const auto& it : *eventIdFields) {
+                    printf("  %d (", it.first);
+                    for (const auto& it2 : it.second) {
+                        printf("%s ", it2.c_str());
+                    }
+                    printf(")\n");
+                }
+                printf("\n");
+                printf("Record Id range = %ld, %ld\n", recordIdRange->first, recordIdRange->second);
+                printf("Time range = ");
+                char timeMinS[128], timeMaxS[128];
+                struct tm tmMin, tmMax;
+                time_t timeMin, timeMax;
+                if (timeRange->first != (unsigned long)-1) {
+                    timeMin = timeRange->first / 1000;
+                    gmtime_r(&timeMin, &tmMin);
+                    strftime(timeMinS, 128, "%F %T", &tmMin);
+                    printf("%s.%03ld - ", timeMinS, timeRange->first % 1000);
+                } else {
+                    printf("-1 - ");
+                }
+                if (timeRange->second != (unsigned long)-1) {
+                    timeMax = timeRange->second / 1000;
+                    gmtime_r(&timeMax, &tmMax);
+                    strftime(timeMaxS, 128, "%F %T", &tmMax);
+                    printf("%s.%03ld\n", timeMaxS, timeRange->second % 1000);
+                } else {
+                    printf("-1\n");
+                }
+                printf("Filters:\n");
+                for (const auto& it2 : *filters) {
+                    printf("  %s:\n", it2.first.c_str());
+                    for (const auto& it3 : it2.second) {
+                        printf("    %s\n", it3.c_str());
+                    }
+                }
+
+                exit(0);
+            }
+            case 'h':
+            case '?':
+            default:
+                usage();
+                exit(0);
+        }
+    }
+}

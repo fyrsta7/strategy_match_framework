@@ -1,0 +1,57 @@
+void AudioSynthWaveformPWM::update(void)
+{
+	audio_block_t *block, *modinput;
+	uint32_t i;
+	int32_t out;
+
+	modinput = receiveReadOnly();
+	if (magnitude == 0) {
+		if (modinput) release(modinput);
+		return;
+	}
+	block = allocate();
+	if (!block) {
+		// unable to allocate memory, so we'll send nothing
+		if (modinput) release(modinput);
+		return;
+	}
+	if (modinput) {
+		for (i = 0; i < AUDIO_BLOCK_SAMPLES; i++) {
+			elapsed += 65536;
+			int32_t in = modinput->data[i];
+			if (magnitude < 0) in = -in;
+			uint32_t dur = ((uint64_t)(in + 32768) * duration) >> 15; // Precompute duration scaling
+			if (elapsed < dur) {
+				out = magnitude;
+			} else {
+				int32_t e = elapsed - dur;
+				e = (e < 0) ? 0 : ((e > 65535) ? 65535 : e); // Clamp elapsed value
+				elapsed = e;
+				// Precompute magnitude scaling factor
+				int32_t mag_scaled = (magnitude * e * 2) >> 16;
+				out = magnitude - mag_scaled;
+				magnitude = -magnitude;
+			}
+			block->data[i] = out;
+		}
+		release(modinput);
+	} else {
+		uint32_t double_magnitude = magnitude * 2; // Precompute magnitude scaling factor
+		for (i = 0; i < AUDIO_BLOCK_SAMPLES; i++) {
+			elapsed += 65536;
+			if (elapsed < duration) {
+				out = magnitude;
+			} else {
+				elapsed -= duration;
+				// Clamp elapsed value
+				elapsed = (elapsed > 65535) ? 65535 : elapsed;
+				// Use precomputed magnitude scaling factor
+				out = magnitude - ((double_magnitude * elapsed) >> 16);
+				magnitude = -magnitude;
+			}
+			block->data[i] = out;
+		}
+	}
+	transmit(block);
+	release(block);
+}

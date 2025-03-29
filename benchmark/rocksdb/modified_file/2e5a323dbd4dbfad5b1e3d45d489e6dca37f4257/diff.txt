@@ -1,0 +1,13 @@
+diff --git a/port/port_posix.h b/port/port_posix.h
+index 01a1a28a0..d153c5817 100644
+--- a/port/port_posix.h
++++ b/port/port_posix.h
+@@ -158,7 +158,7 @@ static inline void AsmVolatilePause() {
+ #if defined(__i386__) || defined(__x86_64__)
+   asm volatile("pause");
+ #elif defined(__aarch64__)
+-  asm volatile("yield");
++  asm volatile("isb");
+ #elif defined(__powerpc64__)
+   asm volatile("or 27,27,27");
+ #endif

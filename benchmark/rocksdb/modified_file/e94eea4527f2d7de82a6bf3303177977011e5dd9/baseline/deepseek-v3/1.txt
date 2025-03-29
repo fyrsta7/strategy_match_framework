@@ -1,0 +1,4 @@
+void WriteBatch::Clear() {
+  rep_.resize(kHeader);
+  rep_.shrink_to_fit();
+}

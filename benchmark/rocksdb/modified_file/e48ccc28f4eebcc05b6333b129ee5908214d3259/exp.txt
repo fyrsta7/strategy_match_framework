@@ -1,0 +1,22 @@
+本次提交主要是对 VersionEdit::EncodeTo 函数中编码新文件（new_files_）信息的部分做了修改，核心目标是减少当文件校验值（checksum）没有使用时在 manifest 中冗余写入的数据，从而节省 manifest 文件的空间，同时带来轻微的性能提升。
+
+详细来说，修改前在处理新文件的自定义字段时，无条件地写入了文件校验值相关的两个字段（NewFileCustomTag::kFileChecksum 和 NewFileCustomTag::kFileChecksumFuncName）。也就是说，不论文件的校验信息是否被实际使用，这两部分都总会被写入到 manifest 中，增加了不必要的数据量。
+
+在修改后的代码中，开发者增加了一段判断逻辑：只有当文件的校验函数名称（f.file_checksum_func_name）不等于一个特殊的标识值 kUnknownFileChecksumFuncName 时，才会将文件校验值和校验函数名称写入 manifest。这意味着当文件校验信息没有被设置或不需要使用时，就不会产生相关的 manifest 记录。
+
+归纳一下本次提交的主要修改思路、目的和预期的优化效果：
+
+1. 修改思路：
+   - 在写入新文件的自定义字段时，用条件判断包装原本总是执行的校验值写入流程，只有在校验值数据有效的情况下才写相关字段。
+   - 通过判断 f.file_checksum_func_name 是否为 kUnknownFileChecksumFuncName 来决定是否写入 kFileChecksum 与 kFileChecksumFuncName 字段。
+
+2. 修改目的：
+   - 减少不必要的数据写入，避免当文件校验值没有使用时仍写入大块冗余信息，降低 manifest 文件的体积。
+   - 使得 manifest 文件更加精简，提高运行时的性能，因为 manifest 文件更小，读取和写入时的开销也会降低。
+
+3. 预期优化效果：
+   - 在实际使用中，如果没有使用文件校验功能，相关的两项校验信息不会被记录到 manifest 中，从而节省空间。
+   - 由于减少了数据写入量，轻微地提升了版本编辑记录的编码效率，带来少量性能提升。
+   - 整体上有助于长期稳定运行，尤其是在大规模文件管理或高频更新场景下，可以避免 manifest 文件因不必要的数据而增大。
+
+总之，这次提交通过对新文件编码逻辑的调整，在保证必需数据不丢失的同时，剔除了当文件校验并不需要时的冗余数据写入，从而达到减少 manifest 文件体积和提升编码效率的目的。

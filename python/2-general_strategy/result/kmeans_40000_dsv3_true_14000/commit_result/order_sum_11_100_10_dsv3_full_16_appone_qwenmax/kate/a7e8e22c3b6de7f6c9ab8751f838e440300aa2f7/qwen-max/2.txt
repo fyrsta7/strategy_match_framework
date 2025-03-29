@@ -1,0 +1,8 @@
+foreach (const QString& s, services)
+      {
+        if (s.startsWith ("org.kde.kate-"))
+        {
+          serviceName = s;
+          break;
+        }
+      }

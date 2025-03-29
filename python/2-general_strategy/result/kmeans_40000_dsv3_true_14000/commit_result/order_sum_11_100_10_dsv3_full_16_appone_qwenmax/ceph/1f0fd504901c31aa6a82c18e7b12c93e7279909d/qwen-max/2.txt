@@ -1,0 +1,6 @@
+void trim() {
+      if (!objects.empty())
+	begin = objects.begin()->first;
+      else
+	begin = end;
+    }

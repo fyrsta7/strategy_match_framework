@@ -1,0 +1,210 @@
+[
+    {
+        "repository_name": "BsodSurvivor",
+        "hash": "774785a79d14c95d467dd0224761723d51b5f9da",
+        "author": "Chris Lattner",
+        "date": "2006-09-03T07:53:50+00:00",
+        "message": "minor speedup\n\nllvm-svn: 30065",
+        "modified_files_count": 1,
+        "modified_files": [
+            "llvm/lib/CodeGen/LiveIntervalAnalysis.cpp"
+        ],
+        "github_commit_url": "https://github.com/ykfre/BsodSurvivor/commit/774785a79d14c95d467dd0224761723d51b5f9da",
+        "contains_optimization_keyword": true,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "operon",
+        "hash": "aae163f20fc4ddc4ff1c464466039cdf4ef77df8",
+        "author": "Bogdan Burlacu",
+        "date": "2019-09-28T10:59:30+02:00",
+        "message": "Small performance improvement in eval loop",
+        "modified_files_count": 1,
+        "modified_files": [
+            "include/operon/core/eval.hpp"
+        ],
+        "github_commit_url": "https://github.com/heal-research/operon/commit/aae163f20fc4ddc4ff1c464466039cdf4ef77df8",
+        "contains_optimization_keyword": true,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "endurox",
+        "hash": "91d5c57a0d5c02134a3cbdeccf792dfc3d04a984",
+        "author": "spuhpointer",
+        "date": "2016-07-07T10:59:30+03:00",
+        "message": "Some speedup",
+        "modified_files_count": 1,
+        "modified_files": [
+            "libubf/ubf_impl.c"
+        ],
+        "github_commit_url": "https://github.com/endurox-dev/endurox/commit/91d5c57a0d5c02134a3cbdeccf792dfc3d04a984",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "validate_entry"
+        ],
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "maplab",
+        "hash": "394d7cbd64eea3ee00993c7a9a8ce1210fe4def6",
+        "author": "Marius Fehr",
+        "date": "2020-04-09T13:17:24+02:00",
+        "message": "Update console-plugins/map-optimization-plugin/src/optimizer-plugin.cc\n\nCo-Authored-By: Thomas Schneider <schneith@ethz.ch>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "console-plugins/map-optimization-plugin/src/optimizer-plugin.cc"
+        ],
+        "github_commit_url": "https://github.com/ethz-asl/maplab/commit/394d7cbd64eea3ee00993c7a9a8ce1210fe4def6",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "OptimizerPlugin::OptimizerPlugin"
+        ],
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "Xapiand",
+        "hash": "0dc94caa1c6f86ab4200ade9a183c06341357085",
+        "author": "JoseMariaVR",
+        "date": "2017-03-24T13:05:40-06:00",
+        "message": "Optimization in test geospatial query make_search",
+        "modified_files_count": 1,
+        "modified_files": [
+            "tests/test_geospatial_query.cc"
+        ],
+        "github_commit_url": "https://github.com/Kronuz/Xapiand/commit/0dc94caa1c6f86ab4200ade9a183c06341357085",
+        "contains_optimization_keyword": true,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "TOWNSEMU",
+        "hash": "cebcc209693651729a0aa853a909616a797f6108",
+        "author": "CaptainYS",
+        "date": "2020-10-30T12:42:27-04:00",
+        "message": "Small speed up.",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/cpu/i486inst.cpp"
+        ],
+        "github_commit_url": "https://github.com/captainys/TOWNSEMU/commit/cebcc209693651729a0aa853a909616a797f6108",
+        "contains_optimization_keyword": true,
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "NBlood",
+        "hash": "b9e67132ccdaaec6ffcc915296f22e52f86841c9",
+        "author": "Richard Gobeille",
+        "date": "2022-04-12T17:45:45-07:00",
+        "message": "engine: optimize 8cf7e9fbb0a49d9bdc3a3c8d80a9f63df7e4daa0\n\nAnd yes, I check the compiler output using godbolt.org :p",
+        "modified_files_count": 1,
+        "modified_files": [
+            "source/build/src/engine.cpp"
+        ],
+        "github_commit_url": "https://github.com/NBlood/NBlood/commit/b9e67132ccdaaec6ffcc915296f22e52f86841c9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "classicDrawSprite"
+        ],
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "criu",
+        "hash": "2449656e10cb1725fe58399e5f07fe55f6c282d9",
+        "author": "Pavel Emelyanov",
+        "date": "2016-01-13T16:21:21+03:00",
+        "message": "util: Optimize vaddr_to_pfn\n\nSigned-off-by: Pavel Emelyanov <xemul@virtuozzo.com>",
+        "modified_files_count": 1,
+        "modified_files": [
+            "util.c"
+        ],
+        "github_commit_url": "https://github.com/checkpoint-restore/criu/commit/2449656e10cb1725fe58399e5f07fe55f6c282d9",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "vaddr_to_pfn"
+        ],
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "xray-16",
+        "hash": "40105998d414e9322540b52ed323196dc8deab78",
+        "author": "Xottab-DUTY",
+        "date": "2017-08-18T18:06:21+05:00",
+        "message": "Optimize if checks in CWeapon::OnStateSwitch()",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/xrGame/Weapon.cpp"
+        ],
+        "github_commit_url": "https://github.com/OpenXRay/xray-16/commit/40105998d414e9322540b52ed323196dc8deab78",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "CWeapon::OnStateSwitch"
+        ],
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "NPLRuntime",
+        "hash": "8a4073ca0890a53aeb571781657e8a57ee50a7ee",
+        "author": "kkvskkkk",
+        "date": "2017-08-02T16:10:46+08:00",
+        "message": "optimize performance",
+        "modified_files_count": 1,
+        "modified_files": [
+            "Client/trunk/ParaEngineClient/NPL/NPLHelper.cpp"
+        ],
+        "github_commit_url": "https://github.com/LiXizhi/NPLRuntime/commit/8a4073ca0890a53aeb571781657e8a57ee50a7ee",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "NPLHelper::SerializeToSCode"
+        ],
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "CuraEngine",
+        "hash": "693774fcfb880220c0bd5928810be01bd3c93a8b",
+        "author": "Lipu Fei",
+        "date": "2017-07-07T11:03:58+02:00",
+        "message": "Optimize SupportLayer::excludeAreasFromSupportInfillAreas()\n\nCURA-2724",
+        "modified_files_count": 1,
+        "modified_files": [
+            "src/sliceDataStorage.cpp"
+        ],
+        "github_commit_url": "https://github.com/Ultimaker/CuraEngine/commit/693774fcfb880220c0bd5928810be01bd3c93a8b",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "SupportLayer::excludeAreasFromSupportInfillAreas"
+        ],
+        "is_opt_ds_simple": "true"
+    },
+    {
+        "repository_name": "mlib",
+        "hash": "743959ebde33e9a5452799e02c245cee02ebada2",
+        "author": "Patrick Pelissier",
+        "date": "2020-05-16T14:09:49+02:00",
+        "message": "Fix micro performance issue",
+        "modified_files_count": 1,
+        "modified_files": [
+            "m-array.h"
+        ],
+        "github_commit_url": "https://github.com/P-p-H-d/mlib/commit/743959ebde33e9a5452799e02c245cee02ebada2",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+            "M_C"
+        ],
+        "is_opt_ds_simple": "true"
+    }
+]

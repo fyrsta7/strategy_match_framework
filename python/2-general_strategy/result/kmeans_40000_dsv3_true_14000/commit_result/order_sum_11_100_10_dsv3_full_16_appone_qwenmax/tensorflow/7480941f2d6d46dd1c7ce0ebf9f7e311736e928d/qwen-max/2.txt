@@ -1,0 +1,20 @@
+LogicalResult matchAndRewrite(mhlo::DynamicReshapeOp op,
+                              PatternRewriter &rewriter) const override {
+  ShapeComponentAnalysis shapeComponentAnalysis;
+  if (!isExpandShape(shapeComponentAnalysis, op)) return failure();
+  auto output_shape = shapeComponentAnalysis.GetValueInfo(op.output_shape());
+  SmallVector<ReassociationExprs> reassociations(output_shape->size());
+  auto *it = reassociations.begin();
+  int64_t runningIndex = 0;
+  for (const auto &dim : *output_shape) { // Optimized: Changed to const auto&
+    it->push_back(rewriter.getAffineDimExpr(runningIndex++));
+    if (!dim.isConstant(1)) ++it;
+  }
+  // If the last dimension was a 1 expand it from the penultimate dim.
+  if (output_shape->back().isConstant(1)) std::prev(it)->append(*it);
+  reassociations.erase(it, reassociations.end());
+
+  rewriter.replaceOpWithNewOp<tensor::ExpandShapeOp>(
+      op, op.getResult().getType(), op.operand(), reassociations);
+  return success();
+}

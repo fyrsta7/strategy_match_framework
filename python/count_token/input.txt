@@ -1,0 +1,2226 @@
+
+
+=== Prompt for 21db55f8164d2a6519dcc993f74bf7f49c700854 ===
+
+You are a C/C++ performance optimization expert. Optimize the given function by referring to the examples below.
+
+Optimization Guidelines:
+1. Maintain exact functionality
+2. Focus on low-level optimizations (SIMD, cache)
+3. Reduce branch mispredictions
+4. Improve memory access patterns
+
+Reference Examples (ordered by ascending similarity):
+==== Example 1 (Similarity: 1500.8) ====
+Original Function:
+InitPostgres(const char *in_dbname, Oid dboid, const char *username,
+			 Oid useroid, char *out_dbname, bool override_allow_connections)
+{
+	bool		bootstrap = IsBootstrapProcessingMode();
+	bool		am_superuser;
+	char	   *fullpath;
+	char		dbname[NAMEDATALEN];
+
+	elog(DEBUG3, "InitPostgres");
+
+	/*
+	 * Add my PGPROC struct to the ProcArray.
+	 *
+	 * Once I have done this, I am visible to other backends!
+	 */
+	InitProcessPhase2();
+
+	/*
+	 * Initialize my entry in the shared-invalidation manager's array of
+	 * per-backend data.
+	 *
+	 * Sets up MyBackendId, a unique backend identifier.
+	 */
+	MyBackendId = InvalidBackendId;
+
+	SharedInvalBackendInit(false);
+
+	if (MyBackendId > MaxBackends || MyBackendId <= 0)
+		elog(FATAL, "bad backend ID: %d", MyBackendId);
+
+	/* Now that we have a BackendId, we can participate in ProcSignal */
+	ProcSignalInit(MyBackendId);
+
+	/*
+	 * Also set up timeout handlers needed for backend operation.  We need
+	 * these in every case except bootstrap.
+	 */
+	if (!bootstrap)
+	{
+		RegisterTimeout(DEADLOCK_TIMEOUT, CheckDeadLockAlert);
+		RegisterTimeout(STATEMENT_TIMEOUT, StatementTimeoutHandler);
+		RegisterTimeout(LOCK_TIMEOUT, LockTimeoutHandler);
+		RegisterTimeout(IDLE_IN_TRANSACTION_SESSION_TIMEOUT,
+						IdleInTransactionSessionTimeoutHandler);
+		RegisterTimeout(IDLE_SESSION_TIMEOUT, IdleSessionTimeoutHandler);
+		RegisterTimeout(CLIENT_CONNECTION_CHECK_TIMEOUT, ClientCheckTimeoutHandler);
+	}
+
+	/*
+	 * Initialize local process's access to XLOG.
+	 */
+	if (IsUnderPostmaster)
+	{
+		/*
+		 * The postmaster already started the XLOG machinery, but we need to
+		 * call InitXLOGAccess(), if the system isn't in hot-standby mode.
+		 * This is handled by calling RecoveryInProgress and ignoring the
+		 * result.
+		 */
+		(void) RecoveryInProgress();
+	}
+	else
+	{
+		/*
+		 * We are either a bootstrap process or a standalone backend. Either
+		 * way, start up the XLOG machinery, and register to have it closed
+		 * down at exit.
+		 *
+		 * We don't yet have an aux-process resource owner, but StartupXLOG
+		 * and ShutdownXLOG will need one.  Hence, create said resource owner
+		 * (and register a callback to clean it up after ShutdownXLOG runs).
+		 */
+		CreateAuxProcessResourceOwner();
+
+		StartupXLOG();
+		/* Release (and warn about) any buffer pins leaked in StartupXLOG */
+		ReleaseAuxProcessResources(true);
+		/* Reset CurrentResourceOwner to nothing for the moment */
+		CurrentResourceOwner = NULL;
+
+		/*
+		 * Use before_shmem_exit() so that ShutdownXLOG() can rely on DSM
+		 * segments etc to work (which in turn is required for pgstats).
+		 */
+		before_shmem_exit(ShutdownXLOG, 0);
+	}
+
+	/*
+	 * Initialize the relation cache and the system catalog caches.  Note that
+	 * no catalog access happens here; we only set up the hashtable structure.
+	 * We must do this before starting a transaction because transaction abort
+	 * would try to touch these hashtables.
+	 */
+	RelationCacheInitialize();
+	InitCatalogCache();
+	InitPlanCache();
+
+	/* Initialize portal manager */
+	EnablePortalManager();
+
+	/* Initialize status reporting */
+	if (!bootstrap)
+		pgstat_beinit();
+
+	/*
+	 * Load relcache entries for the shared system catalogs.  This must create
+	 * at least entries for pg_database and catalogs used for authentication.
+	 */
+	RelationCacheInitializePhase2();
+
+	/*
+	 * Set up process-exit callback to do pre-shutdown cleanup.  This is the
+	 * one of the first before_shmem_exit callbacks we register; thus, this
+	 * will be one the last things we do before low-level modules like the
+	 * buffer manager begin to close down.  We need to have this in place
+	 * before we begin our first transaction --- if we fail during the
+	 * initialization transaction, as is entirely possible, we need the
+	 * AbortTransaction call to clean up.
+	 */
+	before_shmem_exit(ShutdownPostgres, 0);
+
+	/* The autovacuum launcher is done here */
+	if (IsAutoVacuumLauncherProcess())
+	{
+		/* report this backend in the PgBackendStatus array */
+		pgstat_bestart();
+
+		return;
+	}
+
+	/*
+	 * Start a new transaction here before first access to db, and get a
+	 * snapshot.  We don't have a use for the snapshot itself, but we're
+	 * interested in the secondary effect that it sets RecentGlobalXmin. (This
+	 * is critical for anything that reads heap pages, because HOT may decide
+	 * to prune them even if the process doesn't attempt to modify any
+	 * tuples.)
+	 *
+	 * FIXME: This comment is inaccurate / the code buggy. A snapshot that is
+	 * not pushed/active does not reliably prevent HOT pruning (->xmin could
+	 * e.g. be cleared when cache invalidations are processed).
+	 */
+	if (!bootstrap)
+	{
+		/* statement_timestamp must be set for timeouts to work correctly */
+		SetCurrentStatementStartTimestamp();
+		StartTransactionCommand();
+
+		/*
+		 * transaction_isolation will have been set to the default by the
+		 * above.  If the default is "serializable", and we are in hot
+		 * standby, we will fail if we don't change it to something lower.
+		 * Fortunately, "read committed" is plenty good enough.
+		 */
+		XactIsoLevel = XACT_READ_COMMITTED;
+
+		(void) GetTransactionSnapshot();
+	}
+
+	/*
+	 * Perform client authentication if necessary, then figure out our
+	 * postgres user ID, and see if we are a superuser.
+	 *
+	 * In standalone mode and in autovacuum worker processes, we use a fixed
+	 * ID, otherwise we figure it out from the authenticated user name.
+	 */
+	if (bootstrap || IsAutoVacuumWorkerProcess())
+	{
+		InitializeSessionUserIdStandalone();
+		am_superuser = true;
+	}
+	else if (!IsUnderPostmaster)
+	{
+		InitializeSessionUserIdStandalone();
+		am_superuser = true;
+		if (!ThereIsAtLeastOneRole())
+			ereport(WARNING,
+					(errcode(ERRCODE_UNDEFINED_OBJECT),
+					 errmsg("no roles are defined in this database system"),
+					 errhint("You should immediately run CREATE USER \"%s\" SUPERUSER;.",
+							 username != NULL ? username : "postgres")));
+	}
+	else if (IsBackgroundWorker)
+	{
+		if (username == NULL && !OidIsValid(useroid))
+		{
+			InitializeSessionUserIdStandalone();
+			am_superuser = true;
+		}
+		else
+		{
+			InitializeSessionUserId(username, useroid);
+			am_superuser = superuser();
+		}
+	}
+	else
+	{
+		/* normal multiuser case */
+		Assert(MyProcPort != NULL);
+		PerformAuthentication(MyProcPort);
+		InitializeSessionUserId(username, useroid);
+		am_superuser = superuser();
+	}
+
+	/*
+	 * If we're trying to shut down, only superusers can connect, and new
+	 * replication connections are not allowed.
+	 */
+	if ((!am_superuser || am_walsender) &&
+		MyProcPort != NULL &&
+		MyProcPort->canAcceptConnections == CAC_SUPERUSER)
+	{
+		if (am_walsender)
+			ereport(FATAL,
+					(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
+					 errmsg("new replication connections are not allowed during database shutdown")));
+		else
+			ereport(FATAL,
+					(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
+					 errmsg("must be superuser to connect during database shutdown")));
+	}
+
+	/*
+	 * Binary upgrades only allowed super-user connections
+	 */
+	if (IsBinaryUpgrade && !am_superuser)
+	{
+		ereport(FATAL,
+				(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
+				 errmsg("must be superuser to connect in binary upgrade mode")));
+	}
+
+	/*
+	 * The last few connection slots are reserved for superusers.  Replication
+	 * connections are drawn from slots reserved with max_wal_senders and not
+	 * limited by max_connections or superuser_reserved_connections.
+	 */
+	if (!am_superuser && !am_walsender &&
+		ReservedBackends > 0 &&
+		!HaveNFreeProcs(ReservedBackends))
+		ereport(FATAL,
+				(errcode(ERRCODE_TOO_MANY_CONNECTIONS),
+				 errmsg("remaining connection slots are reserved for non-replication superuser connections")));
+
+	/* Check replication permissions needed for walsender processes. */
+	if (am_walsender)
+	{
+		Assert(!bootstrap);
+
+		if (!superuser() && !has_rolreplication(GetUserId()))
+			ereport(FATAL,
+					(errcode(ERRCODE_INSUFFICIENT_PRIVILEGE),
+					 errmsg("must be superuser or replication role to start walsender")));
+	}
+
+	/*
+	 * If this is a plain walsender only supporting physical replication, we
+	 * don't want to connect to any particular database. Just finish the
+	 * backend startup by processing any options from the startup packet, and
+	 * we're done.
+	 */
+	if (am_walsender && !am_db_walsender)
+	{
+		/* process any options passed in the startup packet */
+		if (MyProcPort != NULL)
+			process_startup_options(MyProcPort, am_superuser);
+
+		/* Apply PostAuthDelay as soon as we've read all options */
+		if (PostAuthDelay > 0)
+			pg_usleep(PostAuthDelay * 1000000L);
+
+		/* initialize client encoding */
+		InitializeClientEncoding();
+
+		/* report this backend in the PgBackendStatus array */
+		pgstat_bestart();
+
+		/* close the transaction we started above */
+		CommitTransactionCommand();
+
+		return;
+	}
+
+	/*
+	 * Set up the global variables holding database id and default tablespace.
+	 * But note we won't actually try to touch the database just yet.
+	 *
+	 * We take a shortcut in the bootstrap case, otherwise we have to look up
+	 * the db's entry in pg_database.
+	 */
+	if (bootstrap)
+	{
+		MyDatabaseId = TemplateDbOid;
+		MyDatabaseTableSpace = DEFAULTTABLESPACE_OID;
+	}
+	else if (in_dbname != NULL)
+	{
+		HeapTuple	tuple;
+		Form_pg_database dbform;
+
+		tuple = GetDatabaseTuple(in_dbname);
+		if (!HeapTupleIsValid(tuple))
+			ereport(FATAL,
+					(errcode(ERRCODE_UNDEFINED_DATABASE),
+					 errmsg("database \"%s\" does not exist", in_dbname)));
+		dbform = (Form_pg_database) GETSTRUCT(tuple);
+		MyDatabaseId = dbform->oid;
+		MyDatabaseTableSpace = dbform->dattablespace;
+		/* take database name from the caller, just for paranoia */
+		strlcpy(dbname, in_dbname, sizeof(dbname));
+	}
+	else if (OidIsValid(dboid))
+	{
+		/* caller specified database by OID */
+		HeapTuple	tuple;
+		Form_pg_database dbform;
+
+		tuple = GetDatabaseTupleByOid(dboid);
+		if (!HeapTupleIsValid(tuple))
+			ereport(FATAL,
+					(errcode(ERRCODE_UNDEFINED_DATABASE),
+					 errmsg("database %u does not exist", dboid)));
+		dbform = (Form_pg_database) GETSTRUCT(tuple);
+		MyDatabaseId = dbform->oid;
+		MyDatabaseTableSpace = dbform->dattablespace;
+		Assert(MyDatabaseId == dboid);
+		strlcpy(dbname, NameStr(dbform->datname), sizeof(dbname));
+		/* pass the database name back to the caller */
+		if (out_dbname)
+			strcpy(out_dbname, dbname);
+	}
+	else
+	{
+		/*
+		 * If this is a background worker not bound to any particular
+		 * database, we're done now.  Everything that follows only makes sense
+		 * if we are bound to a specific database.  We do need to close the
+		 * transaction we started before returning.
+		 */
+		if (!bootstrap)
+		{
+			pgstat_bestart();
+			CommitTransactionCommand();
+		}
+		return;
+	}
+
+	/*
+	 * Now, take a writer's lock on the database we are trying to connect to.
+	 * If there is a concurrently running DROP DATABASE on that database, this
+	 * will block us until it finishes (and has committed its update of
+	 * pg_database).
+	 *
+	 * Note that the lock is not held long, only until the end of this startup
+	 * transaction.  This is OK since we will advertise our use of the
+	 * database in the ProcArray before dropping the lock (in fact, that's the
+	 * next thing to do).  Anyone trying a DROP DATABASE after this point will
+	 * see us in the array once they have the lock.  Ordering is important for
+	 * this because we don't want to advertise ourselves as being in this
+	 * database until we have the lock; otherwise we create what amounts to a
+	 * deadlock with CountOtherDBBackends().
+	 *
+	 * Note: use of RowExclusiveLock here is reasonable because we envision
+	 * our session as being a concurrent writer of the database.  If we had a
+	 * way of declaring a session as being guaranteed-read-only, we could use
+	 * AccessShareLock for such sessions and thereby not conflict against
+	 * CREATE DATABASE.
+	 */
+	if (!bootstrap)
+		LockSharedObject(DatabaseRelationId, MyDatabaseId, 0,
+						 RowExclusiveLock);
+
+	/*
+	 * Now we can mark our PGPROC entry with the database ID.
+	 *
+	 * We assume this is an atomic store so no lock is needed; though actually
+	 * things would work fine even if it weren't atomic.  Anyone searching the
+	 * ProcArray for this database's ID should hold the database lock, so they
+	 * would not be executing concurrently with this store.  A process looking
+	 * for another database's ID could in theory see a chance match if it read
+	 * a partially-updated databaseId value; but as long as all such searches
+	 * wait and retry, as in CountOtherDBBackends(), they will certainly see
+	 * the correct value on their next try.
+	 */
+	MyProc->databaseId = MyDatabaseId;
+
+	/*
+	 * We established a catalog snapshot while reading pg_authid and/or
+	 * pg_database; but until we have set up MyDatabaseId, we won't react to
+	 * incoming sinval messages for unshared catalogs, so we won't realize it
+	 * if the snapshot has been invalidated.  Assume it's no good anymore.
+	 */
+	InvalidateCatalogSnapshot();
+
+	/*
+	 * Recheck pg_database to make sure the target database hasn't gone away.
+	 * If there was a concurrent DROP DATABASE, this ensures we will die
+	 * cleanly without creating a mess.
+	 */
+	if (!bootstrap)
+	{
+		HeapTuple	tuple;
+
+		tuple = GetDatabaseTuple(dbname);
+		if (!HeapTupleIsValid(tuple) ||
+			MyDatabaseId != ((Form_pg_database) GETSTRUCT(tuple))->oid ||
+			MyDatabaseTableSpace != ((Form_pg_database) GETSTRUCT(tuple))->dattablespace)
+			ereport(FATAL,
+					(errcode(ERRCODE_UNDEFINED_DATABASE),
+					 errmsg("database \"%s\" does not exist", dbname),
+					 errdetail("It seems to have just been dropped or renamed.")));
+	}
+
+	/*
+	 * Now we should be able to access the database directory safely. Verify
+	 * it's there and looks reasonable.
+	 */
+	fullpath = GetDatabasePath(MyDatabaseId, MyDatabaseTableSpace);
+
+	if (!bootstrap)
+	{
+		if (access(fullpath, F_OK) == -1)
+		{
+			if (errno == ENOENT)
+				ereport(FATAL,
+						(errcode(ERRCODE_UNDEFINED_DATABASE),
+						 errmsg("database \"%s\" does not exist",
+								dbname),
+						 errdetail("The database subdirectory \"%s\" is missing.",
+								   fullpath)));
+			else
+				ereport(FATAL,
+						(errcode_for_file_access(),
+						 errmsg("could not access directory \"%s\": %m",
+								fullpath)));
+		}
+
+		ValidatePgVersion(fullpath);
+	}
+
+	SetDatabasePath(fullpath);
+
+	/*
+	 * It's now possible to do real access to the system catalogs.
+	 *
+	 * Load relcache entries for the system catalogs.  This must create at
+	 * least the minimum set of "nailed-in" cache entries.
+	 */
+	RelationCacheInitializePhase3();
+
+	/* set up ACL framework (so CheckMyDatabase can check permissions) */
+	initialize_acl();
+
+	/*
+	 * Re-read the pg_database row for our database, check permissions and set
+	 * up database-specific GUC settings.  We can't do this until all the
+	 * database-access infrastructure is up.  (Also, it wants to know if the
+	 * user is a superuser, so the above stuff has to happen first.)
+	 */
+	if (!bootstrap)
+		CheckMyDatabase(dbname, am_superuser, override_allow_connections);
+
+	/*
+	 * Now process any command-line switches and any additional GUC variable
+	 * settings passed in the startup packet.   We couldn't do this before
+	 * because we didn't know if client is a superuser.
+	 */
+	if (MyProcPort != NULL)
+		process_startup_options(MyProcPort, am_superuser);
+
+	/* Process pg_db_role_setting options */
+	process_settings(MyDatabaseId, GetSessionUserId());
+
+	/* Apply PostAuthDelay as soon as we've read all options */
+	if (PostAuthDelay > 0)
+		pg_usleep(PostAuthDelay * 1000000L);
+
+	/*
+	 * Initialize various default states that can't be set up until we've
+	 * selected the active user and gotten the right GUC settings.
+	 */
+
+	/* set default namespace search path */
+	InitializeSearchPath();
+
+	/* initialize client encoding */
+	InitializeClientEncoding();
+
+	/* Initialize this backend's session state. */
+	InitializeSession();
+
+	/* report this backend in the PgBackendStatus array */
+	if (!bootstrap)
+		pgstat_bestart();
+
+	/* close the transaction we started above */
+	if (!bootstrap)
+		CommitTransactionCommand();
+}
+
+Optimization Changes:
+```diff
+diff --git a/src/backend/utils/init/postinit.c b/src/backend/utils/init/postinit.c
+index 0c56c38a14..646126edee 100644
+--- a/src/backend/utils/init/postinit.c
++++ b/src/backend/utils/init/postinit.c
+@@ -676,8 +676,7 @@ InitPostgres(const char *in_dbname, Oid dboid, const char *username,
+ 	EnablePortalManager();
+ 
+ 	/* Initialize status reporting */
+-	if (!bootstrap)
+-		pgstat_beinit();
++	pgstat_beinit();
+ 
+ 	/*
+ 	 * Load relcache entries for the shared system catalogs.  This must create
+```
+------------------------
+
+==== Example 2 (Similarity: 1587.7) ====
+Original Function:
+MmArmAccessFault(IN BOOLEAN StoreInstruction,
+                 IN PVOID Address,
+                 IN KPROCESSOR_MODE Mode,
+                 IN PVOID TrapInformation)
+{
+    KIRQL OldIrql = KeGetCurrentIrql(), LockIrql;
+    PMMPTE ProtoPte = NULL;
+    PMMPTE PointerPte = MiAddressToPte(Address);
+    PMMPDE PointerPde = MiAddressToPde(Address);
+#if (_MI_PAGING_LEVELS >= 3)
+    PMMPDE PointerPpe = MiAddressToPpe(Address);
+#if (_MI_PAGING_LEVELS == 4)
+    PMMPDE PointerPxe = MiAddressToPxe(Address);
+#endif
+#endif
+    MMPTE TempPte;
+    PETHREAD CurrentThread;
+    PEPROCESS CurrentProcess;
+    NTSTATUS Status;
+    PMMSUPPORT WorkingSet;
+    ULONG ProtectionCode;
+    PMMVAD Vad;
+    PFN_NUMBER PageFrameIndex;
+    ULONG Color;
+
+    DPRINT("ARM3 FAULT AT: %p\n", Address);
+
+    /* Check for page fault on high IRQL */
+    if (OldIrql > APC_LEVEL)
+    {
+        // There are some special cases where this is okay, but not in ARM3 yet
+        DbgPrint("MM:***PAGE FAULT AT IRQL > 1  Va %p, IRQL %lx\n",
+                 Address,
+                 OldIrql);
+        ASSERT(OldIrql <= APC_LEVEL);
+    }
+
+    /* Check for kernel fault address */
+    while (Address >= MmSystemRangeStart)
+    {
+        /* Bail out, if the fault came from user mode */
+        if (Mode == UserMode) return STATUS_ACCESS_VIOLATION;
+
+        /* PXEs and PPEs for kernel mode are mapped for everything we need */
+#if (_MI_PAGING_LEVELS >= 3)
+        if (
+#if (_MI_PAGING_LEVELS == 4)
+            (PointerPxe->u.Hard.Valid == 0) ||
+#endif
+            (PointerPpe->u.Hard.Valid == 0))
+        {
+            /* The address is not from any pageable area! */
+            KeBugCheckEx(PAGE_FAULT_IN_NONPAGED_AREA,
+                         (ULONG_PTR)Address,
+                         StoreInstruction,
+                         (ULONG_PTR)TrapInformation,
+                         2);
+        }
+#endif
+
+        /* Check if the PDE is invalid */
+        if (PointerPde->u.Hard.Valid == 0)
+        {
+            //
+            // Debug spew (eww!)
+            //
+            DPRINT("Invalid PDE\n");
+#if (_MI_PAGING_LEVELS == 2)
+            //
+            // Handle mapping in "Special" PDE directoreis
+            //
+            MiCheckPdeForPagedPool(Address);
+#endif
+            //
+            // Now we SHOULD be good
+            //
+            if (PointerPde->u.Hard.Valid == 0)
+            {
+                //
+                // FIXFIX: Do the S-LIST hack
+                //
+
+                //
+                // Kill the system
+                //
+                KeBugCheckEx(PAGE_FAULT_IN_NONPAGED_AREA,
+                             (ULONG_PTR)Address,
+                             StoreInstruction,
+                             (ULONG_PTR)TrapInformation,
+                             2);
+            }
+        }
+
+        /* The PDE is valid, so read the PTE */
+        TempPte = *PointerPte;
+        if (TempPte.u.Hard.Valid == 1)
+        {
+            //
+            // Only two things can go wrong here:
+            // Executing NX page (we couldn't care less)
+            // Writing to a read-only page (the stuff ARM3 works with is write,
+            // so again, moot point).
+            //
+
+            //
+            // Otherwise, the PDE was probably invalid, and all is good now
+            //
+            return STATUS_SUCCESS;
+        }
+
+        // Check for a fault on the page table or hyperspace
+        if (MI_IS_PAGE_TABLE_OR_HYPER_ADDRESS(Address))
+        {
+#if (_MI_PAGING_LEVELS == 2)
+            /* Could be paged pool access from a new process -- synchronize the page directories */
+            if (MiCheckPdeForPagedPool(Address) == STATUS_WAIT_1)
+            {
+                DPRINT1("PAGE TABLES FAULTED IN!\n");
+                return STATUS_SUCCESS;
+            }
+#endif
+            /* Otherwise this could be a commit of a virtual address */
+            break;
+        }
+
+        /* In this path, we are using the system working set */
+        CurrentThread = PsGetCurrentThread();
+        WorkingSet = &MmSystemCacheWs;
+
+        /* Acquire it */
+        KeRaiseIrql(APC_LEVEL, &LockIrql);
+        MiLockWorkingSet(CurrentThread, WorkingSet);
+
+        /* Re-read PTE now that we own the lock */
+        TempPte = *PointerPte;
+        if (TempPte.u.Hard.Valid == 1)
+        {
+            // Only two things can go wrong here:
+            // Executing NX page (we couldn't care less)
+            // Writing to a read-only page (the stuff ARM3 works with is write,
+            // so again, moot point).
+            ASSERT(TempPte.u.Hard.Write == 1);
+
+            /* Release the working set */
+            MiUnlockWorkingSet(CurrentThread, WorkingSet);
+            KeLowerIrql(LockIrql);
+
+            // Otherwise, the PDE was probably invalid, and all is good now
+            return STATUS_SUCCESS;
+        }
+
+        /* Check one kind of prototype PTE */
+        if (TempPte.u.Soft.Prototype)
+        {
+            /* Make sure protected pool is on, and that this is a pool address */
+            if ((MmProtectFreedNonPagedPool) &&
+                (((Address >= MmNonPagedPoolStart) &&
+                  (Address < (PVOID)((ULONG_PTR)MmNonPagedPoolStart +
+                                     MmSizeOfNonPagedPoolInBytes))) ||
+                 ((Address >= MmNonPagedPoolExpansionStart) &&
+                  (Address < MmNonPagedPoolEnd))))
+            {
+                /* Bad boy, bad boy, whatcha gonna do, whatcha gonna do when ARM3 comes for you! */
+                KeBugCheckEx(DRIVER_CAUGHT_MODIFYING_FREED_POOL,
+                             (ULONG_PTR)Address,
+                             StoreInstruction,
+                             Mode,
+                             4);
+            }
+
+            /* Get the prototype PTE! */
+            ProtoPte = MiProtoPteToPte(&TempPte);
+        }
+        else
+        {
+            /* We don't implement transition PTEs */
+            ASSERT(TempPte.u.Soft.Transition == 0);
+
+            /* Check for no-access PTE */
+            if (TempPte.u.Soft.Protection == MM_NOACCESS)
+            {
+                /* Bugcheck the system! */
+                KeBugCheckEx(PAGE_FAULT_IN_NONPAGED_AREA,
+                             (ULONG_PTR)Address,
+                             StoreInstruction,
+                             (ULONG_PTR)TrapInformation,
+                             1);
+            }
+        }
+
+        /* Check for demand page */
+        if ((StoreInstruction) && !(ProtoPte) && !(TempPte.u.Hard.Valid))
+        {
+            /* Get the protection code */
+            if (!(TempPte.u.Soft.Protection & MM_READWRITE))
+            {
+                /* Bad boy, bad boy, whatcha gonna do, whatcha gonna do when ARM3 comes for you! */
+                KeBugCheckEx(ATTEMPTED_WRITE_TO_READONLY_MEMORY,
+                             (ULONG_PTR)Address,
+                             TempPte.u.Long,
+                             (ULONG_PTR)TrapInformation,
+                             14);
+            }
+        }
+
+        /* Now do the real fault handling */
+        Status = MiDispatchFault(StoreInstruction,
+                                 Address,
+                                 PointerPte,
+                                 ProtoPte,
+                                 FALSE,
+                                 NULL,
+                                 TrapInformation,
+                                 NULL);
+
+        /* Release the working set */
+        ASSERT(KeAreAllApcsDisabled() == TRUE);
+        MiUnlockWorkingSet(CurrentThread, WorkingSet);
+        KeLowerIrql(LockIrql);
+
+        /* We are done! */
+        DPRINT("Fault resolved with status: %lx\n", Status);
+        return Status;
+    }
+
+#if (_MI_PAGING_LEVELS == 4)
+    /* On these systems we have PXEs and PPEs ready for everything we need */
+    if (PointerPxe->u.Hard.Valid == 0) return STATUS_ACCESS_VIOLATION;
+#endif
+#if (_MI_PAGING_LEVELS >= 3)
+    if (PointerPpe->u.Hard.Valid == 0) return STATUS_ACCESS_VIOLATION;
+#endif
+
+    /* This is a user fault (<- And this is a lie!) */
+    CurrentThread = PsGetCurrentThread();
+    CurrentProcess = PsGetCurrentProcess();
+
+    /* Lock the working set */
+    MiLockProcessWorkingSet(CurrentProcess, CurrentThread);
+
+    /* First things first, is the PDE valid? */
+    ASSERT(PointerPde->u.Hard.LargePage == 0);
+    if (PointerPde->u.Hard.Valid == 0)
+    {
+        /* Right now, we only handle scenarios where the PDE is totally empty */
+        ASSERT(PointerPde->u.Long == 0);
+
+        /* Check if this address range belongs to a valid allocation (VAD) */
+        MiCheckVirtualAddress(Address, &ProtectionCode, &Vad);
+
+        /* Right now, we expect a valid protection mask on the VAD */
+        ASSERT(ProtectionCode != MM_NOACCESS);
+
+        /* Make the PDE demand-zero */
+        MI_WRITE_INVALID_PDE(PointerPde, DemandZeroPde);
+
+        /* And go dispatch the fault on the PDE. This should handle the demand-zero */
+#if MI_TRACE_PFNS
+        UserPdeFault = TRUE;
+#endif
+        Status = MiDispatchFault(TRUE,
+                                 PointerPte,
+                                 (PMMPTE)PointerPde,
+                                 NULL,
+                                 FALSE,
+                                 PsGetCurrentProcess(),
+                                 TrapInformation,
+                                 NULL);
+#if MI_TRACE_PFNS
+        UserPdeFault = FALSE;
+#endif
+        /* We should come back with APCs enabled, and with a valid PDE */
+        ASSERT(KeAreAllApcsDisabled() == TRUE);
+        ASSERT(PointerPde->u.Hard.Valid == 1);
+    }
+
+    /* Now capture the PTE. Ignore virtual faults for now */
+    TempPte = *PointerPte;
+    ASSERT(TempPte.u.Hard.Valid == 0);
+
+    /* Quick check for demand-zero */
+    if (TempPte.u.Long == (MM_READWRITE << MM_PTE_SOFTWARE_PROTECTION_BITS))
+    {
+        /* Resolve the fault */
+        MiResolveDemandZeroFault(Address,
+                                 (ULONG)PointerPte->u.Soft.Protection,
+                                 CurrentProcess,
+                                 MM_NOIRQL);
+
+        /* Return the status */
+        MiUnlockProcessWorkingSet(CurrentProcess, CurrentThread);
+        return STATUS_PAGE_FAULT_DEMAND_ZERO;
+    }
+
+    /* Get protection and check if it's a prototype PTE */
+    ProtectionCode = (ULONG)TempPte.u.Soft.Protection;
+    ASSERT(TempPte.u.Soft.Prototype == 0);
+
+    /* Check for non-demand zero PTE */
+    if (TempPte.u.Long != 0)
+    {
+        /* This is a page fault, check for valid protection */
+        ASSERT(ProtectionCode != 0x100);
+
+        /* FIXME: Run MiAccessCheck */
+
+        /* Dispatch the fault */
+        Status = MiDispatchFault(StoreInstruction,
+                                 Address,
+                                 PointerPte,
+                                 NULL,
+                                 FALSE,
+                                 PsGetCurrentProcess(),
+                                 TrapInformation,
+                                 NULL);
+
+        /* Return the status */
+        ASSERT(NT_SUCCESS(Status));
+        ASSERT(KeGetCurrentIrql() <= APC_LEVEL);
+        MiUnlockProcessWorkingSet(CurrentProcess, CurrentThread);
+        return Status;
+    }
+
+    /* Check if this address range belongs to a valid allocation (VAD) */
+    ASSERT(TempPte.u.Long == 0);
+    ProtoPte = MiCheckVirtualAddress(Address, &ProtectionCode, &Vad);
+    if (ProtectionCode == MM_NOACCESS)
+    {
+        /* This is a bogus VA */
+        Status = STATUS_ACCESS_VIOLATION;
+
+        /* Could be a not-yet-mapped paged pool page table */
+#if (_MI_PAGING_LEVELS == 2)
+        MiCheckPdeForPagedPool(Address);
+#endif
+        /* See if that fixed it */
+        if (PointerPte->u.Hard.Valid == 1) Status = STATUS_SUCCESS;
+
+        /* Return the status */
+        MiUnlockProcessWorkingSet(CurrentProcess, CurrentThread);
+        return Status;
+    }
+
+    /* Is this a user address? */
+    if (Address <= MM_HIGHEST_USER_ADDRESS)
+    {
+        /* Add an additional page table reference */
+        MmWorkingSetList->UsedPageTableEntries[MiGetPdeOffset(Address)]++;
+        ASSERT(MmWorkingSetList->UsedPageTableEntries[MiGetPdeOffset(Address)] <= PTE_COUNT);
+    }
+
+    /* Did we get a prototype PTE back? */
+    if (!ProtoPte)
+    {
+        /* No, create a new PTE. First, write the protection */
+        PointerPte->u.Soft.Protection = ProtectionCode;
+
+        /* Lock the PFN database since we're going to grab a page */
+        OldIrql = KeAcquireQueuedSpinLock(LockQueuePfnLock);
+
+        /* Try to get a zero page */
+        MI_SET_USAGE(MI_USAGE_PEB_TEB);
+        MI_SET_PROCESS2(CurrentProcess->ImageFileName);
+        Color = MI_GET_NEXT_PROCESS_COLOR(CurrentProcess);
+        PageFrameIndex = MiRemoveZeroPageSafe(Color);
+        if (!PageFrameIndex)
+        {
+            /* Grab a page out of there. Later we should grab a colored zero page */
+            PageFrameIndex = MiRemoveAnyPage(Color);
+            ASSERT(PageFrameIndex);
+
+            /* Release the lock since we need to do some zeroing */
+            KeReleaseQueuedSpinLock(LockQueuePfnLock, OldIrql);
+
+            /* Zero out the page, since it's for user-mode */
+            MiZeroPfn(PageFrameIndex);
+
+            /* Grab the lock again so we can initialize the PFN entry */
+            OldIrql = KeAcquireQueuedSpinLock(LockQueuePfnLock);
+        }
+
+        /* Initialize the PFN entry now */
+        MiInitializePfn(PageFrameIndex, PointerPte, 1);
+
+        /* One more demand-zero fault */
+        KeGetCurrentPrcb()->MmDemandZeroCount++;
+
+        /* And we're done with the lock */
+        KeReleaseQueuedSpinLock(LockQueuePfnLock, OldIrql);
+
+
+        /* Was the fault on an actual user page, or a kernel page for the user? */
+        if (PointerPte <= MiHighestUserPte)
+        {
+            /* User fault, build a user PTE */
+            MI_MAKE_HARDWARE_PTE_USER(&TempPte,
+                                      PointerPte,
+                                      PointerPte->u.Soft.Protection,
+                                      PageFrameIndex);
+        }
+        else
+        {
+            /* Session, kernel, or user PTE, figure it out and build it */
+            MI_MAKE_HARDWARE_PTE(&TempPte,
+                                 PointerPte,
+                                 PointerPte->u.Soft.Protection,
+                                 PageFrameIndex);
+        }
+
+        /* Write the dirty bit for writeable pages */
+        if (MI_IS_PAGE_WRITEABLE(&TempPte)) MI_MAKE_DIRTY_PAGE(&TempPte);
+
+        /* And now write down the PTE, making the address valid */
+        MI_WRITE_VALID_PTE(PointerPte, TempPte);
+
+        /* Demand zero */
+        Status = STATUS_PAGE_FAULT_DEMAND_ZERO;
+    }
+    else
+    {
+        /* No guard page support yet */
+        ASSERT((ProtectionCode & MM_DECOMMIT) == 0);
+        ASSERT(ProtectionCode != 0x100);
+
+        /* Write the prototype PTE */
+        TempPte = PrototypePte;
+        TempPte.u.Soft.Protection = ProtectionCode;
+        MI_WRITE_INVALID_PTE(PointerPte, TempPte);
+
+        /* Handle the fault */
+        Status = MiDispatchFault(StoreInstruction,
+                                 Address,
+                                 PointerPte,
+                                 ProtoPte,
+                                 FALSE,
+                                 CurrentProcess,
+                                 TrapInformation,
+                                 Vad);
+        ASSERT(Status == STATUS_PAGE_FAULT_TRANSITION);
+        ASSERT(PointerPte->u.Hard.Valid == 1);
+        ASSERT(PointerPte->u.Hard.PageFrameNumber != 0);
+    }
+
+    /* Release the working set */
+    MiUnlockProcessWorkingSet(CurrentProcess, CurrentThread);
+    return Status;
+}
+
+Optimization Changes:
+```diff
+diff --git a/reactos/ntoskrnl/mm/ARM3/pagfault.c b/reactos/ntoskrnl/mm/ARM3/pagfault.c
+index baa72e47818..2c1a3b33af7 100644
+--- a/reactos/ntoskrnl/mm/ARM3/pagfault.c
++++ b/reactos/ntoskrnl/mm/ARM3/pagfault.c
+@@ -100,6 +100,28 @@ MiCheckVirtualAddress(IN PVOID VirtualAddress,
+     }
+ }
+ 
++#if (_MI_PAGING_LEVELS == 2)
++BOOLEAN
++FORCEINLINE
++MiSynchronizeSystemPde(PMMPDE PointerPde)
++{
++    MMPDE SystemPde;
++    ULONG Index;
++
++    /* Get the Index from the PDE */
++    Index = ((ULONG_PTR)PointerPde & (SYSTEM_PD_SIZE - 1)) / sizeof(MMPTE);
++
++    /* Copy the PDE from the double-mapped system page directory */
++    SystemPde = MmSystemPagePtes[Index];
++    *PointerPde = SystemPde;
++
++    /* Make sure we re-read the PDE and PTE */
++    KeMemoryBarrierWithoutFence();
++
++    /* Return, if we had success */
++    return (BOOLEAN)SystemPde.u.Hard.Valid;
++}
++
+ NTSTATUS
+ FASTCALL
+ MiCheckPdeForPagedPool(IN PVOID Address)
+@@ -159,6 +181,7 @@ MiCheckPdeForPagedPool(IN PVOID Address)
+     //
+     return Status;
+ }
++#endif
+ 
+ VOID
+ NTAPI
+@@ -699,28 +722,12 @@ MmArmAccessFault(IN BOOLEAN StoreInstruction,
+         /* Check if the PDE is invalid */
+         if (PointerPde->u.Hard.Valid == 0)
+         {
+-            //
+-            // Debug spew (eww!)
+-            //
+-            DPRINT("Invalid PDE\n");
+ #if (_MI_PAGING_LEVELS == 2)
+-            //
+-            // Handle mapping in "Special" PDE directoreis
+-            //
+-            MiCheckPdeForPagedPool(Address);
++            /* Sync this PDE and check, if that made it valid */
++            if (!MiSynchronizeSystemPde(PointerPde))
+ #endif
+-            //
+-            // Now we SHOULD be good
+-            //
+-            if (PointerPde->u.Hard.Valid == 0)
+             {
+-                //
+-                // FIXFIX: Do the S-LIST hack
+-                //
+-
+-                //
+-                // Kill the system
+-                //
++                /* PDE (still) not valid, kill the system */
+                 KeBugCheckEx(PAGE_FAULT_IN_NONPAGED_AREA,
+                              (ULONG_PTR)Address,
+                              StoreInstruction,
+@@ -824,20 +831,20 @@ MmArmAccessFault(IN BOOLEAN StoreInstruction,
+                              (ULONG_PTR)TrapInformation,
+                              1);
+             }
+-        }
+ 
+-        /* Check for demand page */
+-        if ((StoreInstruction) && !(ProtoPte) && !(TempPte.u.Hard.Valid))
+-        {
+-            /* Get the protection code */
+-            if (!(TempPte.u.Soft.Protection & MM_READWRITE))
++            /* Check for demand page */
++            if ((StoreInstruction) && !(TempPte.u.Hard.Valid))
+             {
+-                /* Bad boy, bad boy, whatcha gonna do, whatcha gonna do when ARM3 comes for you! */
+-                KeBugCheckEx(ATTEMPTED_WRITE_TO_READONLY_MEMORY,
+-                             (ULONG_PTR)Address,
+-                             TempPte.u.Long,
+-                             (ULONG_PTR)TrapInformation,
+-                             14);
++                /* Get the protection code */
++                if (!(TempPte.u.Soft.Protection & MM_READWRITE))
++                {
++                    /* Bugcheck the system! */
++                    KeBugCheckEx(ATTEMPTED_WRITE_TO_READONLY_MEMORY,
++                                 (ULONG_PTR)Address,
++                                 TempPte.u.Long,
++                                 (ULONG_PTR)TrapInformation,
++                                 14);
++                }
+             }
+         }
+ 
+@@ -889,21 +896,15 @@ MmArmAccessFault(IN BOOLEAN StoreInstruction,
+         /* Right now, we expect a valid protection mask on the VAD */
+         ASSERT(ProtectionCode != MM_NOACCESS);
+ 
+-        /* Make the PDE demand-zero */
+-        MI_WRITE_INVALID_PDE(PointerPde, DemandZeroPde);
+-
+         /* And go dispatch the fault on the PDE. This should handle the demand-zero */
+ #if MI_TRACE_PFNS
+         UserPdeFault = TRUE;
+ #endif
+-        Status = MiDispatchFault(TRUE,
+-                                 PointerPte,
+-                                 (PMMPTE)PointerPde,
+-                                 NULL,
+-                                 FALSE,
+-                                 PsGetCurrentProcess(),
+-                                 TrapInformation,
+-                                 NULL);
++        /* Resolve a demand zero fault */
++        Status = MiResolveDemandZeroFault(PointerPte,
++                                          MM_READWRITE,
++                                          CurrentProcess,
++                                          MM_NOIRQL);
+ #if MI_TRACE_PFNS
+         UserPdeFault = FALSE;
+ #endif
+@@ -930,15 +931,14 @@ MmArmAccessFault(IN BOOLEAN StoreInstruction,
+         return STATUS_PAGE_FAULT_DEMAND_ZERO;
+     }
+ 
+-    /* Get protection and check if it's a prototype PTE */
+-    ProtectionCode = (ULONG)TempPte.u.Soft.Protection;
++    /* Make sure it's not a prototype PTE */
+     ASSERT(TempPte.u.Soft.Prototype == 0);
+ 
+     /* Check for non-demand zero PTE */
+     if (TempPte.u.Long != 0)
+     {
+         /* This is a page fault, check for valid protection */
+-        ASSERT(ProtectionCode != 0x100);
++        ASSERT(TempPte.u.Soft.Protection != 0x100);
+ 
+         /* FIXME: Run MiAccessCheck */
+```
+------------------------
+
+==== Example 3 (Similarity: 1796.5) ====
+Original Function:
+Status MergeHelper::MergeUntil(InternalIterator* iter,
+                               RangeDelAggregator* range_del_agg,
+                               const SequenceNumber stop_before,
+                               const bool at_bottom) {
+  // Get a copy of the internal key, before it's invalidated by iter->Next()
+  // Also maintain the list of merge operands seen.
+  assert(HasOperator());
+  keys_.clear();
+  merge_context_.Clear();
+  has_compaction_filter_skip_until_ = false;
+  assert(user_merge_operator_);
+  bool first_key = true;
+
+  // We need to parse the internal key again as the parsed key is
+  // backed by the internal key!
+  // Assume no internal key corruption as it has been successfully parsed
+  // by the caller.
+  // original_key_is_iter variable is just caching the information:
+  // original_key_is_iter == (iter->key().ToString() == original_key)
+  bool original_key_is_iter = true;
+  std::string original_key = iter->key().ToString();
+  // Important:
+  // orig_ikey is backed by original_key if keys_.empty()
+  // orig_ikey is backed by keys_.back() if !keys_.empty()
+  ParsedInternalKey orig_ikey;
+  ParseInternalKey(original_key, &orig_ikey);
+
+  Status s;
+  bool hit_the_next_user_key = false;
+  for (; iter->Valid(); iter->Next(), original_key_is_iter = false) {
+    if (IsShuttingDown()) {
+      return Status::ShutdownInProgress();
+    }
+
+    ParsedInternalKey ikey;
+    assert(keys_.size() == merge_context_.GetNumOperands());
+
+    if (!ParseInternalKey(iter->key(), &ikey)) {
+      // stop at corrupted key
+      if (assert_valid_internal_key_) {
+        assert(!"Corrupted internal key not expected.");
+        return Status::Corruption("Corrupted internal key not expected.");
+      }
+      break;
+    } else if (first_key) {
+      assert(user_comparator_->Equal(ikey.user_key, orig_ikey.user_key));
+      first_key = false;
+    } else if (!user_comparator_->Equal(ikey.user_key, orig_ikey.user_key)) {
+      // hit a different user key, stop right here
+      hit_the_next_user_key = true;
+      break;
+    } else if (stop_before && ikey.sequence <= stop_before) {
+      // hit an entry that's visible by the previous snapshot, can't touch that
+      break;
+    }
+
+    // At this point we are guaranteed that we need to process this key.
+
+    assert(IsValueType(ikey.type));
+    if (ikey.type != kTypeMerge) {
+
+      // hit a put/delete/single delete
+      //   => merge the put value or a nullptr with operands_
+      //   => store result in operands_.back() (and update keys_.back())
+      //   => change the entry type to kTypeValue for keys_.back()
+      // We are done! Success!
+
+      // If there are no operands, just return the Status::OK(). That will cause
+      // the compaction iterator to write out the key we're currently at, which
+      // is the put/delete we just encountered.
+      if (keys_.empty()) {
+        return Status::OK();
+      }
+
+      // TODO(noetzli) If the merge operator returns false, we are currently
+      // (almost) silently dropping the put/delete. That's probably not what we
+      // want. Also if we're in compaction and it's a put, it would be nice to
+      // run compaction filter on it.
+      const Slice val = iter->value();
+      const Slice* val_ptr = (kTypeValue == ikey.type) ? &val : nullptr;
+      std::string merge_result;
+      s = TimedFullMerge(user_merge_operator_, ikey.user_key, val_ptr,
+                         merge_context_.GetOperands(), &merge_result, logger_,
+                         stats_, env_);
+
+      // We store the result in keys_.back() and operands_.back()
+      // if nothing went wrong (i.e.: no operand corruption on disk)
+      if (s.ok()) {
+        // The original key encountered
+        original_key = std::move(keys_.back());
+        orig_ikey.type = kTypeValue;
+        UpdateInternalKey(&original_key, orig_ikey.sequence, orig_ikey.type);
+        keys_.clear();
+        merge_context_.Clear();
+        keys_.emplace_front(std::move(original_key));
+        merge_context_.PushOperand(merge_result);
+      }
+
+      // move iter to the next entry
+      iter->Next();
+      return s;
+    } else {
+      // hit a merge
+      //   => if there is a compaction filter, apply it.
+      //   => check for range tombstones covering the operand
+      //   => merge the operand into the front of the operands_ list
+      //      if not filtered
+      //   => then continue because we haven't yet seen a Put/Delete.
+      //
+      // Keep queuing keys and operands until we either meet a put / delete
+      // request or later did a partial merge.
+
+      Slice value_slice = iter->value();
+      // add an operand to the list if:
+      // 1) it's included in one of the snapshots. in that case we *must* write
+      // it out, no matter what compaction filter says
+      // 2) it's not filtered by a compaction filter
+      CompactionFilter::Decision filter =
+          ikey.sequence <= latest_snapshot_
+              ? CompactionFilter::Decision::kKeep
+              : FilterMerge(orig_ikey.user_key, value_slice);
+      if (range_del_agg != nullptr &&
+
+          range_del_agg->ShouldDelete(
+              iter->key(),
+              RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&
+          filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {
+        filter = CompactionFilter::Decision::kRemove;
+      }
+      if (filter == CompactionFilter::Decision::kKeep ||
+          filter == CompactionFilter::Decision::kChangeValue) {
+        if (original_key_is_iter) {
+          // this is just an optimization that saves us one memcpy
+          keys_.push_front(std::move(original_key));
+        } else {
+          keys_.push_front(iter->key().ToString());
+        }
+        if (keys_.size() == 1) {
+          // we need to re-anchor the orig_ikey because it was anchored by
+          // original_key before
+          ParseInternalKey(keys_.back(), &orig_ikey);
+        }
+        if (filter == CompactionFilter::Decision::kKeep) {
+          merge_context_.PushOperand(
+              value_slice, iter->IsValuePinned() /* operand_pinned */);
+        } else {  // kChangeValue
+          // Compaction filter asked us to change the operand from value_slice
+          // to compaction_filter_value_.
+          merge_context_.PushOperand(compaction_filter_value_, false);
+        }
+      } else if (filter == CompactionFilter::Decision::kRemoveAndSkipUntil) {
+        // Compaction filter asked us to remove this key altogether
+        // (not just this operand), along with some keys following it.
+        keys_.clear();
+        merge_context_.Clear();
+        has_compaction_filter_skip_until_ = true;
+        return Status::OK();
+      }
+    }
+  }
+
+  if (merge_context_.GetNumOperands() == 0) {
+    // we filtered out all the merge operands
+    return Status::OK();
+  }
+
+  // We are sure we have seen this key's entire history if we are at the
+  // last level and exhausted all internal keys of this user key.
+  // NOTE: !iter->Valid() does not necessarily mean we hit the
+  // beginning of a user key, as versions of a user key might be
+  // split into multiple files (even files on the same level)
+  // and some files might not be included in the compaction/merge.
+  //
+  // There are also cases where we have seen the root of history of this
+  // key without being sure of it. Then, we simply miss the opportunity
+  // to combine the keys. Since VersionSet::SetupOtherInputs() always makes
+  // sure that all merge-operands on the same level get compacted together,
+  // this will simply lead to these merge operands moving to the next level.
+  //
+  // So, we only perform the following logic (to merge all operands together
+  // without a Put/Delete) if we are certain that we have seen the end of key.
+  bool surely_seen_the_beginning = hit_the_next_user_key && at_bottom;
+  if (surely_seen_the_beginning) {
+    // do a final merge with nullptr as the existing value and say
+    // bye to the merge type (it's now converted to a Put)
+    assert(kTypeMerge == orig_ikey.type);
+    assert(merge_context_.GetNumOperands() >= 1);
+    assert(merge_context_.GetNumOperands() == keys_.size());
+    std::string merge_result;
+    s = TimedFullMerge(user_merge_operator_, orig_ikey.user_key, nullptr,
+                       merge_context_.GetOperands(), &merge_result, logger_,
+                       stats_, env_);
+    if (s.ok()) {
+      // The original key encountered
+      // We are certain that keys_ is not empty here (see assertions couple of
+      // lines before).
+      original_key = std::move(keys_.back());
+      orig_ikey.type = kTypeValue;
+      UpdateInternalKey(&original_key, orig_ikey.sequence, orig_ikey.type);
+      keys_.clear();
+      merge_context_.Clear();
+      keys_.emplace_front(std::move(original_key));
+      merge_context_.PushOperand(merge_result);
+    }
+  } else {
+    // We haven't seen the beginning of the key nor a Put/Delete.
+    // Attempt to use the user's associative merge function to
+    // merge the stacked merge operands into a single operand.
+    s = Status::MergeInProgress();
+    if (merge_context_.GetNumOperands() >= 2) {
+      bool merge_success = false;
+      std::string merge_result;
+      {
+        StopWatchNano timer(env_, stats_ != nullptr);
+        PERF_TIMER_GUARD(merge_operator_time_nanos);
+        merge_success = user_merge_operator_->PartialMergeMulti(
+            orig_ikey.user_key,
+            std::deque<Slice>(merge_context_.GetOperands().begin(),
+                              merge_context_.GetOperands().end()),
+            &merge_result, logger_);
+        RecordTick(stats_, MERGE_OPERATION_TOTAL_TIME,
+                   stats_ ? timer.ElapsedNanosSafe() : 0);
+      }
+      if (merge_success) {
+        // Merging of operands (associative merge) was successful.
+        // Replace operands with the merge result
+        merge_context_.Clear();
+        merge_context_.PushOperand(merge_result);
+        keys_.erase(keys_.begin(), keys_.end() - 1);
+      }
+    }
+  }
+
+  return s;
+}
+
+Optimization Changes:
+```diff
+diff --git a/db/merge_helper.cc b/db/merge_helper.cc
+index 142486e5e..625de27c2 100644
+--- a/db/merge_helper.cc
++++ b/db/merge_helper.cc
+@@ -201,12 +201,11 @@ Status MergeHelper::MergeUntil(InternalIterator* iter,
+           ikey.sequence <= latest_snapshot_
+               ? CompactionFilter::Decision::kKeep
+               : FilterMerge(orig_ikey.user_key, value_slice);
+-      if (range_del_agg != nullptr &&
+-
++      if (filter != CompactionFilter::Decision::kRemoveAndSkipUntil &&
++          range_del_agg != nullptr &&
+           range_del_agg->ShouldDelete(
+               iter->key(),
+-              RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&
+-          filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {
++              RangeDelAggregator::RangePositioningMode::kForwardTraversal)) {
+         filter = CompactionFilter::Decision::kRemove;
+       }
+       if (filter == CompactionFilter::Decision::kKeep ||
+```
+------------------------
+
+==== Example 4 (Similarity: 1837.3) ====
+Original Function:
+Status VersionSet::Recover(
+    const std::vector<ColumnFamilyDescriptor>& column_families,
+    bool read_only) {
+  std::unordered_map<std::string, ColumnFamilyOptions> cf_name_to_options;
+  for (auto cf : column_families) {
+    cf_name_to_options.insert({cf.name, cf.options});
+  }
+  // keeps track of column families in manifest that were not found in
+  // column families parameters. if those column families are not dropped
+  // by subsequent manifest records, Recover() will return failure status
+  std::unordered_map<int, std::string> column_families_not_found;
+
+  // Read "CURRENT" file, which contains a pointer to the current manifest file
+  std::string manifest_filename;
+  Status s = ReadFileToString(
+      env_, CurrentFileName(dbname_), &manifest_filename
+  );
+  if (!s.ok()) {
+    return s;
+  }
+  if (manifest_filename.empty() ||
+      manifest_filename.back() != '\n') {
+    return Status::Corruption("CURRENT file does not end with newline");
+  }
+  // remove the trailing '\n'
+  manifest_filename.resize(manifest_filename.size() - 1);
+  FileType type;
+  bool parse_ok =
+      ParseFileName(manifest_filename, &manifest_file_number_, &type);
+  if (!parse_ok || type != kDescriptorFile) {
+    return Status::Corruption("CURRENT file corrupted");
+  }
+
+  Log(db_options_->info_log, "Recovering from manifest file: %s\n",
+      manifest_filename.c_str());
+
+  manifest_filename = dbname_ + "/" + manifest_filename;
+  unique_ptr<SequentialFile> manifest_file;
+  s = env_->NewSequentialFile(manifest_filename, &manifest_file,
+                              env_options_);
+  if (!s.ok()) {
+    return s;
+  }
+  uint64_t manifest_file_size;
+  s = env_->GetFileSize(manifest_filename, &manifest_file_size);
+  if (!s.ok()) {
+    return s;
+  }
+
+  bool have_log_number = false;
+  bool have_prev_log_number = false;
+  bool have_next_file = false;
+  bool have_last_sequence = false;
+  uint64_t next_file = 0;
+  uint64_t last_sequence = 0;
+  uint64_t log_number = 0;
+  uint64_t prev_log_number = 0;
+  uint32_t max_column_family = 0;
+  std::unordered_map<uint32_t, Builder*> builders;
+
+  // add default column family
+  auto default_cf_iter = cf_name_to_options.find(kDefaultColumnFamilyName);
+  if (default_cf_iter == cf_name_to_options.end()) {
+    return Status::InvalidArgument("Default column family not specified");
+  }
+  VersionEdit default_cf_edit;
+  default_cf_edit.AddColumnFamily(kDefaultColumnFamilyName);
+  default_cf_edit.SetColumnFamily(0);
+  ColumnFamilyData* default_cfd =
+      CreateColumnFamily(default_cf_iter->second, &default_cf_edit);
+  builders.insert({0, new Builder(default_cfd)});
+
+  {
+    VersionSet::LogReporter reporter;
+    reporter.status = &s;
+    log::Reader reader(std::move(manifest_file), &reporter, true /*checksum*/,
+                       0 /*initial_offset*/);
+    Slice record;
+    std::string scratch;
+    while (reader.ReadRecord(&record, &scratch) && s.ok()) {
+      VersionEdit edit;
+      s = edit.DecodeFrom(record);
+      if (!s.ok()) {
+        break;
+      }
+
+      // Not found means that user didn't supply that column
+      // family option AND we encountered column family add
+      // record. Once we encounter column family drop record,
+      // we will delete the column family from
+      // column_families_not_found.
+      bool cf_in_not_found =
+          column_families_not_found.find(edit.column_family_) !=
+          column_families_not_found.end();
+      // in builders means that user supplied that column family
+      // option AND that we encountered column family add record
+      bool cf_in_builders =
+          builders.find(edit.column_family_) != builders.end();
+
+      // they can't both be true
+      assert(!(cf_in_not_found && cf_in_builders));
+
+      ColumnFamilyData* cfd = nullptr;
+
+      if (edit.is_column_family_add_) {
+        if (cf_in_builders || cf_in_not_found) {
+          s = Status::Corruption(
+              "Manifest adding the same column family twice");
+          break;
+        }
+        auto cf_options = cf_name_to_options.find(edit.column_family_name_);
+        if (cf_options == cf_name_to_options.end()) {
+          column_families_not_found.insert(
+              {edit.column_family_, edit.column_family_name_});
+        } else {
+          cfd = CreateColumnFamily(cf_options->second, &edit);
+          builders.insert({edit.column_family_, new Builder(cfd)});
+        }
+      } else if (edit.is_column_family_drop_) {
+        if (cf_in_builders) {
+          auto builder = builders.find(edit.column_family_);
+          assert(builder != builders.end());
+          delete builder->second;
+          builders.erase(builder);
+          cfd = column_family_set_->GetColumnFamily(edit.column_family_);
+          if (cfd->Unref()) {
+            delete cfd;
+            cfd = nullptr;
+          } else {
+            // who else can have reference to cfd!?
+            assert(false);
+          }
+        } else if (cf_in_not_found) {
+          column_families_not_found.erase(edit.column_family_);
+        } else {
+          s = Status::Corruption(
+              "Manifest - dropping non-existing column family");
+          break;
+        }
+      } else if (!cf_in_not_found) {
+        if (!cf_in_builders) {
+          s = Status::Corruption(
+              "Manifest record referencing unknown column family");
+          break;
+        }
+
+        cfd = column_family_set_->GetColumnFamily(edit.column_family_);
+        // this should never happen since cf_in_builders is true
+        assert(cfd != nullptr);
+        if (edit.max_level_ >= cfd->current()->NumberLevels()) {
+          s = Status::InvalidArgument(
+              "db has more levels than options.num_levels");
+          break;
+        }
+
+        // if it is not column family add or column family drop,
+        // then it's a file add/delete, which should be forwarded
+        // to builder
+        auto builder = builders.find(edit.column_family_);
+        assert(builder != builders.end());
+        builder->second->Apply(&edit);
+      }
+
+      if (cfd != nullptr) {
+        if (edit.has_log_number_) {
+          if (cfd->GetLogNumber() > edit.log_number_) {
+            Log(db_options_->info_log,
+                "MANIFEST corruption detected, but ignored - Log numbers in "
+                "records NOT monotonically increasing");
+          } else {
+            cfd->SetLogNumber(edit.log_number_);
+            have_log_number = true;
+          }
+        }
+        if (edit.has_comparator_ &&
+            edit.comparator_ != cfd->user_comparator()->Name()) {
+          s = Status::InvalidArgument(
+              cfd->user_comparator()->Name(),
+              "does not match existing comparator " + edit.comparator_);
+          break;
+        }
+      }
+
+      if (edit.has_prev_log_number_) {
+        prev_log_number = edit.prev_log_number_;
+        have_prev_log_number = true;
+      }
+
+      if (edit.has_next_file_number_) {
+        next_file = edit.next_file_number_;
+        have_next_file = true;
+      }
+
+      if (edit.has_max_column_family_) {
+        max_column_family = edit.max_column_family_;
+      }
+
+      if (edit.has_last_sequence_) {
+        last_sequence = edit.last_sequence_;
+        have_last_sequence = true;
+      }
+    }
+  }
+
+  if (s.ok()) {
+    if (!have_next_file) {
+      s = Status::Corruption("no meta-nextfile entry in descriptor");
+    } else if (!have_log_number) {
+      s = Status::Corruption("no meta-lognumber entry in descriptor");
+    } else if (!have_last_sequence) {
+      s = Status::Corruption("no last-sequence-number entry in descriptor");
+    }
+
+    if (!have_prev_log_number) {
+      prev_log_number = 0;
+    }
+
+    column_family_set_->UpdateMaxColumnFamily(max_column_family);
+
+    MarkFileNumberUsed(prev_log_number);
+    MarkFileNumberUsed(log_number);
+  }
+
+  // there were some column families in the MANIFEST that weren't specified
+  // in the argument. This is OK in read_only mode
+  if (read_only == false && column_families_not_found.size() > 0) {
+    std::string list_of_not_found;
+    for (const auto& cf : column_families_not_found) {
+      list_of_not_found += ", " + cf.second;
+    }
+    list_of_not_found = list_of_not_found.substr(2);
+    s = Status::InvalidArgument(
+        "You have to open all column families. Column families not opened: " +
+        list_of_not_found);
+  }
+
+  if (s.ok()) {
+    for (auto cfd : *column_family_set_) {
+      auto builders_iter = builders.find(cfd->GetID());
+      assert(builders_iter != builders.end());
+      auto builder = builders_iter->second;
+
+      if (db_options_->max_open_files == -1) {
+      // unlimited table cache. Pre-load table handle now.
+      // Need to do it out of the mutex.
+        builder->LoadTableHandlers();
+      }
+
+      Version* v = new Version(cfd, this, current_version_number_++);
+      builder->SaveTo(v);
+
+      // Install recovered version
+      std::vector<uint64_t> size_being_compacted(v->NumberLevels() - 1);
+      cfd->compaction_picker()->SizeBeingCompacted(size_being_compacted);
+      v->PrepareApply(size_being_compacted);
+      AppendVersion(cfd, v);
+    }
+
+    manifest_file_size_ = manifest_file_size;
+    next_file_number_ = next_file + 1;
+    last_sequence_ = last_sequence;
+    prev_log_number_ = prev_log_number;
+
+    Log(db_options_->info_log,
+        "Recovered from manifest file:%s succeeded,"
+        "manifest_file_number is %lu, next_file_number is %lu, "
+        "last_sequence is %lu, log_number is %lu,"
+        "prev_log_number is %lu,"
+        "max_column_family is %u\n",
+        manifest_filename.c_str(), (unsigned long)manifest_file_number_,
+        (unsigned long)next_file_number_, (unsigned long)last_sequence_,
+        (unsigned long)log_number, (unsigned long)prev_log_number_,
+        column_family_set_->GetMaxColumnFamily());
+
+    for (auto cfd : *column_family_set_) {
+      Log(db_options_->info_log,
+          "Column family [%s] (ID %u), log number is %" PRIu64 "\n",
+          cfd->GetName().c_str(), cfd->GetID(), cfd->GetLogNumber());
+    }
+  }
+
+  for (auto builder : builders) {
+    delete builder.second;
+  }
+
+  return s;
+}
+
+Optimization Changes:
+```diff
+diff --git a/db/version_set.cc b/db/version_set.cc
+index 10649fa6c..1d1d53813 100644
+--- a/db/version_set.cc
++++ b/db/version_set.cc
+@@ -2169,7 +2169,7 @@ Status VersionSet::Recover(
+ 
+   // there were some column families in the MANIFEST that weren't specified
+   // in the argument. This is OK in read_only mode
+-  if (read_only == false && column_families_not_found.size() > 0) {
++  if (read_only == false && !column_families_not_found.empty()) {
+     std::string list_of_not_found;
+     for (const auto& cf : column_families_not_found) {
+       list_of_not_found += ", " + cf.second;
+```
+------------------------
+
+Target Function to Optimize:
+```cpp
+Status DBImpl::WriteImpl(const WriteOptions& write_options,
+                         WriteBatch* my_batch, WriteCallback* callback,
+                         UserWriteCallback* user_write_cb, uint64_t* log_used,
+                         uint64_t log_ref, bool disable_memtable,
+                         uint64_t* seq_used, size_t batch_cnt,
+                         PreReleaseCallback* pre_release_callback,
+                         PostMemTableCallback* post_memtable_callback) {
+  assert(!seq_per_batch_ || batch_cnt != 0);
+  assert(my_batch == nullptr || my_batch->Count() == 0 ||
+         write_options.protection_bytes_per_key == 0 ||
+         write_options.protection_bytes_per_key ==
+             my_batch->GetProtectionBytesPerKey());
+  if (my_batch == nullptr) {
+    return Status::InvalidArgument("Batch is nullptr!");
+  } else if (!disable_memtable &&
+             WriteBatchInternal::TimestampsUpdateNeeded(*my_batch)) {
+    // If writing to memtable, then we require the caller to set/update the
+    // timestamps for the keys in the write batch.
+    // Otherwise, it means we are just writing to the WAL, and we allow
+    // timestamps unset for the keys in the write batch. This can happen if we
+    // use TransactionDB with write-committed policy, and we currently do not
+    // support user-defined timestamp with other policies.
+    // In the prepare phase, a transaction can write the batch to the WAL
+    // without inserting to memtable. The keys in the batch do not have to be
+    // assigned timestamps because they will be used only during recovery if
+    // there is a commit marker which includes their commit timestamp.
+    return Status::InvalidArgument("write batch must have timestamp(s) set");
+  } else if (write_options.rate_limiter_priority != Env::IO_TOTAL &&
+             write_options.rate_limiter_priority != Env::IO_USER) {
+    return Status::InvalidArgument(
+        "WriteOptions::rate_limiter_priority only allows "
+        "Env::IO_TOTAL and Env::IO_USER due to implementation constraints");
+  } else if (write_options.rate_limiter_priority != Env::IO_TOTAL &&
+             (write_options.disableWAL || manual_wal_flush_)) {
+    return Status::InvalidArgument(
+        "WriteOptions::rate_limiter_priority currently only supports "
+        "rate-limiting automatic WAL flush, which requires "
+        "`WriteOptions::disableWAL` and "
+        "`DBOptions::manual_wal_flush` both set to false");
+  } else if (write_options.protection_bytes_per_key != 0 &&
+             write_options.protection_bytes_per_key != 8) {
+    return Status::InvalidArgument(
+        "`WriteOptions::protection_bytes_per_key` must be zero or eight");
+  } else if (write_options.disableWAL &&
+             immutable_db_options_.recycle_log_file_num > 0 &&
+             !(two_write_queues_ && disable_memtable)) {
+    // Corruption detection in recycled WALs relies on sequential sequence
+    // numbers, but WritePreparedTxnDB uses disableWAL internally for split
+    // writes
+    return Status::InvalidArgument(
+        "WriteOptions::disableWAL option is not supported if "
+        "DBOptions::recycle_log_file_num > 0");
+  }
+  // TODO: this use of operator bool on `tracer_` can avoid unnecessary lock
+  // grabs but does not seem thread-safe.
+  if (tracer_) {
+    InstrumentedMutexLock lock(&trace_mutex_);
+    if (tracer_ && !tracer_->IsWriteOrderPreserved()) {
+      // We don't have to preserve write order so can trace anywhere. It's more
+      // efficient to trace here than to add latency to a phase of the log/apply
+      // pipeline.
+      // TODO: maybe handle the tracing status?
+      tracer_->Write(my_batch).PermitUncheckedError();
+    }
+  }
+  if (write_options.sync && write_options.disableWAL) {
+    return Status::InvalidArgument("Sync writes has to enable WAL.");
+  }
+  if (two_write_queues_ && immutable_db_options_.enable_pipelined_write) {
+    return Status::NotSupported(
+        "pipelined_writes is not compatible with concurrent prepares");
+  }
+  if (seq_per_batch_ && immutable_db_options_.enable_pipelined_write) {
+    // TODO(yiwu): update pipeline write with seq_per_batch and batch_cnt
+    return Status::NotSupported(
+        "pipelined_writes is not compatible with seq_per_batch");
+  }
+  if (immutable_db_options_.unordered_write &&
+      immutable_db_options_.enable_pipelined_write) {
+    return Status::NotSupported(
+        "pipelined_writes is not compatible with unordered_write");
+  }
+  if (immutable_db_options_.enable_pipelined_write &&
+      post_memtable_callback != nullptr) {
+    return Status::NotSupported(
+        "pipelined write currently does not honor post_memtable_callback");
+  }
+  if (seq_per_batch_ && post_memtable_callback != nullptr) {
+    return Status::NotSupported(
+        "seq_per_batch currently does not honor post_memtable_callback");
+  }
+  if (my_batch->HasDeleteRange() && immutable_db_options_.row_cache) {
+    return Status::NotSupported(
+        "DeleteRange is not compatible with row cache.");
+  }
+  // Otherwise IsLatestPersistentState optimization does not make sense
+  assert(!WriteBatchInternal::IsLatestPersistentState(my_batch) ||
+         disable_memtable);
+
+  if (write_options.low_pri) {
+    Status s = ThrottleLowPriWritesIfNeeded(write_options, my_batch);
+    if (!s.ok()) {
+      return s;
+    }
+  }
+
+  if (two_write_queues_ && disable_memtable) {
+    AssignOrder assign_order =
+        seq_per_batch_ ? kDoAssignOrder : kDontAssignOrder;
+    // Otherwise it is WAL-only Prepare batches in WriteCommitted policy and
+    // they don't consume sequence.
+    return WriteImplWALOnly(
+        &nonmem_write_thread_, write_options, my_batch, callback, user_write_cb,
+        log_used, log_ref, seq_used, batch_cnt, pre_release_callback,
+        assign_order, kDontPublishLastSeq, disable_memtable);
+  }
+
+  if (immutable_db_options_.unordered_write) {
+    const size_t sub_batch_cnt = batch_cnt != 0
+                                     ? batch_cnt
+                                     // every key is a sub-batch consuming a seq
+                                     : WriteBatchInternal::Count(my_batch);
+    uint64_t seq = 0;
+    // Use a write thread to i) optimize for WAL write, ii) publish last
+    // sequence in in increasing order, iii) call pre_release_callback serially
+    Status status = WriteImplWALOnly(
+        &write_thread_, write_options, my_batch, callback, user_write_cb,
+        log_used, log_ref, &seq, sub_batch_cnt, pre_release_callback,
+        kDoAssignOrder, kDoPublishLastSeq, disable_memtable);
+    TEST_SYNC_POINT("DBImpl::WriteImpl:UnorderedWriteAfterWriteWAL");
+    if (!status.ok()) {
+      return status;
+    }
+    if (seq_used) {
+      *seq_used = seq;
+    }
+    if (!disable_memtable) {
+      TEST_SYNC_POINT("DBImpl::WriteImpl:BeforeUnorderedWriteMemtable");
+      status = UnorderedWriteMemtable(write_options, my_batch, callback,
+                                      log_ref, seq, sub_batch_cnt);
+    }
+    return status;
+  }
+
+  if (immutable_db_options_.enable_pipelined_write) {
+    return PipelinedWriteImpl(write_options, my_batch, callback, user_write_cb,
+                              log_used, log_ref, disable_memtable, seq_used);
+  }
+
+  PERF_TIMER_GUARD(write_pre_and_post_process_time);
+  WriteThread::Writer w(write_options, my_batch, callback, user_write_cb,
+                        log_ref, disable_memtable, batch_cnt,
+                        pre_release_callback, post_memtable_callback);
+  StopWatch write_sw(immutable_db_options_.clock, stats_, DB_WRITE);
+
+  write_thread_.JoinBatchGroup(&w);
+  if (w.state == WriteThread::STATE_PARALLEL_MEMTABLE_CALLER) {
+    write_thread_.SetMemWritersEachStride(&w);
+  }
+  if (w.state == WriteThread::STATE_PARALLEL_MEMTABLE_WRITER) {
+    // we are a non-leader in a parallel group
+
+    if (w.ShouldWriteToMemtable()) {
+      PERF_TIMER_STOP(write_pre_and_post_process_time);
+      PERF_TIMER_FOR_WAIT_GUARD(write_memtable_time);
+
+      ColumnFamilyMemTablesImpl column_family_memtables(
+          versions_->GetColumnFamilySet());
+      w.status = WriteBatchInternal::InsertInto(
+          &w, w.sequence, &column_family_memtables, &flush_scheduler_,
+          &trim_history_scheduler_,
+          write_options.ignore_missing_column_families, 0 /*log_number*/, this,
+          true /*concurrent_memtable_writes*/, seq_per_batch_, w.batch_cnt,
+          batch_per_txn_, write_options.memtable_insert_hint_per_batch);
+
+      PERF_TIMER_START(write_pre_and_post_process_time);
+    }
+
+    if (write_thread_.CompleteParallelMemTableWriter(&w)) {
+      // we're responsible for exit batch group
+      // TODO(myabandeh): propagate status to write_group
+      auto last_sequence = w.write_group->last_sequence;
+      for (auto* tmp_w : *(w.write_group)) {
+        assert(tmp_w);
+        if (tmp_w->post_memtable_callback) {
+          Status tmp_s =
+              (*tmp_w->post_memtable_callback)(last_sequence, disable_memtable);
+          // TODO: propagate the execution status of post_memtable_callback to
+          // caller.
+          assert(tmp_s.ok());
+        }
+      }
+      versions_->SetLastSequence(last_sequence);
+      MemTableInsertStatusCheck(w.status);
+      write_thread_.ExitAsBatchGroupFollower(&w);
+    }
+    assert(w.state == WriteThread::STATE_COMPLETED);
+    // STATE_COMPLETED conditional below handles exit
+  }
+  if (w.state == WriteThread::STATE_COMPLETED) {
+    if (log_used != nullptr) {
+      *log_used = w.log_used;
+    }
+    if (seq_used != nullptr) {
+      *seq_used = w.sequence;
+    }
+    // write is complete and leader has updated sequence
+    return w.FinalStatus();
+  }
+  // else we are the leader of the write batch group
+  assert(w.state == WriteThread::STATE_GROUP_LEADER);
+  Status status;
+  // Once reaches this point, the current writer "w" will try to do its write
+  // job.  It may also pick up some of the remaining writers in the "writers_"
+  // when it finds suitable, and finish them in the same write batch.
+  // This is how a write job could be done by the other writer.
+  WriteContext write_context;
+  LogContext log_context(write_options.sync);
+  WriteThread::WriteGroup write_group;
+  bool in_parallel_group = false;
+  uint64_t last_sequence = kMaxSequenceNumber;
+
+  assert(!two_write_queues_ || !disable_memtable);
+  {
+    // With concurrent writes we do preprocess only in the write thread that
+    // also does write to memtable to avoid sync issue on shared data structure
+    // with the other thread
+
+    // PreprocessWrite does its own perf timing.
+    PERF_TIMER_STOP(write_pre_and_post_process_time);
+
+    status = PreprocessWrite(write_options, &log_context, &write_context);
+    if (!two_write_queues_) {
+      // Assign it after ::PreprocessWrite since the sequence might advance
+      // inside it by WriteRecoverableState
+      last_sequence = versions_->LastSequence();
+    }
+
+    PERF_TIMER_START(write_pre_and_post_process_time);
+  }
+
+  // Add to log and apply to memtable.  We can release the lock
+  // during this phase since &w is currently responsible for logging
+  // and protects against concurrent loggers and concurrent writes
+  // into memtables
+
+  TEST_SYNC_POINT("DBImpl::WriteImpl:BeforeLeaderEnters");
+  last_batch_group_size_ =
+      write_thread_.EnterAsBatchGroupLeader(&w, &write_group);
+
+  IOStatus io_s;
+  Status pre_release_cb_status;
+  if (status.ok()) {
+    // Rules for when we can update the memtable concurrently
+    // 1. supported by memtable
+    // 2. Puts are not okay if inplace_update_support
+    // 3. Merges are not okay
+    //
+    // Rules 1..2 are enforced by checking the options
+    // during startup (CheckConcurrentWritesSupported), so if
+    // options.allow_concurrent_memtable_write is true then they can be
+    // assumed to be true.  Rule 3 is checked for each batch.  We could
+    // relax rules 2 if we could prevent write batches from referring
+    // more than once to a particular key.
+    bool parallel = immutable_db_options_.allow_concurrent_memtable_write &&
+                    write_group.size > 1;
+    size_t total_count = 0;
+    size_t valid_batches = 0;
+    size_t total_byte_size = 0;
+    size_t pre_release_callback_cnt = 0;
+    for (auto* writer : write_group) {
+      assert(writer);
+      if (writer->CheckCallback(this)) {
+        valid_batches += writer->batch_cnt;
+        if (writer->ShouldWriteToMemtable()) {
+          total_count += WriteBatchInternal::Count(writer->batch);
+          total_byte_size = WriteBatchInternal::AppendedByteSize(
+              total_byte_size, WriteBatchInternal::ByteSize(writer->batch));
+          parallel = parallel && !writer->batch->HasMerge();
+        }
+        if (writer->pre_release_callback) {
+          pre_release_callback_cnt++;
+        }
+      }
+    }
+    // TODO: this use of operator bool on `tracer_` can avoid unnecessary lock
+    // grabs but does not seem thread-safe.
+    if (tracer_) {
+      InstrumentedMutexLock lock(&trace_mutex_);
+      if (tracer_ && tracer_->IsWriteOrderPreserved()) {
+        for (auto* writer : write_group) {
+          if (writer->CallbackFailed()) {
+            continue;
+          }
+          // TODO: maybe handle the tracing status?
+          tracer_->Write(writer->batch).PermitUncheckedError();
+        }
+      }
+    }
+    // Note about seq_per_batch_: either disableWAL is set for the entire write
+    // group or not. In either case we inc seq for each write batch with no
+    // failed callback. This means that there could be a batch with
+    // disalbe_memtable in between; although we do not write this batch to
+    // memtable it still consumes a seq. Otherwise, if !seq_per_batch_, we inc
+    // the seq per valid written key to mem.
+    size_t seq_inc = seq_per_batch_ ? valid_batches : total_count;
+
+    const bool concurrent_update = two_write_queues_;
+    // Update stats while we are an exclusive group leader, so we know
+    // that nobody else can be writing to these particular stats.
+    // We're optimistic, updating the stats before we successfully
+    // commit.  That lets us release our leader status early.
+    auto stats = default_cf_internal_stats_;
+    stats->AddDBStats(InternalStats::kIntStatsNumKeysWritten, total_count,
+                      concurrent_update);
+    RecordTick(stats_, NUMBER_KEYS_WRITTEN, total_count);
+    stats->AddDBStats(InternalStats::kIntStatsBytesWritten, total_byte_size,
+                      concurrent_update);
+    RecordTick(stats_, BYTES_WRITTEN, total_byte_size);
+    stats->AddDBStats(InternalStats::kIntStatsWriteDoneBySelf, 1,
+                      concurrent_update);
+    RecordTick(stats_, WRITE_DONE_BY_SELF);
+    auto write_done_by_other = write_group.size - 1;
+    if (write_done_by_other > 0) {
+      stats->AddDBStats(InternalStats::kIntStatsWriteDoneByOther,
+                        write_done_by_other, concurrent_update);
+      RecordTick(stats_, WRITE_DONE_BY_OTHER, write_done_by_other);
+    }
+    RecordInHistogram(stats_, BYTES_PER_WRITE, total_byte_size);
+
+    if (write_options.disableWAL) {
+      has_unpersisted_data_.store(true, std::memory_order_relaxed);
+    }
+
+    PERF_TIMER_STOP(write_pre_and_post_process_time);
+
+    if (!two_write_queues_) {
+      if (status.ok() && !write_options.disableWAL) {
+        assert(log_context.log_file_number_size);
+        LogFileNumberSize& log_file_number_size =
+            *(log_context.log_file_number_size);
+        PERF_TIMER_GUARD(write_wal_time);
+        io_s =
+            WriteToWAL(write_group, log_context.writer, log_used,
+                       log_context.need_log_sync, log_context.need_log_dir_sync,
+                       last_sequence + 1, log_file_number_size);
+      }
+    } else {
+      if (status.ok() && !write_options.disableWAL) {
+        PERF_TIMER_GUARD(write_wal_time);
+        // LastAllocatedSequence is increased inside WriteToWAL under
+        // wal_write_mutex_ to ensure ordered events in WAL
+        io_s = ConcurrentWriteToWAL(write_group, log_used, &last_sequence,
+                                    seq_inc);
+      } else {
+        // Otherwise we inc seq number for memtable writes
+        last_sequence = versions_->FetchAddLastAllocatedSequence(seq_inc);
+      }
+    }
+    status = io_s;
+    assert(last_sequence != kMaxSequenceNumber);
+    const SequenceNumber current_sequence = last_sequence + 1;
+    last_sequence += seq_inc;
+
+    // PreReleaseCallback is called after WAL write and before memtable write
+    if (status.ok()) {
+      SequenceNumber next_sequence = current_sequence;
+      size_t index = 0;
+      // Note: the logic for advancing seq here must be consistent with the
+      // logic in WriteBatchInternal::InsertInto(write_group...) as well as
+      // with WriteBatchInternal::InsertInto(write_batch...) that is called on
+      // the merged batch during recovery from the WAL.
+      for (auto* writer : write_group) {
+        if (writer->CallbackFailed()) {
+          continue;
+        }
+        writer->sequence = next_sequence;
+        if (writer->pre_release_callback) {
+          Status ws = writer->pre_release_callback->Callback(
+              writer->sequence, disable_memtable, writer->log_used, index++,
+              pre_release_callback_cnt);
+          if (!ws.ok()) {
+            status = pre_release_cb_status = ws;
+            break;
+          }
+        }
+        if (seq_per_batch_) {
+          assert(writer->batch_cnt);
+          next_sequence += writer->batch_cnt;
+        } else if (writer->ShouldWriteToMemtable()) {
+          next_sequence += WriteBatchInternal::Count(writer->batch);
+        }
+      }
+    }
+
+    if (status.ok()) {
+      PERF_TIMER_FOR_WAIT_GUARD(write_memtable_time);
+
+      if (!parallel) {
+        // w.sequence will be set inside InsertInto
+        w.status = WriteBatchInternal::InsertInto(
+            write_group, current_sequence, column_family_memtables_.get(),
+            &flush_scheduler_, &trim_history_scheduler_,
+            write_options.ignore_missing_column_families,
+            0 /*recovery_log_number*/, this, parallel, seq_per_batch_,
+            batch_per_txn_);
+      } else {
+        write_group.last_sequence = last_sequence;
+        write_thread_.LaunchParallelMemTableWriters(&write_group);
+        in_parallel_group = true;
+
+        // Each parallel follower is doing each own writes. The leader should
+        // also do its own.
+        if (w.ShouldWriteToMemtable()) {
+          ColumnFamilyMemTablesImpl column_family_memtables(
+              versions_->GetColumnFamilySet());
+          assert(w.sequence == current_sequence);
+          w.status = WriteBatchInternal::InsertInto(
+              &w, w.sequence, &column_family_memtables, &flush_scheduler_,
+              &trim_history_scheduler_,
+              write_options.ignore_missing_column_families, 0 /*log_number*/,
+              this, true /*concurrent_memtable_writes*/, seq_per_batch_,
+              w.batch_cnt, batch_per_txn_,
+              write_options.memtable_insert_hint_per_batch);
+        }
+      }
+      if (seq_used != nullptr) {
+        *seq_used = w.sequence;
+      }
+    }
+  }
+  PERF_TIMER_START(write_pre_and_post_process_time);
+
+  if (!io_s.ok()) {
+    // Check WriteToWAL status
+    IOStatusCheck(io_s);
+  }
+  if (!w.CallbackFailed()) {
+    if (!io_s.ok()) {
+      assert(pre_release_cb_status.ok());
+    } else {
+      WriteStatusCheck(pre_release_cb_status);
+    }
+  } else {
+    assert(pre_release_cb_status.ok());
+  }
+
+  if (log_context.need_log_sync) {
+    VersionEdit synced_wals;
+    log_write_mutex_.Lock();
+    if (status.ok()) {
+      MarkLogsSynced(logfile_number_, log_context.need_log_dir_sync,
+                     &synced_wals);
+    } else {
+      MarkLogsNotSynced(logfile_number_);
+    }
+    log_write_mutex_.Unlock();
+    if (status.ok() && synced_wals.IsWalAddition()) {
+      InstrumentedMutexLock l(&mutex_);
+      // TODO: plumb Env::IOActivity, Env::IOPriority
+      const ReadOptions read_options;
+      status = ApplyWALToManifest(read_options, write_options, &synced_wals);
+    }
+
+    // Requesting sync with two_write_queues_ is expected to be very rare. We
+    // hence provide a simple implementation that is not necessarily efficient.
+    if (status.ok() && two_write_queues_) {
+      if (manual_wal_flush_) {
+        status = FlushWAL(true);
+      } else {
+        status = SyncWAL();
+      }
+    }
+  }
+
+  bool should_exit_batch_group = true;
+  if (in_parallel_group) {
+    // CompleteParallelWorker returns true if this thread should
+    // handle exit, false means somebody else did
+    should_exit_batch_group = write_thread_.CompleteParallelMemTableWriter(&w);
+  }
+  if (should_exit_batch_group) {
+    if (status.ok()) {
+      for (auto* tmp_w : write_group) {
+        assert(tmp_w);
+        if (tmp_w->post_memtable_callback) {
+          Status tmp_s =
+              (*tmp_w->post_memtable_callback)(last_sequence, disable_memtable);
+          // TODO: propagate the execution status of post_memtable_callback to
+          // caller.
+          assert(tmp_s.ok());
+        }
+      }
+      // Note: if we are to resume after non-OK statuses we need to revisit how
+      // we reacts to non-OK statuses here.
+      versions_->SetLastSequence(last_sequence);
+    }
+    MemTableInsertStatusCheck(w.status);
+    write_thread_.ExitAsBatchGroupLeader(write_group, status);
+  }
+
+  if (status.ok()) {
+    status = w.FinalStatus();
+  }
+  return status;
+}
+```
+
+Output Requirements:
+- Return ONLY the optimized code
+- Preserve original formatting
+- Mark optimizations with // OPT: comments
+
+========================================

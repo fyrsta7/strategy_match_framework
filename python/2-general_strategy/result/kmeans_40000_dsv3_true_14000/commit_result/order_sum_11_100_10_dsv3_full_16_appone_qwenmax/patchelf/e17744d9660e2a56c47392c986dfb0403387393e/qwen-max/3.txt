@@ -1,0 +1,15 @@
+static void patchElf()
+{
+    for (const auto& fileName : fileNames) {
+        if (!printInterpreter && !printRPath && !printSoname && !printNeeded)
+            debug("patching ELF file '%s'\n", fileName.c_str());
+
+        auto fileContents = readFile(fileName);
+        std::string outputFileName2 = outputFileName.empty() ? fileName : outputFileName;
+
+        if (getElfType(fileContents).is32Bit)
+            patchElf2(ElfFile<Elf32_Ehdr, Elf32_Phdr, Elf32_Shdr, Elf32_Addr, Elf32_Off, Elf32_Dyn, Elf32_Sym, Elf32_Verneed, Elf32_Versym>(fileContents), fileContents, outputFileName2);
+        else
+            patchElf2(ElfFile<Elf64_Ehdr, Elf64_Phdr, Elf64_Shdr, Elf64_Addr, Elf64_Off, Elf64_Dyn, Elf64_Sym, Elf64_Verneed, Elf64_Versym>(fileContents), fileContents, outputFileName2);
+    }
+}

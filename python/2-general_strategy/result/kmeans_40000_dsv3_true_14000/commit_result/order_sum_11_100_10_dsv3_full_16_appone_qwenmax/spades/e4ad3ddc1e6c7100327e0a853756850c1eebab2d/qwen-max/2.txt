@@ -1,0 +1,49 @@
+size_t InterestingPositionProcessor::FillInterestingPositions(vector<position_description> &charts) {
+    size_t count = 0;
+    set<int> tmp_pos;
+    for (size_t i = 0; i < contig_.length(); i++) {
+        int sum_total = 0;
+        // Precompute the sum of votes excluding Insertion and Deletion variants
+        for (size_t j = 0; j < MAX_VARIANTS; j++) {
+            if (j != Variants::Insertion && j != Variants::Deletion) {
+                sum_total += charts[i].votes[j];
+            }
+        }
+
+        // Cache the threshold values to avoid recalculating them in the inner loop
+        const double lower_threshold = 0.1 * sum_total;
+        const double upper_threshold = 0.9 * sum_total;
+
+        int variants = 0;
+        for (size_t j = 0; j < MAX_VARIANTS; j++) {
+            // Use the precomputed thresholds to reduce redundant calculations
+            if (j != Variants::Insertion && j != Variants::Deletion &&
+                charts[i].votes[j] > lower_threshold &&
+                charts[i].votes[j] < upper_threshold &&
+                sum_total > 20) {
+                variants++;
+            }
+        }
+
+        if (variants > 1 || contig_[i] == Variants::Undefined) {
+            DEBUG("Adding interesting position: " << i << " " << charts[i].str());
+            tmp_pos.insert((int)i);
+
+            // Precompute the anchor-related values to avoid recalculating them in the inner loop
+            const int anchor_base = (int)(i / kAnchorGap);
+            for (int j = -kAnchorNum; j <= kAnchorNum; j++) {
+                tmp_pos.insert((anchor_base + j) * kAnchorGap);
+            }
+        }
+    }
+
+    for (const auto &pos : tmp_pos) {
+        if (pos >= 0 && pos < (int)contig_.length()) {
+            DEBUG("position " << pos << " is interesting ");
+            DEBUG(charts[pos].str());
+            is_interesting_[pos] = 1;
+            count++;
+        }
+    }
+    return count;
+}

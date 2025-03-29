@@ -1,0 +1,70 @@
+IMesh* _build_water_anisotropy(int id, FlexRendererThreadData data) {
+	int start = id * MAX_PRIMATIVES;
+	int end = min((id + 1) * MAX_PRIMATIVES, data.max_particles);
+
+	// We need to figure out how many and which particles are going to be rendered
+	int particles_to_render = 0;
+	for (int particle_index = start; particle_index < end; ++particle_index) {
+		Vector particle_pos = data.particle_positions[particle_index].AsVector3D();
+
+		// Frustrum culling
+		Vector4D dst;
+		Vector4DMultiply(data.view_projection_matrix, Vector4D(particle_pos.x, particle_pos.y, particle_pos.z, 1), dst);
+		if (dst.z < data.radius || -dst.x - dst.w > data.radius || dst.x - dst.w > data.radius || -dst.y - dst.w > data.radius || dst.y - dst.w > data.radius) continue;
+
+		// PVS Culling
+		if (!engine->IsBoxVisible(particle_pos, particle_pos)) continue;
+		
+		// Add to our buffer
+		data.render_buffer[start + particles_to_render] = particle_index;
+		particles_to_render++;
+	}
+
+	// Don't even bother
+	if (particles_to_render == 0) return nullptr;
+
+	float scale_mult = 10.f / data.radius;	// no fucking clue why this works
+	IMesh* mesh = materials->GetRenderContext()->CreateStaticMesh(VERTEX_POSITION | VERTEX_NORMAL | VERTEX_TEXCOORD0_2D, "");
+	CMeshBuilder mesh_builder;
+	mesh_builder.Begin(mesh, MATERIAL_TRIANGLES, particles_to_render);
+	for (int i = start; i < start + particles_to_render; ++i) {
+		int particle_index = data.render_buffer[i];
+		Vector particle_pos = data.particle_positions[particle_index].AsVector3D();
+
+		// Precompute values that remain constant across the inner loop
+		Vector forward = (particle_pos - data.eye_pos).Normalized();
+		Vector right = forward.Cross(Vector(0, 0, 1)).Normalized();
+		Vector up = right.Cross(forward);
+		Vector local_pos[3] = { (-up - right * SQRT3), up * 2.0, (-up + right * SQRT3) };
+
+		Vector4D ani0 = data.particle_ani0[particle_index];
+		Vector4D ani1 = data.particle_ani1[particle_index];
+		Vector4D ani2 = data.particle_ani2[particle_index];
+
+		// Precompute ani vectors as Vector3D to avoid repeated calls to AsVector3D()
+		Vector ani0_vec = ani0.AsVector3D();
+		Vector ani1_vec = ani1.AsVector3D();
+		Vector ani2_vec = ani2.AsVector3D();
+
+		for (int j = 0; j < 3; j++) {
+			// Anisotropy warping (code provided by Spanky)
+			Vector pos_ani = local_pos[j] / scale_mult;
+
+			// Precompute dot products to avoid redundant calculations
+			float dot0 = pos_ani.Dot(ani0_vec) * ani0.w * scale_mult;
+			float dot1 = pos_ani.Dot(ani1_vec) * ani1.w * scale_mult;
+			float dot2 = pos_ani.Dot(ani2_vec) * ani2.w * scale_mult;
+
+			pos_ani += ani0_vec * dot0 + ani1_vec * dot1 + ani2_vec * dot2;
+			Vector world_pos = particle_pos + pos_ani;
+
+			mesh_builder.TexCoord2f(0, u[j], v[j]);
+			mesh_builder.Position3f(world_pos.x, world_pos.y, world_pos.z);
+			mesh_builder.Normal3f(-forward.x, -forward.y, -forward.z);
+			mesh_builder.AdvanceVertex();
+		}
+	}
+	mesh_builder.End();
+
+	return mesh;
+}

@@ -1,0 +1,13 @@
+# 存储敏感信息
+python/config.py
+
+__pycache__/
+.vscode/
+.DS_Store
+
+cache/
+models/
+
+all_has_file_deduplicated.json
+all_has_file.json
+all_one_func.json

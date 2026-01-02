@@ -7,6 +7,13 @@ import config
 from tqdm import tqdm
 import concurrent.futures
 
+# 最大线程数
+max_workers = 128
+# 知识库根目录
+base_dir = os.path.join(config.root_path, "knowledge_base_all")
+# 代码库列表文件路径
+repo_list_file = os.path.join(config.root_path, "repo_list_30342.json")
+
 def count_commits_in_repo(repo_path, json_files):
     """
     统计一个代码库中指定的几个 JSON 文件包含的 commit 数量
@@ -40,7 +47,7 @@ def count_commits_in_repo(repo_path, json_files):
 
 def main():
     """
-    主函数：遍历 knowledge_base 目录下所有代码库，
+    主函数：从 config.root_path/repo_list_c.json 中读取需要处理的代码库列表，
     统计指定 JSON 文件的 commit 数量并输出到 CSV 文件
     """
     # 要统计的 JSON 文件列表（按要求顺序）
@@ -49,30 +56,72 @@ def main():
         'one_file.json',
         'c_language.json',
         'is_opt_keyword.json',
+        # 'is_opt_keyword_x86.json',
+        # 'is_opt_keyword_arm64.json',
+        # 'is_opt_keyword_aarch64.json',
+        # 'is_opt_keyword_arch_all.json',
         'has_file.json',
-        'has_file_with_func.json',
+        'has_file_deduplicate.json',
+        'diff.json',
         'one_func.json',
-        'one_func_deduplicate.json',
+        'line_block.json',
+        'func_name.json',
+        'func_name_result.json',
         'is_opt_llm.json',
-        'is_opt_final.json'
+        'is_opt_final.json',
+        # 'summary.json',
+        # 'summary_filter.json',
+        # 'rapgen.json'
     ]
-    
-    # 获取知识库根目录
-    base_dir = os.path.join(config.root_path, "knowledge_base")
     
     # 确保目录存在
     if not os.path.exists(base_dir):
         print(f"错误: 目录不存在: {base_dir}")
         return
     
-    # 获取所有代码库目录
-    repos = [os.path.join(base_dir, repo) for repo in os.listdir(base_dir) 
-             if os.path.isdir(os.path.join(base_dir, repo))]
+    # 从 JSON 文件中读取代码库列表
+    try:
+        with open(repo_list_file, 'r', encoding='utf-8') as f:
+            repo_list_data = json.load(f)
+        
+        # 根据 repo_list_c.json 的结构提取代码库名称
+        if isinstance(repo_list_data, list):
+            repo_names = []
+            for repo_info in repo_list_data:
+                if isinstance(repo_info, dict) and 'name' in repo_info:
+                    repo_names.append(repo_info['name'])
+                elif isinstance(repo_info, str):
+                    # 兼容性：如果元素是字符串，直接使用
+                    repo_names.append(repo_info)
+            
+            # 过滤掉空字符串
+            repo_names = [name for name in repo_names if name]
+        else:
+            raise ValueError("代码库列表文件格式错误：期望数组格式")
+        
+        print(f"从 {repo_list_file} 读取到 {len(repo_names)} 个代码库")
+        print(f"代码库列表: {', '.join(repo_names[:5])}{'...' if len(repo_names) > 5 else ''}")
+        
+    except FileNotFoundError:
+        print(f"错误：找不到代码库列表文件 {repo_list_file}")
+        return
+    except json.JSONDecodeError as e:
+        print(f"错误：解析 JSON 文件失败 - {e}")
+        return
+    except Exception as e:
+        print(f"错误：读取代码库列表时发生错误 - {e}")
+        return
+    
+    if not repo_names:
+        print("未找到任何代码仓库")
+        return
+    
+    # 获取所有代码库目录（只处理在知识库中存在的目录）
+    repos = [os.path.join(base_dir, repo_name) for repo_name in repo_names 
+             if os.path.isdir(os.path.join(base_dir, repo_name))]
     
     print(f"开始统计 {len(repos)} 个代码库的 commit 数量...")
     
-    # 设置最大线程数为24（可以根据需要调整）
-    max_workers = 208
     print(f"使用并行处理，最大线程数: {max_workers}")
     
     # 使用并行处理加速，并明确指定最大线程数

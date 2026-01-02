@@ -10,11 +10,10 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import sys
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
-import repo_name_1870_1003
 
 # 全局变量，控制是否跳过已经处理过的代码库
-SKIP_EXISTING_KEYWORD_RESULTS = True
-
+SKIP_EXISTING_KEYWORD_RESULTS = False
+KNOWLEDGE_BASE_PATH = os.path.join(config.root_path, "knowledge_base_all")
 
 optimization_keywords = [
     # 核心性能指标关键词
@@ -89,7 +88,7 @@ def process_keywords_phase(repositories, keywords):
     """
     print("===== 第一阶段：关键词筛选 =====")
     for repo in tqdm(repositories, desc="Keyword filtering"):
-        knowledge_base_path = os.path.join(config.root_path, "knowledge_base", repo)
+        knowledge_base_path = os.path.join(KNOWLEDGE_BASE_PATH, repo)
         c_language_file = os.path.join(knowledge_base_path, "c_language.json")
         output_keyword = os.path.join(knowledge_base_path, "is_opt_keyword.json")
         
@@ -150,8 +149,6 @@ if __name__ == "__main__":
     # EXCLUDED_REPOSITORIES = ["linux-xlnx", "linux"]
     EXCLUDED_REPOSITORIES = []
     # INCLUDED_REPOSITORIES = ["ytsaurus", "agensgraph", "glibc", "graaljs", "wesnoth", "QGIS", "ITK", "VTK", "root", "crawl", "OpenCPN", "scummvm", "proton", "haiku", "kicad-source-mirror", "pacemaker", "freebsd-src", "Floorp", "Slicer", "gcc", "vpp", "qt-creator", "qtbase", "linux", "pipewire", "ParaView", "source", "glib", "dealii"]
-    # INCLUDED_REPOSITORIES = repo_name_1870_1003.INCLUDED_REPOSITORIES
-    # INCLUDED_REPOSITORIES = ["rocksdb"]
     if not os.path.exists(repository_root):
         print(f"Error: 目录 '{repository_root}' 不存在。")
         sys.exit(1)

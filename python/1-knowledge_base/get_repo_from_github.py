@@ -4,7 +4,6 @@ import json
 from datetime import datetime, timedelta
 import sys
 import time
-
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 import config
 
@@ -72,7 +71,6 @@ def search_repositories_interval(language, star_lower, star_upper):
         left = search_repositories_interval(language, star_lower, mid)
         right = search_repositories_interval(language, mid+1, star_upper)
         return left + right
-
     # 否则，正常分页获取所有结果
     collected_repos = []
     page = 1
@@ -134,7 +132,8 @@ if __name__ == "__main__":
         {
             "name": repo["name"],
             "http_url": repo["clone_url"],
-            "ssh_url": repo["ssh_url"]
+            "ssh_url": repo["ssh_url"],
+            "stars": repo["stargazers_count"]  # 添加stars字段
         }
         for repo in all_repos
         if repo["clone_url"] not in existing_urls
@@ -144,6 +143,9 @@ if __name__ == "__main__":
         with open(REPO_LIST_FILE, "w") as f:
             json.dump(existing_repos, f, indent=4, ensure_ascii=False)
         print(f"\nSuccessfully added {len(new_repos)} new repositories")
+        # 输出新添加的仓库及其star数
+        for repo in new_repos:
+            print(f"Added: {repo['name']} - Stars: {repo['stars']}")
         print(f"Total repositories now: {len(existing_repos)}")
     else:
         print("\nNo new repositories found to add")

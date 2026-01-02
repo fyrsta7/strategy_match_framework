@@ -1,0 +1,362 @@
+{
+  "clusters": [
+    {
+      "cluster_id": 1,
+      "size": 9,
+      "commits": [
+        {
+          "repository_name": "rocksdb",
+          "hash": "20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+          "author": "Sagar Vemuri",
+          "date": "2017-08-05T00:15:35-07:00",
+          "message": "Optimize range-delete aggregator call in merge helper.\n\nSummary:\nIn the condition:\n```\nif (range_del_agg != nullptr &&\n    range_del_agg->ShouldDelete(\n        iter->key(),\n        RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&\n    filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {\n...\n}\n```\nit could be possible that all the work done in `range_del_agg->ShouldDelete` is wasted due to not having the right `filter` value later on.\nInstead, check `filter` value before even calling `range_del_agg->ShouldDelete`, which is a much more involved function.\nCloses https://github.com/facebook/rocksdb/pull/2690\n\nDifferential Revision: D5568931\n\nPulled By: sagar0\n\nfbshipit-source-id: 17512d52360425c7ae9de7675383f5d7bc3dad58",
+          "modified_files_count": 1,
+          "modified_files": [
+            "db/merge_helper.cc"
+          ],
+          "github_commit_url": "https://github.com/facebook/rocksdb/commit/20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "MergeHelper::MergeUntil"
+          ],
+          "added_lines": 3,
+          "deleted_lines": 4,
+          "total_changed_lines": 7,
+          "net_line_change": -1,
+          "modified_code_blocks": 2,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+          "file_start_line": 204,
+          "file_end_line": 209,
+          "func_start_line": 122,
+          "func_end_line": 127,
+          "representativeness_score": 0.9107885956764221,
+          "semgrep_generation_success": true
+        },
+        {
+          "repository_name": "radare2",
+          "hash": "78ece9fd2b422636ec4ca024ddca2a7e6ceb51ec",
+          "author": "Alex Gaines",
+          "date": "2018-07-05T00:24:06+02:00",
+          "message": "very minor optimization here, but it improved the performance of  r_reg_32_to_64 quite significantly... Profiling a test program that used libr_anal esil went from  r_reg_32_to_64 using ~9.5% to ~2.3% of the total time (#10624)",
+          "modified_files_count": 1,
+          "modified_files": [
+            "libr/reg/reg.c"
+          ],
+          "github_commit_url": "https://github.com/radareorg/radare2/commit/78ece9fd2b422636ec4ca024ddca2a7e6ceb51ec",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "r_reg_32_to_64"
+          ],
+          "added_lines": 1,
+          "deleted_lines": 1,
+          "total_changed_lines": 2,
+          "net_line_change": 0,
+          "modified_code_blocks": 1,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+          "file_start_line": 21,
+          "file_end_line": 21,
+          "func_start_line": 8,
+          "func_end_line": 8,
+          "representativeness_score": 0.9107885956764221
+        },
+        {
+          "repository_name": "mongo",
+          "hash": "09853275e93594547e87cff11227a2b49ab16057",
+          "author": "Mathias Stearn",
+          "date": "2010-07-14T20:08:14-04:00",
+          "message": "optimization: cheap op first",
+          "modified_files_count": 1,
+          "modified_files": [
+            "s/strategy_shard.cpp"
+          ],
+          "github_commit_url": "https://github.com/mongodb/mongo/commit/09853275e93594547e87cff11227a2b49ab16057",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "_update"
+          ],
+          "added_lines": 1,
+          "deleted_lines": 1,
+          "total_changed_lines": 2,
+          "net_line_change": 0,
+          "modified_code_blocks": 1,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder sub-conditions in if statements with multiple 'or'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements with multiple 'or'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements with multiple 'or'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder sub-conditions in if statements with multiple 'or'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+          "file_start_line": 190,
+          "file_end_line": 190,
+          "func_start_line": 40,
+          "func_end_line": 40,
+          "representativeness_score": 0.9094147086143494
+        },
+        {
+          "repository_name": "godot",
+          "hash": "53e9d908506dc0edc5dcf149da6bddd0a64df4c5",
+          "author": "CrazyRoka",
+          "date": "2024-07-11T20:40:00+01:00",
+          "message": "Optimize Node::is_readable_from_caller_thread() by prioritizing the most common case.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "scene/main/node.h"
+          ],
+          "github_commit_url": "https://github.com/godotengine/godot/commit/53e9d908506dc0edc5dcf149da6bddd0a64df4c5",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "is_readable_from_caller_thread"
+          ],
+          "added_lines": 1,
+          "deleted_lines": 1,
+          "total_changed_lines": 2,
+          "net_line_change": 0,
+          "modified_code_blocks": 1,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder sub-conditions in if statements with multiple 'or'-connected conditions to place simpler or more likely true checks before complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements with multiple 'or'-connected conditions to place simpler or more likely-to-be-true checks before more complex ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in logical OR expressions to place simpler or more likely-to-be-true conditions first for better short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder sub-conditions in if statements with multiple 'or'-connected conditions to place simpler or more likely-to-be-true checks before more complex ones for better short-circuit evaluation.",
+          "file_start_line": 599,
+          "file_end_line": 599,
+          "func_start_line": 6,
+          "func_end_line": 6,
+          "representativeness_score": 0.8971577286720276
+        },
+        {
+          "repository_name": "openssl",
+          "hash": "d5d007abe357ce4bea5390bf3a872dc85497da38",
+          "author": "Lutz Jänicke",
+          "date": "2002-04-18T11:54:06+00:00",
+          "message": "Optimize: better shortcut evaluation (\"Howard Chu\" <hyc@highlandsun.com>).",
+          "modified_files_count": 1,
+          "modified_files": [
+            "crypto/objects/obj_dat.c"
+          ],
+          "github_commit_url": "https://github.com/openssl/openssl/commit/d5d007abe357ce4bea5390bf3a872dc85497da38",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "OBJ_obj2txt"
+          ],
+          "added_lines": 1,
+          "deleted_lines": 2,
+          "total_changed_lines": 3,
+          "net_line_change": -1,
+          "modified_code_blocks": 1,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder conditions in if statements to place simpler checks before potentially expensive function calls for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements to place simpler boolean checks before expensive function calls for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements to place simpler checks before expensive function calls for better short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder sub-conditions in if statements to place simpler checks before expensive function calls for better short-circuit evaluation.",
+          "file_start_line": 448,
+          "file_end_line": 449,
+          "func_start_line": 31,
+          "func_end_line": 32,
+          "representativeness_score": 0.87596595287323
+        },
+        {
+          "repository_name": "tensorflow",
+          "hash": "2f605c58a81522bb86a63aa2c48728ac2cbea6ca",
+          "author": "Emilio Cota",
+          "date": "2024-03-22T20:24:10-07:00",
+          "message": "[xla:gpu] dot_merger: reorder merge checks to call IsReachableNonConst last\n\nOnly perform the reachability check if necessary, since it can be expensive.\n\nThis brings a 1.5x compilation time speedup for a large, dense model.\n\nPiperOrigin-RevId: 618355183",
+          "modified_files_count": 1,
+          "modified_files": [
+            "third_party/xla/xla/service/dot_merger.cc"
+          ],
+          "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/2f605c58a81522bb86a63aa2c48728ac2cbea6ca",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ShapeUtil::ByteSizeOfElements"
+          ],
+          "added_lines": 3,
+          "deleted_lines": 2,
+          "total_changed_lines": 5,
+          "net_line_change": 1,
+          "modified_code_blocks": 2,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder conditions in if statements with multiple 'and'-connected sub-conditions to place simpler checks before expensive reachability tests for better short-circuit evaluation.",
+            "Reorder sub-conditions in if statements to place cheaper checks before expensive reachability tests when merging operations to enable better short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder conditions in if statements with multiple 'and'-connected sub-conditions to place simpler checks before expensive reachability tests for better short-circuit evaluation.",
+          "file_start_line": 396,
+          "file_end_line": 397,
+          "func_start_line": 129,
+          "func_end_line": 130,
+          "representativeness_score": 0.8487213850021362
+        },
+        {
+          "repository_name": "react-native",
+          "hash": "9b97c09612050420557f2eca8391999e2fea1ca0",
+          "author": "Pieter De Baets",
+          "date": "2021-09-17T07:25:54-07:00",
+          "message": "Short-circuit evaluation of formsView\n\nSummary:\nChangelog: [Internal]\n\nSmall optimization, we can avoid evaluating some properties if `formsStackingContext` is already set, because the end-result is always true.\n\nReviewed By: sammy-SC\n\nDifferential Revision: D30990925\n\nfbshipit-source-id: 08f500aa4b75446a6c644e8821f84dbfccbfebb6",
+          "modified_files_count": 1,
+          "modified_files": [
+            "ReactCommon/react/renderer/components/view/ViewShadowNode.cpp"
+          ],
+          "github_commit_url": "https://github.com/facebook/react-native/commit/9b97c09612050420557f2eca8391999e2fea1ca0",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "ViewShadowNode::initialize"
+          ],
+          "added_lines": 2,
+          "deleted_lines": 3,
+          "total_changed_lines": 5,
+          "net_line_change": -1,
+          "modified_code_blocks": 2,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder sub-conditions in logical OR expressions to place simpler or more likely-to-be-true conditions first for better short-circuit evaluation.",
+            "Reorder sub-conditions in boolean expressions to place simpler or more likely-to-be-true checks before more expensive ones for better short-circuit evaluation.",
+            "Reorder sub-conditions in boolean expressions to place simpler or more likely-to-be-true checks before more complex ones for better short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder sub-conditions in boolean expressions to place simpler or more likely-to-be-true checks before more complex ones for better short-circuit evaluation.",
+          "file_start_line": 49,
+          "file_end_line": 55,
+          "func_start_line": 24,
+          "func_end_line": 30,
+          "representativeness_score": 0.8295853137969971
+        },
+        {
+          "repository_name": "git",
+          "hash": "a4b6d202caad83c6dc29abe9b17e53a1b3fb54a0",
+          "author": "Derrick Stolee",
+          "date": "2021-01-15T23:05:13-08:00",
+          "message": "cache-tree: speed up consecutive path comparisons\n\nThe previous change reduced time spent in strlen() while comparing\nconsecutive paths in verify_cache(), but we can do better. The\nconditional checks the existence of a directory separator at the correct\nlocation, but only after doing a string comparison. Swap the order to be\nlogically equivalent but perform fewer string comparisons.\n\nTo test the effect on performance, I used a repository with over three\nmillion paths in the index. I then ran the following command on repeat:\n\n  git -c index.threads=1 commit --amend --allow-empty --no-edit\n\nHere are the measurements over 10 runs after a 5-run warmup:\n\n  Benchmark #1: v2.30.0\n    Time (mean ± σ):     854.5 ms ±  18.2 ms\n    Range (min … max):   825.0 ms … 892.8 ms\n\n  Benchmark #2: Previous change\n    Time (mean ± σ):     833.2 ms ±  10.3 ms\n    Range (min … max):   815.8 ms … 849.7 ms\n\n  Benchmark #3: This change\n    Time (mean ± σ):     815.5 ms ±  18.1 ms\n    Range (min … max):   795.4 ms … 849.5 ms\n\nThis change is 2% faster than the previous change and 5% faster than\nv2.30.0.\n\nSigned-off-by: Derrick Stolee <dstolee@microsoft.com>\nSigned-off-by: Junio C Hamano <gitster@pobox.com>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "cache-tree.c"
+          ],
+          "github_commit_url": "https://github.com/git/git/commit/a4b6d202caad83c6dc29abe9b17e53a1b3fb54a0",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "verify_cache"
+          ],
+          "added_lines": 2,
+          "deleted_lines": 2,
+          "total_changed_lines": 4,
+          "net_line_change": 0,
+          "modified_code_blocks": 1,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder conditions in path comparison checks to place simpler character comparisons before expensive string operations for better short-circuit evaluation.",
+            "Reorder conditions in if statements to place simpler character comparisons before more expensive string comparisons when verifying consecutive paths to leverage short-circuit evaluation."
+          ],
+          "optimization_summary_final": "Reorder conditions in if statements to place simpler character comparisons before more expensive string comparisons when verifying consecutive paths to leverage short-circuit evaluation.",
+          "file_start_line": 194,
+          "file_end_line": 195,
+          "func_start_line": 47,
+          "func_end_line": 48,
+          "representativeness_score": 0.7880522012710571
+        },
+        {
+          "repository_name": "ClickHouse",
+          "hash": "7db03cfaf7990e467f68add2b883e5a586d6c3ba",
+          "author": "Nikolai Kochetov",
+          "date": "2019-11-08T14:27:52+03:00",
+          "message": "Fix performance in FilterTransform.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "dbms/src/Processors/Transforms/FilterTransform.cpp"
+          ],
+          "github_commit_url": "https://github.com/ClickHouse/ClickHouse/commit/7db03cfaf7990e467f68add2b883e5a586d6c3ba",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "FilterTransform::transform"
+          ],
+          "added_lines": 1,
+          "deleted_lines": 1,
+          "total_changed_lines": 2,
+          "net_line_change": 0,
+          "modified_code_blocks": 1,
+          "is_opt_ds_simple": "true",
+          "optimization_summary": [
+            "Reorder conditions in if statements when checking multiple properties to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+            "Reorder conditions in if statements to check simple index comparisons before more expensive function calls when filtering columns to improve short-circuit evaluation performance.",
+            "Move conditions checking for special cases (like excluded indices) before general checks in loops to enable early termination and avoid unnecessary computations."
+          ],
+          "optimization_summary_final": "Reorder conditions in if statements to check simple index comparisons before more expensive function calls when filtering columns to improve short-circuit evaluation performance.",
+          "file_start_line": 134,
+          "file_end_line": 134,
+          "func_start_line": 50,
+          "func_end_line": 50,
+          "representativeness_score": 0.7655722498893738
+        }
+      ],
+      "most_representative_commit": {
+        "repository_name": "rocksdb",
+        "hash": "20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "author": "Sagar Vemuri",
+        "date": "2017-08-05T00:15:35-07:00",
+        "message": "Optimize range-delete aggregator call in merge helper.\n\nSummary:\nIn the condition:\n```\nif (range_del_agg != nullptr &&\n    range_del_agg->ShouldDelete(\n        iter->key(),\n        RangeDelAggregator::RangePositioningMode::kForwardTraversal) &&\n    filter != CompactionFilter::Decision::kRemoveAndSkipUntil) {\n...\n}\n```\nit could be possible that all the work done in `range_del_agg->ShouldDelete` is wasted due to not having the right `filter` value later on.\nInstead, check `filter` value before even calling `range_del_agg->ShouldDelete`, which is a much more involved function.\nCloses https://github.com/facebook/rocksdb/pull/2690\n\nDifferential Revision: D5568931\n\nPulled By: sagar0\n\nfbshipit-source-id: 17512d52360425c7ae9de7675383f5d7bc3dad58",
+        "modified_files_count": 1,
+        "modified_files": [
+          "db/merge_helper.cc"
+        ],
+        "github_commit_url": "https://github.com/facebook/rocksdb/commit/20dc5e74f276bdcb26c44c13bced506a2d920d3f",
+        "contains_optimization_keyword": true,
+        "modified_func_count": 1,
+        "modified_other": false,
+        "modified_func": [
+          "MergeHelper::MergeUntil"
+        ],
+        "added_lines": 3,
+        "deleted_lines": 4,
+        "total_changed_lines": 7,
+        "net_line_change": -1,
+        "modified_code_blocks": 2,
+        "is_opt_ds_simple": "true",
+        "optimization_summary": [
+          "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+          "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+          "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation."
+        ],
+        "optimization_summary_final": "Reorder sub-conditions in if statements with multiple 'and'-connected conditions to place simpler or less expensive checks before more complex ones for better short-circuit evaluation.",
+        "file_start_line": 204,
+        "file_end_line": 209,
+        "func_start_line": 122,
+        "func_end_line": 127,
+        "representativeness_score": 0.9107885956764221
+      },
+      "avg_representativeness": 0.8595607479413351
+    }
+  ]
+}

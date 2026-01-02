@@ -12,9 +12,9 @@ from tqdm import tqdm
 # 如果一个 commit 已经存在 modified_files_count 字段，是否仍强制重新计算
 # False: 不重新计算
 # True: 重新计算
-RECALCULATE_IF_EXISTS = False
+RECALCULATE_IF_EXISTS = True
 
-REPO_LIST_FILE = "repo_list_30345_3.json"
+REPO_LIST_FILE = "repo_list_test.json"
 JSON_FILE = "all_commit.json"
 
 def process_repository(repo_info):

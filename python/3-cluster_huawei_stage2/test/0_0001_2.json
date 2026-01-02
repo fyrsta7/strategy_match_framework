@@ -1,0 +1,284 @@
+{
+  "clustering_config": {
+    "min_similarity_threshold": 0.0001,
+    "algorithm": "DBSCAN",
+    "min_cluster_size": 2,
+    "total_commits": 8,
+    "num_clusters": 1,
+    "noise_points": 0,
+    "clustering_rate": 1.0
+  },
+  "clusters": [
+    {
+      "cluster_id": 1,
+      "size": 8,
+      "commits": [
+        {
+          "repository_name": "tbox",
+          "hash": "d07d1ca567ab927eabf9104890747da2bb183530",
+          "author": "ruki",
+          "date": "2020-01-07T21:13:57+08:00",
+          "message": "improve url cstr",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/tbox/network/url.c"
+          ],
+          "github_commit_url": "https://github.com/tboox/tbox/commit/d07d1ca567ab927eabf9104890747da2bb183530",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "tb_url_cstr"
+          ],
+          "optimization_summary_huawei": [
+            "Remove redundant protocol checks for non-Windows paths when building URL strings to avoid unnecessary conditional branches.",
+            "Remove redundant protocol checks and string operations for non-Windows paths when building URL strings to optimize performance by reducing unnecessary condition evaluations and string copies.",
+            "Optimize protocol string handling in URL processing by removing redundant checks for non-Windows paths and only handling Windows-specific protocol cases when needed.",
+            "Remove redundant protocol checks in URL string construction by handling only the necessary case (Windows) and eliminating unnecessary conditional branches for non-Windows paths.",
+            "Remove unnecessary conditional checks for non-win paths when constructing URLs to eliminate redundant protocol string operations."
+          ],
+          "optimization_summary_huawei_final": "Remove redundant protocol checks in URL string construction by handling only the necessary case (Windows) and eliminating unnecessary conditional branches for non-Windows paths.",
+          "reused_from": "generated",
+          "file_start_line": 255,
+          "file_end_line": 261,
+          "line_offset": 238,
+          "func_start_line": 17,
+          "func_end_line": 23,
+          "before_func_total_lines": 123
+        },
+        {
+          "repository_name": "nfs-ganesha",
+          "hash": "c735c0acb4dad9a3f89f54c260d94fe409e317ff",
+          "author": "Venkateswararao Jujjuri (JV)",
+          "date": "2013-09-11T16:57:06-04:00",
+          "message": "If we get a ESTALE on readdir retry the dirent\nas we might have hit with a old dirent which we kept for\nperformance reasons\n\nPorted from 1.5 fad1fe5a6d3cb013d7a3c40986268161892c2622\nand 1e2466078e5129c52bda8916d17a31bf238475c7\n\nSigned-off-by: Venkateswararao Jujjuri \"<jvrao@linux.vnet.ibm.com>\nSigned-off-by: Rong Zeng <rongzeng@us.ibm.com>\nSigned-off-by: Frank S. Filz <ffilzlnx@mindspring.com>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/Cache_inode/cache_inode_readdir.c"
+          ],
+          "github_commit_url": "https://github.com/nfs-ganesha/nfs-ganesha/commit/c735c0acb4dad9a3f89f54c260d94fe409e317ff",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "cache_inode_readdir"
+          ],
+          "optimization_summary_huawei": [
+            "Retry directory entry lookups on ESTALE errors with a one-time retry flag when reading directories to handle stale cached entries while maintaining performance.",
+            "Retry directory entry lookups on ESTALE errors with cached entries to handle stale directory caches while maintaining performance by limiting retries to once per entry.",
+            "Retry directory entry lookups on ESTALE errors with cached entries to handle stale cache cases while maintaining performance benefits of cached directory entries.",
+            "Retry directory entry lookups on ESTALE errors with cached entries to handle stale cache cases while maintaining performance benefits of caching.",
+            "Retry directory entry lookups on ESTALE errors with a one-time retry flag when reading directories to handle stale cached entries while maintaining performance."
+          ],
+          "optimization_summary_huawei_final": "Retry directory entry lookups on ESTALE errors with cached entries to handle stale directory caches while maintaining performance by limiting retries to once per entry.",
+          "reused_from": "generated",
+          "file_start_line": 528,
+          "file_end_line": 698,
+          "line_offset": 502,
+          "func_start_line": 26,
+          "func_end_line": 196,
+          "before_func_total_lines": 238
+        },
+        {
+          "repository_name": "linux",
+          "hash": "35c7b59e3691cbea91c8b91e8ec4b0a4a960dd5a",
+          "author": "Srinivasan Shanmugam",
+          "date": "2023-06-09T12:41:35-04:00",
+          "message": "drm/amd/display: Fix unused variable ‘should_lock_all_pipes’\n\nFix below compilation error:\n\ndrivers/gpu/drm/amd/amdgpu/../display/dc/core/dc.c:3524:7: error: unused variable 'should_lock_all_pipes' [-Werror,-Wunused-variable]\n        bool should_lock_all_pipes = (update_type != UPDATE_TYPE_FAST);\n\nCc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>\nCc: Aurabindo Pillai <aurabindo.pillai@amd.com>\nCc: Harry Wentland <harry.wentland@amd.com>\nCc: Alex Deucher <alexander.deucher@amd.com>\nReviewed-by: Hamza Mahfooz <hamza.mahfooz@amd.com>\nSigned-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>\nSigned-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>\nSigned-off-by: Alex Deucher <alexander.deucher@amd.com>",
+          "modified_files_count": 1,
+          "modified_files": [
+            "drivers/gpu/drm/amd/display/dc/core/dc.c"
+          ],
+          "github_commit_url": "https://github.com/raspberrypi/linux/commit/35c7b59e3691cbea91c8b91e8ec4b0a4a960dd5a",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "commit_planes_for_stream_fast"
+          ],
+          "optimization_summary_huawei": [
+            "Remove unused variable declarations to reduce memory usage and improve code clarity.",
+            "Remove unused variable declarations to reduce memory usage and improve code clarity.",
+            "Remove unused variable declarations to reduce memory usage and improve code clarity.",
+            "Remove unused variable declarations to reduce memory usage and improve code clarity.",
+            "Remove unused variable declarations to reduce memory usage and improve code clarity."
+          ],
+          "optimization_summary_huawei_final": "Remove unused variable declarations to reduce memory usage and improve code clarity.",
+          "reused_from": "generated",
+          "file_start_line": 3524,
+          "file_end_line": 3524,
+          "line_offset": 3513,
+          "func_start_line": 11,
+          "func_end_line": 11,
+          "before_func_total_lines": 70
+        },
+        {
+          "repository_name": "ArcticDB",
+          "hash": "fb5bbbd30bdc66d94980e6d01974037f20c52283",
+          "author": "Ivo Dilov",
+          "date": "2024-01-05T11:26:56+02:00",
+          "message": "Performance improvement of create_jive_table\n\n- Replaces unneeded sort with a for loop to create reverse permutation\n\nAchieves additional performance gain of about 25%.\nBefore this optimization:\n--------------------------------------------------------------------\nBenchmark                          Time             CPU   Iterations\n--------------------------------------------------------------------\nBM_sort/100000/100               133 ms          123 ms            5\nBM_sort/100000/100               129 ms          119 ms            5\nBM_sort/100000/100               143 ms          132 ms            5\nBM_sort/100000/100               131 ms          121 ms            5\nBM_sort/100000/100               131 ms          121 ms            5\nBM_sort/100000/100_mean          134 ms          123 ms            5\nBM_sort/100000/100_median        131 ms          121 ms            5\nBM_sort/100000/100_stddev       5.65 ms         5.22 ms            5\nBM_sort/100000/100_cv           4.23 %          4.23 %             5\nBM_sort/1000000/1                283 ms          261 ms            5\nBM_sort/1000000/1                265 ms          244 ms            5\nBM_sort/1000000/1                255 ms          236 ms            5\nBM_sort/1000000/1                264 ms          244 ms            5\nBM_sort/1000000/1                314 ms          290 ms            5\nBM_sort/1000000/1_mean           276 ms          255 ms            5\nBM_sort/1000000/1_median         265 ms          244 ms            5\nBM_sort/1000000/1_stddev        23.4 ms         21.6 ms            5\nBM_sort/1000000/1_cv            8.46 %          8.46 %             5\n\nAfter this optimization:\n--------------------------------------------------------------------\nBenchmark                          Time             CPU   Iterations\n--------------------------------------------------------------------\nBM_sort/100000/100               138 ms          127 ms            5\nBM_sort/100000/100               122 ms          113 ms            5\nBM_sort/100000/100               117 ms          108 ms            5\nBM_sort/100000/100               122 ms          113 ms            5\nBM_sort/100000/100               134 ms          123 ms            5\nBM_sort/100000/100_mean          127 ms          117 ms            5\nBM_sort/100000/100_median        122 ms          113 ms            5\nBM_sort/100000/100_stddev       8.80 ms         8.12 ms            5\nBM_sort/100000/100_cv           6.95 %          6.95 %             5\nBM_sort/1000000/1                164 ms          151 ms            5\nBM_sort/1000000/1                172 ms          159 ms            5\nBM_sort/1000000/1                176 ms          162 ms            5\nBM_sort/1000000/1                235 ms          217 ms            5\nBM_sort/1000000/1                224 ms          206 ms            5\nBM_sort/1000000/1_mean           194 ms          179 ms            5\nBM_sort/1000000/1_median         176 ms          162 ms            5\nBM_sort/1000000/1_stddev        32.8 ms         30.3 ms            5\nBM_sort/1000000/1_cv           16.89 %         16.91 %             5",
+          "modified_files_count": 1,
+          "modified_files": [
+            "cpp/arcticdb/column_store/column.hpp"
+          ],
+          "github_commit_url": "https://github.com/man-group/ArcticDB/commit/fb5bbbd30bdc66d94980e6d01974037f20c52283",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "create_jive_table"
+          ],
+          "optimization_summary_huawei": [
+            "Replace sorting operations with direct index mapping via for loops when creating reverse permutations to avoid expensive comparison-based sorting overhead.",
+            "Replace sorting operations with direct index mapping via for loops when creating reverse permutations to avoid expensive comparison-based sorting overhead.",
+            "Replace sorting operations with direct index mapping via for loops when creating reverse permutations to avoid expensive comparison-based sorting overhead.",
+            "Replace sorting operations with direct index mapping via for loops when creating reverse permutations to avoid expensive comparison-based sorting overhead.",
+            "Replace sorting operations with direct index mapping via for loops when creating reverse permutations to avoid expensive comparison-based sorting overhead."
+          ],
+          "optimization_summary_huawei_final": "Replace sorting operations with direct index mapping via for loops when creating reverse permutations to avoid expensive comparison-based sorting overhead.",
+          "reused_from": "general",
+          "file_start_line": 700,
+          "file_end_line": 710,
+          "line_offset": 696,
+          "func_start_line": 4,
+          "func_end_line": 14,
+          "before_func_total_lines": 24
+        },
+        {
+          "repository_name": "armnn",
+          "hash": "fc6ab47673057d77b06507e9a32af82a90b28540",
+          "author": "Mike Kelly",
+          "date": "2020-10-12T15:44:56+01:00",
+          "message": "IVGCVSW-5335 Documentation for fast_math\n\n * Changed documentation for fast_math to add warning about possibly reduction in precision.\n\nSigned-off-by: Mike Kelly <mike.kelly@arm.com>\nChange-Id: If954471efc6aef702e8490585571815d9e19b3fc",
+          "modified_files_count": 1,
+          "modified_files": [
+            "tests/ExecuteNetwork/ExecuteNetwork.cpp"
+          ],
+          "github_commit_url": "https://github.com/ARM-software/armnn/commit/fc6ab47673057d77b06507e9a32af82a90b28540",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "main"
+          ],
+          "optimization_summary_huawei": [
+            "The commit updates documentation to clarify that enabling fast_math options in supported backends can improve performance at the potential cost of reduced precision when performing mathematical computations.",
+            "Add documentation warnings when enabling fast_math optimizations in backends to inform users about potential precision trade-offs for performance gains.",
+            "Document the trade-off between performance and precision when enabling fast_math options in backends to inform users about potential precision reductions while gaining speed improvements.",
+            "The commit updates documentation to clarify that enabling fast_math options in supported backends can improve performance at the potential cost of reduced precision.",
+            "Document the trade-off between performance and precision when enabling fast_math options in backends that support it, warning users about potential precision reductions while highlighting performance benefits."
+          ],
+          "optimization_summary_huawei_final": "Document the trade-off between performance and precision when enabling fast_math options in backends to inform users about potential precision reductions while gaining speed improvements.",
+          "reused_from": "generated",
+          "file_start_line": 142,
+          "file_end_line": 142,
+          "line_offset": 8,
+          "func_start_line": 134,
+          "func_end_line": 134,
+          "before_func_total_lines": 336
+        },
+        {
+          "repository_name": "libopenshot",
+          "hash": "97ed0f92ab11e4029f145afb704a496e43d3edad",
+          "author": "Jonathan Thomas",
+          "date": "2022-02-11T15:27:23-06:00",
+          "message": "Improved scrubbing to not wait on pre-roll",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/Qt/PlayerPrivate.cpp"
+          ],
+          "github_commit_url": "https://github.com/OpenShot/libopenshot/commit/97ed0f92ab11e4029f145afb704a496e43d3edad",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "PlayerPrivate::run"
+          ],
+          "optimization_summary_huawei": [
+            "Optimize video scrubbing performance by modifying the pause condition to only check video cache readiness when playback speed is non-zero, allowing timeline navigation without waiting for pre-roll cache preparation.",
+            "Optimize video scrubbing performance by modifying pause conditions to skip pre-roll checks when speed is zero, allowing timeline navigation without waiting for cache readiness.",
+            "Optimize video playback scrubbing by modifying the pause condition to only check for pre-roll readiness when speed is non-zero, allowing timeline navigation without unnecessary pre-roll waits.",
+            "Optimize video playback scrubbing by modifying the pause condition logic to only wait for pre-roll when speed is non-zero, allowing smoother timeline navigation without unnecessary delays.",
+            "Optimize video scrubbing performance by modifying the pause condition to only check video cache readiness when playback speed is non-zero, allowing timeline navigation without waiting for pre-roll cache preparation."
+          ],
+          "optimization_summary_huawei_final": "Optimize video scrubbing performance by modifying the pause condition to only check video cache readiness when playback speed is non-zero, allowing timeline navigation without waiting for pre-roll cache preparation.",
+          "reused_from": "generated",
+          "file_start_line": 74,
+          "file_end_line": 79,
+          "line_offset": 43,
+          "func_start_line": 31,
+          "func_end_line": 36,
+          "before_func_total_lines": 87
+        },
+        {
+          "repository_name": "PandA-bambu",
+          "hash": "6ee89cab6b771aacb2ddb6a4fc7d5b0316a10744",
+          "author": "Fabrizio Ferrandi",
+          "date": "2019-01-08T18:00:56+01:00",
+          "message": "Improved debug messages.",
+          "modified_files_count": 1,
+          "modified_files": [
+            "src/frontend_analysis/IR_manipulation/commutative_expr_restructuring.cpp"
+          ],
+          "github_commit_url": "https://github.com/ferrandi/PandA-bambu/commit/6ee89cab6b771aacb2ddb6a4fc7d5b0316a10744",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "commutative_expr_restructuring::InternalExec"
+          ],
+          "optimization_summary_huawei": [
+            "Replace string concatenation with direct method calls when constructing debug messages to avoid unnecessary string operations.",
+            "Replace string concatenation with direct object-to-string conversion when generating debug messages to avoid unnecessary string operations.",
+            "Replace string concatenation with STR() macro with direct ToString() method calls when generating debug messages to avoid unnecessary string conversions.",
+            "Replace string concatenation with direct method calls when constructing debug messages to avoid temporary string allocations.",
+            "Replace string concatenation with direct method calls when constructing debug messages to avoid unnecessary string operations."
+          ],
+          "optimization_summary_huawei_final": "Replace string concatenation with direct method calls when constructing debug messages to avoid unnecessary string operations.",
+          "reused_from": "generated",
+          "file_start_line": 199,
+          "file_end_line": 199,
+          "line_offset": 175,
+          "func_start_line": 24,
+          "func_end_line": 24,
+          "before_func_total_lines": 252
+        },
+        {
+          "repository_name": "ipa_coverage_planning",
+          "hash": "4a8eed1aa2f8c5234282042b907d6d4c008550c2",
+          "author": "Richard Bormann",
+          "date": "2017-06-23T15:41:25+02:00",
+          "message": "small improvements",
+          "modified_files_count": 1,
+          "modified_files": [
+            "ipa_room_exploration/ros/src/room_exploration_action_server.cpp"
+          ],
+          "github_commit_url": "https://github.com/ipa320/ipa_coverage_planning/commit/4a8eed1aa2f8c5234282042b907d6d4c008550c2",
+          "contains_optimization_keyword": true,
+          "modified_func_count": 1,
+          "modified_other": false,
+          "modified_func": [
+            "RoomExplorationServer::exploreRoom"
+          ],
+          "optimization_summary_huawei": [
+            "Replace hard-coded numeric constants with named enumerations when checking conditionals to improve code readability and maintainability.",
+            "Replace magic numbers with named constants in conditionals to improve code readability and maintainability while avoiding potential errors from hard-coded values.",
+            "Replace magic numbers with named constants in conditional statements to improve code readability and maintainability while maintaining performance.",
+            "Replace magic numbers with named constants in condition checks to improve code readability and maintainability while ensuring consistent value usage.",
+            "Replace magic numbers with named constants in condition checks to improve code readability and maintainability while maintaining performance."
+          ],
+          "optimization_summary_huawei_final": "Replace magic numbers with named constants in conditionals to improve code readability and maintainability while avoiding potential errors from hard-coded values.",
+          "reused_from": "generated",
+          "file_start_line": 306,
+          "file_end_line": 308,
+          "line_offset": 286,
+          "func_start_line": 20,
+          "func_end_line": 22,
+          "before_func_total_lines": 209
+        }
+      ]
+    }
+  ],
+  "noise_points": []
+}

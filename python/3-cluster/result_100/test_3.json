@@ -1,0 +1,80 @@
+{
+    "clusters": [
+        {
+            "cluster_id": 1,
+            "size": 17,
+            "commits": [
+                {
+                    "repository_name": "tensorflow",
+                    "hash": "064772d6f1bc3048dd3c8dd8da5c2a27179b972f",
+                    "author": "Mehdi Amini",
+                    "date": "2021-12-28T22:26:49-08:00",
+                    "message": "Apply clang-tidy fixes for performance-for-range-copy in optimize_mhlo.cc (NFC)\n\nPiperOrigin-RevId: 418727791\nChange-Id: I0eb619996990f46f4b0150257909974772220e5e",
+                    "modified_files_count": 1,
+                    "modified_files": [
+                        "tensorflow/compiler/mlir/hlo/lib/Dialect/mhlo/transforms/optimize_mhlo.cc"
+                    ],
+                    "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/064772d6f1bc3048dd3c8dd8da5c2a27179b972f",
+                    "contains_optimization_keyword": true,
+                    "modified_func_count": 1,
+                    "modified_other": false,
+                    "modified_func": [
+                        "matchAndRewrite"
+                    ],
+                    "added_lines": 2,
+                    "deleted_lines": 2,
+                    "total_changed_lines": 4,
+                    "net_line_change": 0,
+                    "modified_code_blocks": 2,
+                    "is_opt_ds_simple": "true",
+                    "optimization_summary": [
+                        "Use pass-by-reference with `const auto&` instead of pass-by-value when iterating over enumerated containers in range-based for loops to avoid unnecessary object copying.",
+                        "Use pass-by-reference with const qualifier instead of pass-by-value when iterating over range-based for loops to avoid unnecessary object copying.",
+                        "Use pass-by-reference with `const auto&` instead of pass-by-value when iterating over elements in range-based for loops to avoid unnecessary object copying."
+                    ],
+                    "optimization_summary_final": "Use pass-by-reference with `const auto&` instead of pass-by-value when iterating over elements in range-based for loops to avoid unnecessary object copying.",
+                    "file_start_line": 91,
+                    "file_end_line": 103,
+                    "func_start_line": 48,
+                    "func_end_line": 60,
+                    "representativeness_score": 0.7610502243041992
+                    },
+                    {
+                    "repository_name": "tensorflow",
+                    "hash": "e24ab749b4cc14cb90096775874d8c108dad8c5d",
+                    "author": "Mehdi Amini",
+                    "date": "2021-12-28T19:32:31-08:00",
+                    "message": "Apply clang-tidy fixes for performance-for-range-copy in legalize_einsum_to_dot_general.cc (NFC)\n\nPiperOrigin-RevId: 418711475\nChange-Id: Ibaddae9020ed7e38ccc9c91859b21bf192e40fc7",
+                    "modified_files_count": 1,
+                    "modified_files": [
+                        "tensorflow/compiler/mlir/hlo/lib/Dialect/mhlo/transforms/legalize_einsum_to_dot_general.cc"
+                    ],
+                    "github_commit_url": "https://github.com/tensorflow/tensorflow/commit/e24ab749b4cc14cb90096775874d8c108dad8c5d",
+                    "contains_optimization_keyword": true,
+                    "modified_func_count": 1,
+                    "modified_other": false,
+                    "modified_func": [
+                        "matchAndRewrite"
+                    ],
+                    "added_lines": 1,
+                    "deleted_lines": 1,
+                    "total_changed_lines": 2,
+                    "net_line_change": 0,
+                    "modified_code_blocks": 1,
+                    "is_opt_ds_simple": "true",
+                    "optimization_summary": [
+                        "Use pass-by-reference instead of pass-by-value when iterating with llvm::enumerate in range-based for loops to avoid unnecessary object copying.",
+                        "Use pass-by-reference instead of pass-by-value when iterating with llvm::enumerate to avoid unnecessary object copying in range-based for loops.",
+                        "Use pass-by-reference instead of pass-by-value when iterating over enumerated containers in range-based for loops to avoid unnecessary object copying."
+                    ],
+                    "optimization_summary_final": "Use pass-by-reference instead of pass-by-value when iterating with llvm::enumerate in range-based for loops to avoid unnecessary object copying.",
+                    "file_start_line": 77,
+                    "file_end_line": 77,
+                    "func_start_line": 53,
+                    "func_end_line": 53,
+                    "representativeness_score": 1.0
+                }
+            ]
+        }
+    ]
+}

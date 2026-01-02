@@ -1,0 +1,3463 @@
+{
+    "execution_info": {
+        "start_time": "2025-07-19 04:09:23",
+        "end_time": "2025-07-19 04:45:36",
+        "duration_seconds": 2173,
+        "input_file": "/ssd/zyw/llm_on_code/llm_on_code_optimization/python/2-cluster_new/result_30342/0_89_5_True_order.json",
+        "output_result_file": "/ssd/zyw/llm_on_code/llm_on_code_optimization/python/2-cluster_new/result_30342/0_89_5_True_order_simple_processing_result.json",
+        "config_used": {
+            "simple_process_cluster_limit": 0,
+            "simple_commits_per_cluster": 10,
+            "simple_cluster_max_workers": 8,
+            "simple_commit_max_workers": 8,
+            "commit_generation_count": 5,
+            "commit_reuse_existing": true,
+            "llm_max_generation_rounds": 7,
+            "llm_use_langsmith": false
+        }
+    },
+    "overall_statistics": {
+        "total_clusters": 155,
+        "processed_clusters": 90,
+        "total_commits_with_existing_rules": 876,
+        "total_commits_newly_processed": 256,
+        "total_commits_newly_successful": 256,
+        "total_commits_with_rules": 1132,
+        "total_rules_generated": 1211,
+        "success_rate_new_commits": 1.0
+    },
+    "cluster_results": [
+        {
+            "cluster_id": 1,
+            "cluster_index": 0,
+            "commits_with_existing_rules": 17,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 17,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 2,
+            "cluster_index": 1,
+            "commits_with_existing_rules": 15,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 15,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 3,
+            "cluster_index": 2,
+            "commits_with_existing_rules": 12,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 12,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 4,
+            "cluster_index": 3,
+            "commits_with_existing_rules": 12,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 12,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 5,
+            "cluster_index": 4,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 19,
+            "commit_details": [
+                {
+                    "repository_name": "haiku",
+                    "hash": "e196501316ab1f2c0b1ece664af6b508abfe9006",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "naev",
+                    "hash": "c19b1a8252c93a5fe229f88ecf42b8bf6bf882c1",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ravynos",
+                    "hash": "6ea6500b7eba4165c351cbbfcdec7f2fe776f8ac",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ReGameDLL_CS",
+                    "hash": "09e714e339a1a8198a265dd1f880fa9ccf5725bc",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "helenos",
+                    "hash": "2519349d829fafe584aeabcb3b72f219367e9dfb",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 6,
+            "cluster_index": 5,
+            "commits_with_existing_rules": 10,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 7,
+            "cluster_index": 6,
+            "commits_with_existing_rules": 11,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 11,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 8,
+            "cluster_index": 7,
+            "commits_with_existing_rules": 12,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 12,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 9,
+            "cluster_index": 8,
+            "commits_with_existing_rules": 11,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 11,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 10,
+            "cluster_index": 9,
+            "commits_with_existing_rules": 11,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 11,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 11,
+            "cluster_index": 10,
+            "commits_with_existing_rules": 10,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 12,
+            "cluster_index": 11,
+            "commits_with_existing_rules": 13,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 13,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 13,
+            "cluster_index": 12,
+            "commits_with_existing_rules": 11,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 11,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 14,
+            "cluster_index": 13,
+            "commits_with_existing_rules": 8,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 7,
+            "commit_details": [
+                {
+                    "repository_name": "bart",
+                    "hash": "86026f3523f26cbe7ac5464fb2dc6a580deef722",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ooc_svo_builder",
+                    "hash": "6c8166dd00efe8dc3cbe4b8d401878a0714a90ef",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 15,
+            "cluster_index": 14,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "gemrb",
+                    "hash": "291378b6ad2d16af2626bf81d5caf71bc694feb6",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "uclibc-ng",
+                    "hash": "40525510c2b995091498b61404474a6e74eb7cac",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "glibc",
+                    "hash": "483cfe1a6a33d6335b1901581b41040d2d412511",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "libuv",
+                    "hash": "3909e7f6c67ec36d4f1be027ed383e0b2109f48d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ctags",
+                    "hash": "f9bc23faf6a01dabde3f376e6efbeec1d7368f9a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 16,
+            "cluster_index": 15,
+            "commits_with_existing_rules": 10,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 17,
+            "cluster_index": 16,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 23,
+            "commit_details": [
+                {
+                    "repository_name": "glusterfs",
+                    "hash": "6d14f6b99d7e4e4d43651108fc701b01241021b0",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "glusterfs",
+                    "hash": "ac7a6f75844ca85aa52ba8256d0f711fc4c5918b",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "glusterfs",
+                    "hash": "50e64cdda5ab29d729f7507cc66bc89a0d5716ec",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "glusterfs",
+                    "hash": "b87b341e1a69a34bc8b275bb8b9b05130cc4e85f",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "glusterfs",
+                    "hash": "63cfa626ed617476a37d82435552ca7f34cdf654",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 18,
+            "cluster_index": 17,
+            "commits_with_existing_rules": 10,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 19,
+            "cluster_index": 18,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 19,
+            "commit_details": [
+                {
+                    "repository_name": "ceph",
+                    "hash": "94fd423934a7a26b0da5c289698f97ecee660beb",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ceph",
+                    "hash": "4683ce422594dc1dcbc3df591a996c0647c76887",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "cbmc",
+                    "hash": "e94208f8042e35ce0d642be95e58f210e4b45b9f",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "cbmc",
+                    "hash": "1a7033ac6ecee7177d2ebf4c292e34ff6f30b87b",
+                    "rules_generated": 2,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "legato-af",
+                    "hash": "647d59606ccbe925d4dcd44ffe0fdd25dec0d181",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 20,
+            "cluster_index": 19,
+            "commits_with_existing_rules": 8,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "gdal",
+                    "hash": "48fc16e546219221d74dc13763583b78a0036c24",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "doomretro",
+                    "hash": "b93bcc62c47ee063c0ebad85d6658d40d8ab4f0a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 21,
+            "cluster_index": 20,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "qtbase",
+                    "hash": "6d3e9be1d294fdb5f75467b85f6ed1838a7ecc92",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "qtbase",
+                    "hash": "9f0d5b3b6cf61008abad340f18c543d6c109a0a8",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "qtbase",
+                    "hash": "037ba8d7afb6a4b5191918a7ddf182cc25c7b16f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "qtbase",
+                    "hash": "a12cc29cf542cb7c325da6b266d1179d13c3b831",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "qtbase",
+                    "hash": "699df74197dddf2feb2d469009e2794e012e9109",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 22,
+            "cluster_index": 21,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 24,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "c4bde29cb0f3a520e3dd666e523f9a576a47a47a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "4012dda3c160f2d5c615413a224bdb6333698e2c",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "c5266d40b0a26546d0ebedb44dd4145088b85cb8",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "ebff7b41b67d9ba2efac0eb3fb02fe90dcc75737",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "3a8e87ec2376f8844af1a1b924a19e151a85d65a",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 23,
+            "cluster_index": 22,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 21,
+            "commit_details": [
+                {
+                    "repository_name": "gzdoom",
+                    "hash": "ffdd0a11ea94c1b3a6ae69ae7bb494e15908fd87",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "jpeg2png",
+                    "hash": "029a78a47adbf7078aef51e96ca88cf2c81b7715",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "998a5a7d6aabe7e450759e0d82c8a79afd5a97ff",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "rtl_433",
+                    "hash": "a826daec5df675db32b2f2c98c8e19569d871210",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "u-boot",
+                    "hash": "97f57109bb750d0b2908d6ecd4aef3801baf1cf2",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 24,
+            "cluster_index": 23,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 24,
+            "commit_details": [
+                {
+                    "repository_name": "dpdk",
+                    "hash": "3778059a51fcbc6b989ca7503a3ff89f6945ddd2",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "QSanguosha",
+                    "hash": "74badeeaa4a724a20e85434b7f49c8f45032a8f3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "redex",
+                    "hash": "1a9009698fe1553f24fd665cbc95432db265d81b",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "rspamd",
+                    "hash": "79a6671de054b5f03eb4a9cb9b8851d3e111a295",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "helm",
+                    "hash": "f20222b4ac0431d5e84ab3d40981d427b89de552",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 25,
+            "cluster_index": 24,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "vtr-verilog-to-routing",
+                    "hash": "a3aef6dd4a230783c310236030011446437856fe",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "TrenchBroom",
+                    "hash": "387303a1a2c789a999b957f28e736279f8bb1344",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "bitcoin",
+                    "hash": "b77bad309e92f176f340598eec056eb7bff86f5f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "clang",
+                    "hash": "b53de5451df80bde0b66f3ce1e7e5b3b2dd44406",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ADS",
+                    "hash": "3bd72266c31fef43d1b23ef3d41fbcd35ef38bbd",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 26,
+            "cluster_index": 25,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "421348f1ca0bf17769dee0aed4d991845ae0536d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "android_kernel_oneplus_msm8974",
+                    "hash": "b51c8db5eb83b14921e6017aa9c67b82f80260b1",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "samsung-exynos9820",
+                    "hash": "09d43edcdaef8961f01ae499b836e3cb39e47f83",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "2ce02a864ac1a2bf99baeb20d38100d2cc413ac2",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "mOS",
+                    "hash": "65fe40ed5d023bcc66b499f1cb369322e11dc211",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 27,
+            "cluster_index": 26,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 24,
+            "commit_details": [
+                {
+                    "repository_name": "gemmi",
+                    "hash": "4682e02d4921d90cfb442e64cb6c374851088e16",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "skia",
+                    "hash": "eee606c7bf6b343429dcdbf56b6b71bd83575060",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "opm-simulators",
+                    "hash": "5182fef48d18ee6b47f41578c57e811dcbb83c5a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "KeyDB",
+                    "hash": "3c9778ce79f72ac154a25b0818377aa5ce97e5ac",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "pcl",
+                    "hash": "90cb3721d4b43f6b88f5468944ccc12ec01500da",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 28,
+            "cluster_index": 27,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 24,
+            "commit_details": [
+                {
+                    "repository_name": "freeLib",
+                    "hash": "53c4f63f88471e231a04c32cdcafeb0ec50c53d1",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "freeLib",
+                    "hash": "5287b006dfda2d6c29b19c7e4c923ad9bb92fe9a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "mythtv",
+                    "hash": "3abfcee3714b252a62543595a443375e22cf9226",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "client",
+                    "hash": "e1e259679009dc28b5ffc4c924c787ce31fe0e17",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "plasma-workspace",
+                    "hash": "fe6105e64cc742b38e984d0051a475a0e5c73c98",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 29,
+            "cluster_index": 28,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 24,
+            "commit_details": [
+                {
+                    "repository_name": "openMVG",
+                    "hash": "4500417e4b63dc6d4443a73e967a26d46db6adb5",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "metagraph",
+                    "hash": "cb627276b41d66278368f19710a34af29aaaf726",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "pandora",
+                    "hash": "1bcdec7580d9be2cbaf0963ab4e9fc1bd2ddd3c7",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "pandora",
+                    "hash": "57593a28fb24ebc3f0ca1874f6109898fe654bef",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "rawspeed",
+                    "hash": "56828568d226bf66fb0eec4878a1ef0203f42854",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 30,
+            "cluster_index": 29,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 23,
+            "commit_details": [
+                {
+                    "repository_name": "eiskaltdcpp",
+                    "hash": "6ff2c92cfbdaa1439fb54c1ec1fcd9d457ff3618",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "XCSoar",
+                    "hash": "220b0386c11a531855f94de6920d5433663963b3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "dovecot-ceph-plugin",
+                    "hash": "0f649f76bda6054ce178e4f740ad36491fc727c6",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "kakoune",
+                    "hash": "367879ddcf7f332a04cc844ad683caf1c94c933c",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "dosbox-staging",
+                    "hash": "5ca780f9dc9587592ee8df678427326006c757bd",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 31,
+            "cluster_index": 30,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "debian_kernel",
+                    "hash": "df08b04c9a3f2925e34f778bf20d37623635c306",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "d0db2e7ae788d84ff6d0a1cd4dc935282db29073",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "debian_kernel",
+                    "hash": "98fe237d868087d7108fde3da27fcbb531d25ca9",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "debian_kernel",
+                    "hash": "d3a177c71852d2eac42c74a6b2cb7af242061d21",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "debian_kernel",
+                    "hash": "03bc67f592760de5b16a48cb07ca02ecedf5fa11",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 32,
+            "cluster_index": 31,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "Doomsday-Engine",
+                    "hash": "0f30fa7d50fda9e426ec66aa3610e7af855104d2",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "calligra",
+                    "hash": "b794c4b64487455e0309bb6f033e6766717a1b11",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "esp32-snippets",
+                    "hash": "07383014bdcc30b3c1ef56b8f903788c119a6a71",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "Osiris",
+                    "hash": "e12aeab9c3d29a902913ec59238eab363afa5635",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "Catch2",
+                    "hash": "cf55cfd76f0088a61088169508cc1d014f323875",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 33,
+            "cluster_index": 32,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 22,
+            "commit_details": [
+                {
+                    "repository_name": "xbmc",
+                    "hash": "26e4c118b203ce3b19ceba205f653860b8bff30c",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "openmw",
+                    "hash": "0b5d5eab4c997789b1a3eab5b9da8406f6fc1552",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "r5sdk",
+                    "hash": "59593c4d5b8a20d1361916cf9ca674d62cf37889",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "Floorp",
+                    "hash": "cfcb828bb223df2f3f624ec3399c124b4cee73cc",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "fbthrift",
+                    "hash": "fa61e7dc83a0dbba24d907108a459843a4bc8ccf",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 34,
+            "cluster_index": 33,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "swapdb",
+                    "hash": "7d4ff559a70dbb0b26f9679201651175da7c0ce5",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "bit7z",
+                    "hash": "1adc58bdc4c8744666f94024e27716e1f239c16f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ArxLibertatis",
+                    "hash": "aa7cd36c594cf2076518f7eda95535abf28e3cae",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "citra",
+                    "hash": "f34dde32d10413d0540c8cd91bf192267a619697",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "cheerp-compiler",
+                    "hash": "f730fb7f459f59356d70449acd17615c4902a696",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 35,
+            "cluster_index": 34,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 24,
+            "commit_details": [
+                {
+                    "repository_name": "sycl",
+                    "hash": "2c8ebab32eadbc749e669a6529d6a40929ae5d14",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "llvm-leg",
+                    "hash": "97d19ebe5b5bf27617e536a16fa232116cefe914",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "sycl",
+                    "hash": "37d30835f0592c32aa403e8ade88b8fc2ad2d612",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "sycl",
+                    "hash": "e9740a469200a74232df1da26d281993daac838d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "sycl",
+                    "hash": "b5ee5168a36807155a596c70e19e0b0446acc941",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 36,
+            "cluster_index": 35,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "mOS",
+                    "hash": "be4ad944b3bc5ef5a85601d19b92fa8e301617ff",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "knot",
+                    "hash": "c8b53c8d86f1501611c8627f313fd6e87ec19b84",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "open62541",
+                    "hash": "9a76e4496bba211f8dd54756ed8ead09ade58ea0",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "lwan",
+                    "hash": "9b3bdf531e6c8b6ff211f90e75c3a2c90d146c79",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ocproxy",
+                    "hash": "e7ba9f06e5b603cd3cec59686ee7a6b80f37e6dc",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 37,
+            "cluster_index": 36,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 22,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "8afbcaf8690dac19ebf570a4e4fef9c59c75bf8e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "3c8bc3954d771fc4889508ad5d16f084adc4d64d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "95e3a97387d6c396172f944b45bd515c7d1e8bc2",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "0de61d739c21003201a0adb1f5c403f89a7c2441",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "911488de0565f1d53bd36174d20917ebc4b44c0e",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 38,
+            "cluster_index": 37,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "linux-rockchip",
+                    "hash": "306223f885fa9cf355deeb84be0e6594cf4a1680",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux-rockchip",
+                    "hash": "e66f3039c7922cc76ec555363f3e2a4cd224397d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "android_kernel_brcm_rpi",
+                    "hash": "090c1ebf8df486416758ef042193c12e8e35c5c1",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "android_kernel_xiaomi_marble",
+                    "hash": "284a3a5b027d504be4ccd855bad60e73c2230c1d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "c25da5b7baf1d243e6612ba2b97e2a2c4a1376f6",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 39,
+            "cluster_index": 38,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "FFmpeg",
+                    "hash": "e624df5dc33fb1ded7b8b23a72565f882dbb0387",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ParallelIO",
+                    "hash": "7114c751da4ba7c7faa2355a9ac03c229417d9f3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "stellarium",
+                    "hash": "661f5d3bc138744f83e2452efda76c6bbdde497a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "PrusaSlicer",
+                    "hash": "a554f1fb089ccbc6fee995571091054703ca181d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "Carla",
+                    "hash": "396554e377508f8e629c25d5361ed5b495717e90",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 40,
+            "cluster_index": 39,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 23,
+            "commit_details": [
+                {
+                    "repository_name": "efl",
+                    "hash": "4ad9081c81eefacc5b79738561017042371b137f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "miner",
+                    "hash": "3c570f3908a3ebdb30b41ce0846ee41f9ce25abe",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "petsc",
+                    "hash": "4c0dbd8d9ffab79a3b6bd0a1a69f9c87d25f6e92",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "gtk-gnutella",
+                    "hash": "e40759d7765b220086a35b97ecb8550188e8718a",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "KallistiOS",
+                    "hash": "274d659a446b12c785f2e01bfc4b2982821021ae",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 41,
+            "cluster_index": 40,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "ain",
+                    "hash": "3d341d75b33a99ca6e2fc36b6d3d219a28cdd310",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "1e13503e65ee243539077ba09f72841d2dfb15c4",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "peercoin",
+                    "hash": "907b41227d6c5800d73d47a4ce37c44ce06fbf4f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "bitcoin-abc",
+                    "hash": "966fa58918e3bccf7325f3ef4ae5bb21642f1980",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "27e8eb25f9655cd2a64d41ea88e755f8f4fe34b3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 42,
+            "cluster_index": 41,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "b765bc9968de022cc7dfc745d23de595fcc2b6cd",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "1765378dfb10d4feedfc71cd721c4140d927c488",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "2ddd1e6ccb139b9e7f1fed2883e34add832cbd77",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "drm-kmod",
+                    "hash": "02fff247453bbea9be2bfc36f152d4938d44d9fa",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "1d4f70a65fafb484064b9c7caa7318e9fd2ab737",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 43,
+            "cluster_index": 42,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 21,
+            "commit_details": [
+                {
+                    "repository_name": "bibletime",
+                    "hash": "ec258130f12b07abba9be6a7a6cdc07b42529903",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "mythtv",
+                    "hash": "ece3c7e697949859ad582f2ddae738a7c7253b6b",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "bibletime",
+                    "hash": "7df43f0305698d5f51905bb18e6da416d967b7b5",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "bibletime",
+                    "hash": "69d648c556b65d1e4600837274997162f7245a2c",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "bibletime",
+                    "hash": "750fc6d638dd10c1209642129000172c59c419d3",
+                    "rules_generated": 2,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 44,
+            "cluster_index": 43,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "ain",
+                    "hash": "c0aa00f405685302af7befd67984292ebde77992",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "raptoreum",
+                    "hash": "17177202a0632bc54ac86c15b8adf4520510d970",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "65350ab4ed782ef1d011b4c72267bb95382faa9f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "merit",
+                    "hash": "6bc0b0d6ad6cd13a4cec0632fbcda8d252af1bb7",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "a448dea24450adb4e33a2d625a642c0529c7124e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 45,
+            "cluster_index": 44,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 25,
+            "commit_details": [
+                {
+                    "repository_name": "RIOT",
+                    "hash": "b3b7fe790f317715f19613ecb112b664ccf7bd9f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "RIOT",
+                    "hash": "15b5e09d9fc6abd1e0ba9ec2fc52bafacd0497af",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "RIOT",
+                    "hash": "4e05254eb71f23a540413c1b4658db62223b1b59",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "RIOT",
+                    "hash": "6b9ca4d5c0aab0fc7cbe52aa860905da2382e51d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "RIOT",
+                    "hash": "6dd73a0e706da7e882e45b4833da1c5c2d84a7a5",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 46,
+            "cluster_index": 45,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 5,
+            "commits_newly_successful": 5,
+            "total_commits_with_rules": 10,
+            "total_rules_generated": 22,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "76edc27eda068fb8222c452d522d4c93bcebe557",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "4264be505d9f3657de9626f551099e595b2ae7fe",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "b6ed2f7758a558485ff889b4a3912fcb6abcf689",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "wireguard-linux",
+                    "hash": "b149353da471ddfc5d6e698784cf22bc55bff68b",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "wireguard-linux",
+                    "hash": "8ebab155ea18a6d6c47b17287a0ab4633334f6eb",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 47,
+            "cluster_index": 46,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 4,
+            "commits_newly_successful": 4,
+            "total_commits_with_rules": 9,
+            "total_rules_generated": 17,
+            "commit_details": [
+                {
+                    "repository_name": "bitcoin",
+                    "hash": "3d3d8ae3a0a93621044ab0b889bad082cc91d016",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "8a8869e7d284959706ba6371a3bfa6163d06c248",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "87af46e2db0fcaf4f2e7d0509a62a649872bbcdb",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "6131369f5ca5f642f52fc2aa8af84f7c28ab8841",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 48,
+            "cluster_index": 47,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 4,
+            "commits_newly_successful": 4,
+            "total_commits_with_rules": 9,
+            "total_rules_generated": 19,
+            "commit_details": [
+                {
+                    "repository_name": "scummvm",
+                    "hash": "feb8787de61a23c7a575a17a0d4a837285229060",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "scummvm",
+                    "hash": "eb9b4e719286e4a6e07055ff8c6afc9203ebd51f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "scummvm",
+                    "hash": "a5ddb538607e7e7c1c92468b575faeeed805e9fc",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "scummvm",
+                    "hash": "3e55256692c88a2b15289e16f337a51b3ab2c85d",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 49,
+            "cluster_index": 48,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 4,
+            "commits_newly_successful": 4,
+            "total_commits_with_rules": 9,
+            "total_rules_generated": 19,
+            "commit_details": [
+                {
+                    "repository_name": "ytsaurus",
+                    "hash": "30fda9c3a8120df019a1f364f8370e95f9e65a1b",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "mame",
+                    "hash": "010bd4265d28669a1ca127e6679e475ec88f230e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "acts",
+                    "hash": "d74d411914b368cf54609f0c00adcfe97fb623c3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "node",
+                    "hash": "343172430e5c194b78f3526644078a318aaf2d95",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 50,
+            "cluster_index": 49,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 4,
+            "commits_newly_successful": 4,
+            "total_commits_with_rules": 9,
+            "total_rules_generated": 20,
+            "commit_details": [
+                {
+                    "repository_name": "ain",
+                    "hash": "d8b0772f776ffb4a5b2f79b33bf91c7a9de8c94e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "0884861f8bd3c85f01295f33d1f719b1d898ef69",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "3bdfcd4e830ecb9e29de5166cca1137f0b2f6fab",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "3d9a69f729dfff760a1c9413014d47b130021af1",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 51,
+            "cluster_index": 50,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 4,
+            "commits_newly_successful": 4,
+            "total_commits_with_rules": 9,
+            "total_rules_generated": 20,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "91b74bf5310b22ac3286d8e9b5354b77f41af178",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "809ed78a832df8b4ef81fee03570566c8f088f3a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "554d21efb0d2e102a14f8c4b6bdfbcfbe54b3c65",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "wireguard-linux",
+                    "hash": "347bd7f072ea8c36e4becf32c76ee7e96bc7b1c3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 52,
+            "cluster_index": 51,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 4,
+            "commits_newly_successful": 4,
+            "total_commits_with_rules": 9,
+            "total_rules_generated": 20,
+            "commit_details": [
+                {
+                    "repository_name": "qtbase",
+                    "hash": "8eb721468e9462605368d0469d404c0ee6fab854",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "qt-creator",
+                    "hash": "f0f657873f9f3584a776d904d21f0955a28b022e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "qtbase",
+                    "hash": "203f4b93cf17c9a9942c9a2ce6de6bf1d1d3287b",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "qtdeclarative",
+                    "hash": "a54a5fee80e3cf0dffd9498db2d1948ce906e21d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 53,
+            "cluster_index": 52,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 4,
+            "commits_newly_successful": 4,
+            "total_commits_with_rules": 9,
+            "total_rules_generated": 20,
+            "commit_details": [
+                {
+                    "repository_name": "Telegram-iOS",
+                    "hash": "ea4c4bd5c088b5e57281cf93bcbd57b9c104bfac",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "scummvm",
+                    "hash": "79d40d5ac4aef7d62c319e1b1ee25f9974b293c3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "scummvm",
+                    "hash": "2683f2402165ded53396fa9e7b537bac6a004b3e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "scummvm",
+                    "hash": "fb66768fe961297e40da063ab7f6c77575c43a00",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 54,
+            "cluster_index": 53,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 3,
+            "commits_newly_successful": 3,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 15,
+            "commit_details": [
+                {
+                    "repository_name": "Kratos",
+                    "hash": "e0a64867d08bdde1ccae7165b09d06bc68bc9d52",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "lz4",
+                    "hash": "34fe7c9d7f4fbeeb42c22f4ad1a01c1771d14268",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "lz4",
+                    "hash": "e416cc9baa8f228108175b3551726c3f04aec3ee",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 55,
+            "cluster_index": 54,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 3,
+            "commits_newly_successful": 3,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 15,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "36dd2a6e5003a215a1d45e41589164dabae0ec5a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "154fb14df7a3c81dea82eca7c0c46590f5ffc3d2",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux-xtensa",
+                    "hash": "4cabaa0517a9c6157ef5e953825dcd1907ff4d69",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 56,
+            "cluster_index": 55,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 3,
+            "commits_newly_successful": 3,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 15,
+            "commit_details": [
+                {
+                    "repository_name": "vpp",
+                    "hash": "791b7ace176ab13e353ed5d88aa9f90db135404f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "dpdk",
+                    "hash": "39d21077e5258cbbb17eed07111f16a799ea2fa8",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "dpdk",
+                    "hash": "66fc1704a7ca3232d9e452cc486381e2bbe940b3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 57,
+            "cluster_index": 56,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 3,
+            "commits_newly_successful": 3,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 13,
+            "commit_details": [
+                {
+                    "repository_name": "graphia",
+                    "hash": "0beafa90bd842c535af938700e02e215737bab14",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "s25client",
+                    "hash": "8b0c4678d1628098abf9a6621bd93046d730ffec",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "usher",
+                    "hash": "55cb2f1c61f24e8c620e16d04f8f2d414c7ccdaa",
+                    "rules_generated": 3,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 58,
+            "cluster_index": 57,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 3,
+            "commits_newly_successful": 3,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 15,
+            "commit_details": [
+                {
+                    "repository_name": "qbs",
+                    "hash": "d3ee6be6a2e72752697b3b7d1af009770dbc01d6",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "XCSoar",
+                    "hash": "cb920b921f17c158a93be4c32b43f4704392ae3d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "libtorrent",
+                    "hash": "a8562a9f1991dbe4027265b2003dbbc5ebf04a76",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 59,
+            "cluster_index": 58,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 3,
+            "commits_newly_successful": 3,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 15,
+            "commit_details": [
+                {
+                    "repository_name": "ain",
+                    "hash": "ffad2fb4bf0dfaa3472146fb80cff04f554e51cc",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "bitcoinxt",
+                    "hash": "9a39a3303a1239a6d1b40385a50f4b6f1604fde5",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "ain",
+                    "hash": "283a2aff19568fff76dca1565569b76612c64271",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 60,
+            "cluster_index": 59,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 3,
+            "commits_newly_successful": 3,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 11,
+            "commit_details": [
+                {
+                    "repository_name": "busybox",
+                    "hash": "d52c9510fd3a9407044166360fe8b752fd841efc",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "doomretro",
+                    "hash": "69c4a07d0bd08ef410fde8adf2fb6a125edcd9d9",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "CuraEngine",
+                    "hash": "30c2d7fbda9d95666f2cd9d1432b2378e98c87e2",
+                    "rules_generated": 1,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 61,
+            "cluster_index": 60,
+            "commits_with_existing_rules": 7,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 8,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "FFmpeg",
+                    "hash": "ad795f6394563b11a3038d04ef1df6a9ce32bfdb",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 62,
+            "cluster_index": 61,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "llvm-leg",
+                    "hash": "8a8a4350db3e66a517dc179ba38439c66bb726a8",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "sycl",
+                    "hash": "ef60190a00b631436781308a7c9ac4c783ee10e7",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 63,
+            "cluster_index": 62,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "llvm-leg",
+                    "hash": "5e7d0e26915cb035be621b86a591e96950e5b628",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "llvm-leg",
+                    "hash": "0f777ab96a2a99b98a2738d0b7a6375a8224e7e2",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 64,
+            "cluster_index": 63,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "d32xr",
+                    "hash": "ebf823688260832901dea1aff258f31ede6c0a2c",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "FastDoom",
+                    "hash": "2be0ed2b76dc8fa82e3f5ea7b0daed5ff598c502",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 65,
+            "cluster_index": 64,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "KernelSU-Pixel4XL",
+                    "hash": "d27047379e949a26081ffe4a688aac65872778a4",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "2836615aa22de55b8fca5e32fe1b27a67cda625e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 66,
+            "cluster_index": 65,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "KernelSU-Pixel4XL",
+                    "hash": "dcca4c79b0a0078e3c2eaeab62a833cebacc7932",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "android_kernel_xiaomi_sdm845",
+                    "hash": "34912e67616001a9ad4c2eafe68932b7b3f38c2e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 67,
+            "cluster_index": 66,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "8dcf932d541487307fc7388ebfad5955f5fae098",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "16742f2d7c1004bea5222a19428196b7125a41d1",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 68,
+            "cluster_index": 67,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 9,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "7a3a63238fc1d93aa998671de56af2202d776010",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "linux",
+                    "hash": "2589bd8242d74430b7a91109cfe59f2e2173e1bd",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 69,
+            "cluster_index": 68,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "android_kernel_msm-5.4_nothing_sm7325",
+                    "hash": "adfd6355fc8bfa891d25110293aa06ae94593a47",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "kernel",
+                    "hash": "fbae1a97ce342470dcf2c3f51e63faf2e8e557f0",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 70,
+            "cluster_index": 69,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 2,
+            "commits_newly_successful": 2,
+            "total_commits_with_rules": 7,
+            "total_rules_generated": 10,
+            "commit_details": [
+                {
+                    "repository_name": "mantid",
+                    "hash": "cdd3f2ba1f486005e0510ec9bb1370ffacc9f46a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                },
+                {
+                    "repository_name": "mantid",
+                    "hash": "3d4b9dcde1a75e404e1f190ccd83aeb0a6b99db1",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 71,
+            "cluster_index": 70,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "transmission",
+                    "hash": "8d7fbb5d454eba87789f6f52f57878680b9e5c43",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 72,
+            "cluster_index": 71,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "sycl",
+                    "hash": "39ad6f2772684cffca3d636c06b2d6e3830bdf8e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 73,
+            "cluster_index": 72,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "peercoin",
+                    "hash": "ae050fe11cb009c2f436ba2f156a1760a412a1cf",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 74,
+            "cluster_index": 73,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "linux-xtensa",
+                    "hash": "d2a5f10bf1f123f6d9a7fb4be4cd92f6e95c129d",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 75,
+            "cluster_index": 74,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "FFmpeg",
+                    "hash": "f15477169ea9947336448af2772087c8fa1c6cdf",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 76,
+            "cluster_index": 75,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 1,
+            "commit_details": [
+                {
+                    "repository_name": "ain",
+                    "hash": "a1956d2476d49cd2df3848526c663d1a1747a820",
+                    "rules_generated": 1,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 77,
+            "cluster_index": 76,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "inspircd",
+                    "hash": "4b0915fc00af7a078f9873de4f5a249adf583eb9",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 78,
+            "cluster_index": 77,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "sycl",
+                    "hash": "36cdd8262776d0bbcc2f6429e6d5a2859700f638",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 79,
+            "cluster_index": 78,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "cheribsd",
+                    "hash": "06a8aac6c8e781bda3f78889160dd242a195c18a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 80,
+            "cluster_index": 79,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "VoxelEngine-Cpp",
+                    "hash": "8acb0749fb386436c15d7f3a23ad2441d5fdb856",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 81,
+            "cluster_index": 80,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "3ae11dbcfac906a8c3a480e98660a823130dc16a",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 82,
+            "cluster_index": 81,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "mptcp",
+                    "hash": "8d7c55563ed035bfdd7cec6d68f0100b079d3150",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 83,
+            "cluster_index": 82,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 4,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "48381273f8734d28ef56a5bdf1966dd8530111bc",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 84,
+            "cluster_index": 83,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "kernel",
+                    "hash": "c4225992060bb9a851f0dcb3814f319ab90cfa3e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 85,
+            "cluster_index": 84,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "android_kernel_xiaomi_sdm845",
+                    "hash": "a196c7dfdc7041c6e10844f793b7547bdfd3f19e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 86,
+            "cluster_index": 85,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "kernel_xiaomi_sm8250",
+                    "hash": "cd2b50aa0b2f0760ce3e0ff7a0cab808563f8db7",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 87,
+            "cluster_index": 86,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "KernelSU-Pixel4XL",
+                    "hash": "fdfb060d5eba141bac4a2b24405afda9141a267e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 88,
+            "cluster_index": 87,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 1,
+            "commit_details": [
+                {
+                    "repository_name": "linux-rockchip",
+                    "hash": "75db99f1ebd4dafaf5b8f73dceac7965c75d1dbf",
+                    "rules_generated": 1,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 89,
+            "cluster_index": 88,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "android_kernel_google_wahoo",
+                    "hash": "bfb01e6a4fb95470171cfdc476911da3e2b290e2",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 90,
+            "cluster_index": 89,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "KernelSU-Pixel4XL",
+                    "hash": "48a8f3c2081e83fcaa0ff7c4340f955eb9c55409",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 91,
+            "cluster_index": 90,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "android_kernel_google_wahoo",
+                    "hash": "59610f8b04ef23b7c1f95309d32df6154f7c8671",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 92,
+            "cluster_index": 91,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "android_kernel_xiaomi_sdm845",
+                    "hash": "90286460f1cd36d479ad29582b2505e0a9825fe7",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 93,
+            "cluster_index": 92,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 4,
+            "commit_details": [
+                {
+                    "repository_name": "linux-rockchip",
+                    "hash": "39b14449060651cde9d2d5e0b6e48f0674a087c7",
+                    "rules_generated": 4,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 94,
+            "cluster_index": 93,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 2,
+            "commit_details": [
+                {
+                    "repository_name": "android_kernel_google_wahoo",
+                    "hash": "46050a93ff9e13fddcdcaff35e2b0b863b3af69b",
+                    "rules_generated": 2,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 95,
+            "cluster_index": 94,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "android_kernel_google_wahoo",
+                    "hash": "2c04026b1799a0b89f0259df66b4a66923671bfc",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 96,
+            "cluster_index": 95,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "calamares",
+                    "hash": "440b38addf36120b98553598c53d4117feec1f73",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 97,
+            "cluster_index": 96,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "lms",
+                    "hash": "083283d2a746078236f1d617a5673a7b65136e6f",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 98,
+            "cluster_index": 97,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "kernel_xiaomi_sm8250",
+                    "hash": "bdbb86e0e9d5dfa8cdbd9494ac7b76f19ec05ee5",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 99,
+            "cluster_index": 98,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "mOS",
+                    "hash": "d7de4f28bdd4dc0dfa16d962f37b53aefaba9f70",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 100,
+            "cluster_index": 99,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "PhysiCell",
+                    "hash": "2310bdebcd53a8389887b6dc62246706aee68454",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 101,
+            "cluster_index": 100,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "wireguard-linux",
+                    "hash": "738fadaa549797c777650ac8d0d433fdc20152e3",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 102,
+            "cluster_index": 101,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "ravynos",
+                    "hash": "48e3bab3533ae54b45be15a737500a593157054c",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 103,
+            "cluster_index": 102,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "1528bfcfeb5b5dc6edbaba061185b5ff9b73bf96",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 104,
+            "cluster_index": 103,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 1,
+            "commits_newly_successful": 1,
+            "total_commits_with_rules": 6,
+            "total_rules_generated": 5,
+            "commit_details": [
+                {
+                    "repository_name": "linux",
+                    "hash": "be14cc98e9fd5416cc8f86799913fd3c52dc720e",
+                    "rules_generated": 5,
+                    "generation_successful": true,
+                    "error_message": null
+                }
+            ]
+        },
+        {
+            "cluster_id": 105,
+            "cluster_index": 104,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 106,
+            "cluster_index": 105,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 107,
+            "cluster_index": 106,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 108,
+            "cluster_index": 107,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 109,
+            "cluster_index": 108,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 110,
+            "cluster_index": 109,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 111,
+            "cluster_index": 110,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 112,
+            "cluster_index": 111,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 113,
+            "cluster_index": 112,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 114,
+            "cluster_index": 113,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 115,
+            "cluster_index": 114,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 116,
+            "cluster_index": 115,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 117,
+            "cluster_index": 116,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 118,
+            "cluster_index": 117,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 119,
+            "cluster_index": 118,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 120,
+            "cluster_index": 119,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 121,
+            "cluster_index": 120,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 122,
+            "cluster_index": 121,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 123,
+            "cluster_index": 122,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 124,
+            "cluster_index": 123,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 125,
+            "cluster_index": 124,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 126,
+            "cluster_index": 125,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 127,
+            "cluster_index": 126,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 128,
+            "cluster_index": 127,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 129,
+            "cluster_index": 128,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 130,
+            "cluster_index": 129,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 131,
+            "cluster_index": 130,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 132,
+            "cluster_index": 131,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 133,
+            "cluster_index": 132,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 134,
+            "cluster_index": 133,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 135,
+            "cluster_index": 134,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 136,
+            "cluster_index": 135,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 137,
+            "cluster_index": 136,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 138,
+            "cluster_index": 137,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 139,
+            "cluster_index": 138,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 140,
+            "cluster_index": 139,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 141,
+            "cluster_index": 140,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 142,
+            "cluster_index": 141,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 143,
+            "cluster_index": 142,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 144,
+            "cluster_index": 143,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 145,
+            "cluster_index": 144,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 146,
+            "cluster_index": 145,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 147,
+            "cluster_index": 146,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 148,
+            "cluster_index": 147,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 149,
+            "cluster_index": 148,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 150,
+            "cluster_index": 149,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 151,
+            "cluster_index": 150,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 152,
+            "cluster_index": 151,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 153,
+            "cluster_index": 152,
+            "commits_with_existing_rules": 5,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 5,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 154,
+            "cluster_index": 153,
+            "commits_with_existing_rules": 4,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 4,
+            "total_rules_generated": 0,
+            "commit_details": []
+        },
+        {
+            "cluster_id": 155,
+            "cluster_index": 154,
+            "commits_with_existing_rules": 4,
+            "commits_newly_processed": 0,
+            "commits_newly_successful": 0,
+            "total_commits_with_rules": 4,
+            "total_rules_generated": 0,
+            "commit_details": []
+        }
+    ]
+}

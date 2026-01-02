@@ -1,0 +1,207 @@
+{
+    "execution_info": {
+        "start_time": "2025-06-18 23:37:51",
+        "end_time": "2025-06-18 23:38:11",
+        "duration_seconds": 20,
+        "input_cluster_file": "/home/zyw/llm_on_code/llm_on_code_optimization/python/2-cluster_new/result_100/test_2.json",
+        "output_result_file": "/home/zyw/llm_on_code/llm_on_code_optimization/python/2-cluster_new/result_100/test_2_processing_result.json",
+        "config_used": {
+            "success_threshold_per_cluster": 1,
+            "generation_count": 5,
+            "use_langsmith": false,
+            "reuse_existing": true,
+            "max_round": 7,
+            "process_limit": 0
+        }
+    },
+    "overall_statistics": {
+        "total_clusters": 1,
+        "processed_clusters": 1,
+        "successful_clusters": 1,
+        "total_commits_attempted": 1,
+        "total_commits_successful": 1,
+        "success_rate_clusters": 1.0,
+        "success_rate_commits": 1.0
+    },
+    "cluster_results": [
+        {
+            "cluster_index": 0,
+            "cluster_id": 1,
+            "processing_status": "success",
+            "error_message": null,
+            "cluster_statistics": {
+                "commits_in_cluster": 17,
+                "commits_attempted": 1,
+                "commits_successful": 1,
+                "success_threshold_met": true
+            },
+            "commit_results": [
+                {
+                    "commit_info": {
+                        "repository_name": "rocksdb",
+                        "hash": "9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+                        "file_start_line": 131,
+                        "file_end_line": 131
+                    },
+                    "processing_info": {
+                        "processing_status": "success",
+                        "error_message": null,
+                        "commit_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/rocksdb/modified_file/9f246298e2f0af3973918a0dac0c5f46bc0993c0",
+                        "before_file": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/rocksdb/modified_file/9f246298e2f0af3973918a0dac0c5f46bc0993c0/before.cc",
+                        "semgrep_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/knowledge_base/rocksdb/modified_file/9f246298e2f0af3973918a0dac0c5f46bc0993c0/semgrep"
+                    },
+                    "rule_generation": {
+                        "rules_generated": 5,
+                        "generation_successful": true
+                    },
+                    "rule_execution": {
+                        "rules_executed": 5,
+                        "execution_successful": true
+                    },
+                    "coverage_analysis": {
+                        "analysis_successful": true,
+                        "has_matching_rules": true,
+                        "temp_analysis_dir": "/home/zyw/llm_on_code/llm_on_code_optimization/semgrep/temp/cross_analysis_rules_1bf829459403_target_4071e077c556",
+                        "matching_rules": [
+                            {
+                                "rule_file": "1.json",
+                                "rule_number": 1,
+                                "match_ranges": [
+                                    "131-133"
+                                ],
+                                "coverage_details": {
+                                    "total_matches": 1,
+                                    "meets_all_requirements": true,
+                                    "match_details": [
+                                        {
+                                            "start_line": 131,
+                                            "end_line": 133,
+                                            "check_id": "home.zyw.llm_on_code.llm_on_code_optimization.knowledge_base.rocksdb.modified_file.9f246298e2f0af3973918a0dac0c5f46bc0993c0.semgrep.unnecessary-copy-in-range-for-loop",
+                                            "coverage_details": {
+                                                "overlap_lines": 1,
+                                                "required_overlap_lines": 1,
+                                                "match_length": 3,
+                                                "max_allowed_length": 100,
+                                                "overage_ratio": 3.0,
+                                                "match_range": "131-133",
+                                                "target_range": "131-131",
+                                                "overlap_range": "131-131",
+                                                "meets_min_overlap": true,
+                                                "meets_max_length": true,
+                                                "meets_coverage": true,
+                                                "meets_requirements": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "rule_file": "2.json",
+                                "rule_number": 2,
+                                "match_ranges": [
+                                    "131-133"
+                                ],
+                                "coverage_details": {
+                                    "total_matches": 1,
+                                    "meets_all_requirements": true,
+                                    "match_details": [
+                                        {
+                                            "start_line": 131,
+                                            "end_line": 133,
+                                            "check_id": "home.zyw.llm_on_code.llm_on_code_optimization.knowledge_base.rocksdb.modified_file.9f246298e2f0af3973918a0dac0c5f46bc0993c0.semgrep.unnecessary-copy-in-range-for-loop",
+                                            "coverage_details": {
+                                                "overlap_lines": 1,
+                                                "required_overlap_lines": 1,
+                                                "match_length": 3,
+                                                "max_allowed_length": 100,
+                                                "overage_ratio": 3.0,
+                                                "match_range": "131-133",
+                                                "target_range": "131-131",
+                                                "overlap_range": "131-131",
+                                                "meets_min_overlap": true,
+                                                "meets_max_length": true,
+                                                "meets_coverage": true,
+                                                "meets_requirements": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "rule_file": "3.json",
+                                "rule_number": 3,
+                                "match_ranges": [
+                                    "131-133"
+                                ],
+                                "coverage_details": {
+                                    "total_matches": 1,
+                                    "meets_all_requirements": true,
+                                    "match_details": [
+                                        {
+                                            "start_line": 131,
+                                            "end_line": 133,
+                                            "check_id": "home.zyw.llm_on_code.llm_on_code_optimization.knowledge_base.rocksdb.modified_file.9f246298e2f0af3973918a0dac0c5f46bc0993c0.semgrep.range-loop-copy-instead-of-reference",
+                                            "coverage_details": {
+                                                "overlap_lines": 1,
+                                                "required_overlap_lines": 1,
+                                                "match_length": 3,
+                                                "max_allowed_length": 100,
+                                                "overage_ratio": 3.0,
+                                                "match_range": "131-133",
+                                                "target_range": "131-131",
+                                                "overlap_range": "131-131",
+                                                "meets_min_overlap": true,
+                                                "meets_max_length": true,
+                                                "meets_coverage": true,
+                                                "meets_requirements": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            },
+                            {
+                                "rule_file": "5.json",
+                                "rule_number": 5,
+                                "match_ranges": [
+                                    "131-133"
+                                ],
+                                "coverage_details": {
+                                    "total_matches": 1,
+                                    "meets_all_requirements": true,
+                                    "match_details": [
+                                        {
+                                            "start_line": 131,
+                                            "end_line": 133,
+                                            "check_id": "home.zyw.llm_on_code.llm_on_code_optimization.knowledge_base.rocksdb.modified_file.9f246298e2f0af3973918a0dac0c5f46bc0993c0.semgrep.unnecessary-copy-in-range-for-loop",
+                                            "coverage_details": {
+                                                "overlap_lines": 1,
+                                                "required_overlap_lines": 1,
+                                                "match_length": 3,
+                                                "max_allowed_length": 100,
+                                                "overage_ratio": 3.0,
+                                                "match_range": "131-133",
+                                                "target_range": "131-131",
+                                                "overlap_range": "131-131",
+                                                "meets_min_overlap": true,
+                                                "meets_max_length": true,
+                                                "meets_coverage": true,
+                                                "meets_requirements": true
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ],
+                        "coverage_config": {
+                            "min_overlap_lines": 1,
+                            "min_coverage_ratio": 0.5,
+                            "max_overage_ratio": 100,
+                            "allow_partial_coverage": true,
+                            "require_exact_boundaries": false
+                        }
+                    }
+                }
+            ]
+        }
+    ]
+}
